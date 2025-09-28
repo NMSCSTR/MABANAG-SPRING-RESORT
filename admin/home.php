@@ -75,7 +75,7 @@
                         <span class="user-role">Administrator</span>
                     </div>
                 </div>
-                <a href="logout.php" class="btn btn-logout">
+                <a href="logout.php" id=logoutBtn class="btn btn-logout">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -387,5 +387,21 @@
         };
     </script>
     <script src="../js/admin_script.js"></script>
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure you want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'logout.php';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

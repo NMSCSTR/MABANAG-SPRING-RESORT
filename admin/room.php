@@ -100,7 +100,7 @@
                         <span class="user-role">Administrator</span>
                     </div>
                 </div>
-                <a href="logout.php" class="btn btn-logout">
+                <a href="logout.php" id="logoutBtn" class="btn btn-logout">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -495,13 +495,29 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="../js/room_script.js"></script>
     <script>
-$(document).ready(function() {
-    $('.zoomable-room-img').on('click', function() {
-        var imgSrc = $(this).data('img');
-        $('#zoomedRoomImage').attr('src', imgSrc);
-        $('#zoomImageModal').modal('show');
-    });
-});
-</script>
+        $(document).ready(function() {
+            $('.zoomable-room-img').on('click', function() {
+                var imgSrc = $(this).data('img');
+                $('#zoomedRoomImage').attr('src', imgSrc);
+                $('#zoomImageModal').modal('show');
+            });
+        });
+    </script>
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure you want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'logout.php';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

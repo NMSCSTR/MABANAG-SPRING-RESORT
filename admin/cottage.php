@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php 
+<?php
     require_once 'validate.php';
     require_once 'name.php';
     require_once 'connect.php';
@@ -24,13 +24,13 @@
 <body data-alert-type="<?php echo isset($_SESSION['alert_type']) ? $_SESSION['alert_type'] : ''; ?>"
       data-alert-title="<?php echo isset($_SESSION['alert_title']) ? $_SESSION['alert_title'] : ''; ?>"
       data-alert-message="<?php echo isset($_SESSION['alert_message']) ? htmlspecialchars($_SESSION['alert_message']) : ''; ?>">
-    
+
     <?php
-    if(isset($_SESSION['alert_type'])) {
-        unset($_SESSION['alert_type']);
-        unset($_SESSION['alert_message']);
-        unset($_SESSION['alert_title']);
-    }
+        if (isset($_SESSION['alert_type'])) {
+            unset($_SESSION['alert_type']);
+            unset($_SESSION['alert_message']);
+            unset($_SESSION['alert_title']);
+        }
     ?>
     <!-- Admin Dashboard Layout -->
     <div class="dashboard-container">
@@ -42,7 +42,7 @@
             </div>
             <ul class="sidebar-menu">
                 <li class="menu-item">
-                    <a href="admin_dashboard.html">
+                    <a href="home.php">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
@@ -94,7 +94,7 @@
                         <span class="user-role">Administrator</span>
                     </div>
                 </div>
-                <a href="logout.php" class="btn btn-logout">
+                <a href="logout.php" id=logoutBtn class="btn btn-logout">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -178,82 +178,82 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = $conn->query("SELECT * FROM `cottage` ORDER BY `cottage_id` DESC") or die(mysqli_error());
-                                    while($fetch = $query->fetch_array()){
-                                        // Determine capacity based on cottage type
-                                        $capacity = '';
-                                        switch($fetch['cottage_type']) {
-                                            case 'Family':
-                                                $capacity = '6-8 People';
-                                                break;
-                                            case 'Luxury':
-                                                $capacity = '4-6 People';
-                                                break;
-                                            case 'Beachfront':
-                                                $capacity = '4-6 People';
-                                                break;
-                                            case 'Garden View':
-                                                $capacity = '2-4 People';
-                                                break;
-                                            default:
-                                                $capacity = '2-4 People';
-                                        }
-                                    ?>
+                                        $query = $conn->query("SELECT * FROM `cottage` ORDER BY `cottage_id` DESC") or die(mysqli_error());
+                                        while ($fetch = $query->fetch_array()) {
+                                            // Determine capacity based on cottage type
+                                            $capacity = '';
+                                            switch ($fetch['cottage_type']) {
+                                                case 'Family':
+                                                    $capacity = '6-8 People';
+                                                    break;
+                                                case 'Luxury':
+                                                    $capacity = '4-6 People';
+                                                    break;
+                                                case 'Beachfront':
+                                                    $capacity = '4-6 People';
+                                                    break;
+                                                case 'Garden View':
+                                                    $capacity = '2-4 People';
+                                                    break;
+                                                default:
+                                                    $capacity = '2-4 People';
+                                            }
+                                        ?>
                                     <tr>
-                                        <td><?php echo $fetch['cottage_id']?></td>
+                                        <td><?php echo $fetch['cottage_id'] ?></td>
                                         <td>
-                                            <span class="cottage-type-badge cottage-type-<?php echo strtolower(str_replace(' ', '-', $fetch['cottage_type']))?>">
-                                                <i class="fas fa-home me-1"></i><?php echo $fetch['cottage_type']?>
+                                            <span class="cottage-type-badge cottage-type-<?php echo strtolower(str_replace(' ', '-', $fetch['cottage_type'])) ?>">
+                                                <i class="fas fa-home me-1"></i><?php echo $fetch['cottage_type'] ?>
                                             </span>
                                         </td>
-                                        <td>₱<?php echo $fetch['cottage_price']?></td>
+                                        <td>₱<?php echo $fetch['cottage_price'] ?></td>
                                         <td>
-                                            <span class="availability-badge availability-<?php echo strtolower($fetch['cottage_availability'])?>">
-                                                <?php echo $fetch['cottage_availability']?>
+                                            <span class="availability-badge availability-<?php echo strtolower($fetch['cottage_availability']) ?>">
+                                                <?php echo $fetch['cottage_availability'] ?>
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="capacity-badge"><?php echo $capacity?></span>
+                                            <span class="capacity-badge"><?php echo $capacity ?></span>
                                         </td>
                                         <td>
-                                            <?php if(!empty($fetch['photo'])): ?>
-                                                <img src="../photos/<?php echo $fetch['photo']?>" alt="Cottage Photo" class="cottage-thumbnail">
+                                            <?php if (! empty($fetch['photo'])): ?>
+                                                <img src="../photos/<?php echo $fetch['photo'] ?>" alt="Cottage Photo" class="cottage-thumbnail">
                                             <?php else: ?>
                                                 <div class="no-photo">No Image</div>
                                             <?php endif; ?>
                                         </td>
-                                        <td><?php echo $fetch['cottage_description']?></td>
+                                        <td><?php echo $fetch['cottage_description'] ?></td>
                                         <td>
                                             <div class="action-buttons">
-                                                <button class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#editCottageModal" 
-                                                    data-id="<?php echo $fetch['cottage_id']?>"
-                                                    data-type="<?php echo $fetch['cottage_type']?>"
-                                                    data-price="<?php echo $fetch['cottage_price']?>"
-                                                    data-availability="<?php echo $fetch['cottage_availability']?>"
+                                                <button class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#editCottageModal"
+                                                    data-id="<?php echo $fetch['cottage_id'] ?>"
+                                                    data-type="<?php echo $fetch['cottage_type'] ?>"
+                                                    data-price="<?php echo $fetch['cottage_price'] ?>"
+                                                    data-availability="<?php echo $fetch['cottage_availability'] ?>"
                                                     data-description="<?php echo htmlspecialchars($fetch['cottage_description'], ENT_QUOTES); ?>"
-                                                    data-photo="<?php echo $fetch['photo']?>">
+                                                    data-photo="<?php echo $fetch['photo'] ?>">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-sm btn-delete" 
-                                                    data-id="<?php echo $fetch['cottage_id']?>"
-                                                    data-type="<?php echo $fetch['cottage_type']?>">
+                                                <button class="btn btn-sm btn-delete"
+                                                    data-id="<?php echo $fetch['cottage_id'] ?>"
+                                                    data-type="<?php echo $fetch['cottage_type'] ?>">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-view" data-bs-toggle="modal" data-bs-target="#viewCottageModal"
-                                                    data-id="<?php echo $fetch['cottage_id']?>"
-                                                    data-type="<?php echo $fetch['cottage_type']?>"
-                                                    data-price="<?php echo $fetch['cottage_price']?>"
-                                                    data-availability="<?php echo $fetch['cottage_availability']?>"
+                                                    data-id="<?php echo $fetch['cottage_id'] ?>"
+                                                    data-type="<?php echo $fetch['cottage_type'] ?>"
+                                                    data-price="<?php echo $fetch['cottage_price'] ?>"
+                                                    data-availability="<?php echo $fetch['cottage_availability'] ?>"
                                                     data-description="<?php echo htmlspecialchars($fetch['cottage_description'], ENT_QUOTES); ?>"
-                                                    data-photo="<?php echo $fetch['photo']?>"
-                                                    data-capacity="<?php echo $capacity?>">
+                                                    data-photo="<?php echo $fetch['photo'] ?>"
+                                                    data-capacity="<?php echo $capacity ?>">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <?php
-                                    }
+                                        }
                                     ?>
                                 </tbody>
                             </table>
@@ -271,8 +271,8 @@
                             <div class="stat-info">
                                 <h3>
                                     <?php
-                                    $total_cottages = $conn->query("SELECT COUNT(*) as total FROM `cottage`")->fetch_array();
-                                    echo $total_cottages['total'];
+                                        $total_cottages = $conn->query("SELECT COUNT(*) as total FROM `cottage`")->fetch_array();
+                                        echo $total_cottages['total'];
                                     ?>
                                 </h3>
                                 <p>Total Cottages</p>
@@ -287,8 +287,8 @@
                             <div class="stat-info">
                                 <h3>
                                     <?php
-                                    $available_cottages = $conn->query("SELECT COUNT(*) as available FROM `cottage` WHERE `cottage_availability` = 'Available'")->fetch_array();
-                                    echo $available_cottages['available'];
+                                        $available_cottages = $conn->query("SELECT COUNT(*) as available FROM `cottage` WHERE `cottage_availability` = 'Available'")->fetch_array();
+                                        echo $available_cottages['available'];
                                     ?>
                                 </h3>
                                 <p>Available Cottages</p>
@@ -303,8 +303,8 @@
                             <div class="stat-info">
                                 <h3>
                                     <?php
-                                    $occupied_cottages = $conn->query("SELECT COUNT(*) as occupied FROM `cottage` WHERE `cottage_availability` = 'Occupied'")->fetch_array();
-                                    echo $occupied_cottages['occupied'];
+                                        $occupied_cottages = $conn->query("SELECT COUNT(*) as occupied FROM `cottage` WHERE `cottage_availability` = 'Occupied'")->fetch_array();
+                                        echo $occupied_cottages['occupied'];
                                     ?>
                                 </h3>
                                 <p>Occupied Cottages</p>
@@ -319,8 +319,8 @@
                             <div class="stat-info">
                                 <h3>
                                     <?php
-                                    $maintenance_cottages = $conn->query("SELECT COUNT(*) as maintenance FROM `cottage` WHERE `cottage_availability` = 'Maintenance'")->fetch_array();
-                                    echo $maintenance_cottages['maintenance'];
+                                        $maintenance_cottages = $conn->query("SELECT COUNT(*) as maintenance FROM `cottage` WHERE `cottage_availability` = 'Maintenance'")->fetch_array();
+                                        echo $maintenance_cottages['maintenance'];
                                     ?>
                                 </h3>
                                 <p>Under Maintenance</p>
@@ -529,5 +529,21 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="../js/cottage_script.js"></script>
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure you want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'logout.php';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
