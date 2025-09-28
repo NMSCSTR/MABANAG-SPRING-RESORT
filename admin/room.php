@@ -119,12 +119,6 @@
                     <h3>Room Management</h3>
                 </div>
                 <div class="nav-right">
-                    <div class="notifications">
-                        <button class="nav-btn">
-                            <i class="fas fa-bell"></i>
-                            <span class="notification-badge">3</span>
-                        </button>
-                    </div>
                     <div class="user-menu">
                         <button class="nav-btn user-dropdown">
                             <i class="fas fa-user-circle"></i>
@@ -220,7 +214,7 @@
                                         </td>
                                         <td>
                                             <?php if(!empty($fetch['photo'])): ?>
-                                                <img src="../photos/<?php echo $fetch['photo']?>" alt="Room Photo" class="room-thumbnail">
+                                                <img src="../photos/<?php echo $fetch['photo']?>" alt="Room Photo" class="room-thumbnail zoomable-room-img" data-img="../photos/<?php echo $fetch['photo']?>" data-bs-toggle="modal" data-bs-target="#zoomImageModal">
                                             <?php else: ?>
                                                 <div class="no-photo">No Image</div>
                                             <?php endif; ?>
@@ -482,6 +476,17 @@
         </div>
     </div>
 
+    <!-- Image Zoom Modal -->
+    <div class="modal fade" id="zoomImageModal" tabindex="-1" aria-labelledby="zoomImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img id="zoomedRoomImage" src="" alt="Zoomed Room Photo" style="max-width:100%; max-height:80vh;">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
@@ -489,5 +494,14 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="../js/room_script.js"></script>
+    <script>
+$(document).ready(function() {
+    $('.zoomable-room-img').on('click', function() {
+        var imgSrc = $(this).data('img');
+        $('#zoomedRoomImage').attr('src', imgSrc);
+        $('#zoomImageModal').modal('show');
+    });
+});
+</script>
 </body>
 </html>

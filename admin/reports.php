@@ -130,12 +130,6 @@
                     <h3>Reports & Analytics</h3>
                 </div>
                 <div class="nav-right">
-                    <div class="notifications">
-                        <button class="nav-btn">
-                            <i class="fas fa-bell"></i>
-                            <span class="notification-badge">2</span>
-                        </button>
-                    </div>
                     <div class="user-menu">
                         <button class="nav-btn user-dropdown">
                             <i class="fas fa-user-circle"></i>
