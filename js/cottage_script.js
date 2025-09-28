@@ -111,12 +111,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const cottageType = button.getAttribute('data-type');
             const cottagePrice = button.getAttribute('data-price');
             const cottageAvailability = button.getAttribute('data-availability');
+            const cottageDescription = button.getAttribute('data-description');
             const cottagePhoto = button.getAttribute('data-photo');
 
             document.getElementById('edit_cottage_id').value = cottageId;
             document.getElementById('edit_cottage_type').value = cottageType;
             document.getElementById('edit_cottage_price').value = cottagePrice;
             document.getElementById('edit_cottage_availability').value = cottageAvailability;
+            document.getElementById('edit_cottage_description').value = cottageDescription;
+            
             document.getElementById('current_cottage_photo').textContent = cottagePhoto || 'No photo';
             
             // Update capacity
@@ -137,13 +140,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const cottageType = button.getAttribute('data-type');
             const cottagePrice = button.getAttribute('data-price');
             const cottageAvailability = button.getAttribute('data-availability');
+            const cottageDescription = button.getAttribute('data-description');
             const cottagePhoto = button.getAttribute('data-photo');
             const cottageCapacity = capacityMap[cottageType] || '2-4 People';
 
             document.getElementById('view_cottage_id').textContent = cottageId;
             document.getElementById('view_cottage_type').textContent = cottageType + ' Cottage';
-            document.getElementById('view_cottage_price').textContent = '₱' + cottagePrice + '/night';
+            document.getElementById('view_cottage_price').textContent = '₱' + cottagePrice;
             document.getElementById('view_cottage_availability').textContent = cottageAvailability;
+            document.getElementById('view_cottage_description').innerHTML = cottageDescription.replace(/\n/g, '<br>');
+            document.getElementById('view_cottage_description').innerHTML = cottageDescription && cottageDescription.trim() ? cottageDescription.replace(/\n/g, '<br>') : '<span class="text-muted">No description available.</span>';
             document.getElementById('view_cottage_capacity').textContent = cottageCapacity;
             
             // Set photo

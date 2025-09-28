@@ -370,7 +370,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="room_price" class="form-label">Price per Night ($) <span class="text-danger">*</span></label>
+                                    <label for="room_price" class="form-label">Price per Night (₱) <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="room_price" name="room_price" step="0.01" required>
                                 </div>
                             </div>

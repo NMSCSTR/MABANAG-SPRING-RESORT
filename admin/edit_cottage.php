@@ -117,7 +117,7 @@ if(ISSET($_POST['edit_cottage'])){
                     `cottage_price` = '$cottage_price',
                     `cottage_availability` = '$cottage_availability',
                     `photo` = '$photo_name',
-                    `description` = '$description'
+                    `cottage_description` = '$description'
                     WHERE `cottage_id` = '$cottage_id'";
         } else {
             // Update without changing the photo
@@ -125,7 +125,7 @@ if(ISSET($_POST['edit_cottage'])){
                     `cottage_type` = '$cottage_type',
                     `cottage_price` = '$cottage_price',
                     `cottage_availability` = '$cottage_availability',
-                    `description` = '$description'
+                    `cottage_description` = '$description'
                     WHERE `cottage_id` = '$cottage_id'";
         }
         

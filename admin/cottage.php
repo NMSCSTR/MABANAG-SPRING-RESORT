@@ -178,6 +178,7 @@
                                         <th>Availability</th>
                                         <th>Capacity</th>
                                         <th>Photo</th>
+                                        <th>Description</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -227,6 +228,7 @@
                                                 <div class="no-photo">No Image</div>
                                             <?php endif; ?>
                                         </td>
+                                        <td><?php echo $fetch['cottage_description']?></td>
                                         <td>
                                             <div class="action-buttons">
                                                 <button class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#editCottageModal" 
@@ -234,6 +236,7 @@
                                                     data-type="<?php echo $fetch['cottage_type']?>"
                                                     data-price="<?php echo $fetch['cottage_price']?>"
                                                     data-availability="<?php echo $fetch['cottage_availability']?>"
+                                                    data-description="<?php echo htmlspecialchars($fetch['cottage_description'], ENT_QUOTES); ?>"
                                                     data-photo="<?php echo $fetch['photo']?>">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
@@ -247,6 +250,7 @@
                                                     data-type="<?php echo $fetch['cottage_type']?>"
                                                     data-price="<?php echo $fetch['cottage_price']?>"
                                                     data-availability="<?php echo $fetch['cottage_availability']?>"
+                                                    data-description="<?php echo htmlspecialchars($fetch['cottage_description'], ENT_QUOTES); ?>"
                                                     data-photo="<?php echo $fetch['photo']?>"
                                                     data-capacity="<?php echo $capacity?>">
                                                     <i class="fas fa-eye"></i>
@@ -431,7 +435,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="edit_cottage_price" class="form-label">Price per Night ($) <span class="text-danger">*</span></label>
+                                    <label for="edit_cottage_price" class="form-label">Price per Night (₱) <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="edit_cottage_price" name="cottage_price" step="0.01" min="0" required>
                                 </div>
                             </div>
@@ -510,7 +514,8 @@
                                 </div>
                                 <div class="detail-item">
                                     <strong>Description:</strong>
-                                    <p id="view_cottage_description" class="mt-2">No description available.</p>
+                                    <!-- <p id="view_cottage_description" class="mt-2">No description available.</p> -->
+                                    <span id="view_cottage_description"></span>
                                 </div>
                             </div>
                         </div>

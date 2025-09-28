@@ -10,7 +10,7 @@ if(ISSET($_POST['add_cottage'])){
     $cottage_type = mysqli_real_escape_string($conn, $_POST['cottage_type']);
     $cottage_price = mysqli_real_escape_string($conn, $_POST['cottage_price']);
     $cottage_availability = mysqli_real_escape_string($conn, $_POST['cottage_availability']);
-    $description = mysqli_real_escape_string($conn, $_POST['description'] ?? '');
+    $cottage_description = mysqli_real_escape_string($conn, $_POST['description'] ?? '');
     
     // Validate required fields
     if(empty($cottage_type)) {
@@ -107,8 +107,8 @@ if(ISSET($_POST['add_cottage'])){
             $_SESSION['alert_title'] = 'Duplicate Entry!';
         } else {
             // Insert into database
-            $sql = "INSERT INTO `cottage` (`cottage_type`, `cottage_price`, `cottage_availability`, `photo`, `description`) 
-                    VALUES ('$cottage_type', '$cottage_price', '$cottage_availability', '$photo_name', '$description')";
+            $sql = "INSERT INTO `cottage` (`cottage_type`, `cottage_price`, `cottage_availability`, `photo`, `cottage_description`) 
+                    VALUES ('$cottage_type', '$cottage_price', '$cottage_availability', '$photo_name', '$cottage_description')";
             
             if($conn->query($sql)) {
                 $_SESSION['alert_type'] = 'success';
