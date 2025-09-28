@@ -289,6 +289,91 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <?php
+// --- Revenue Data Queries ---
+function getRevenueData($conn, $type = 'weekly') {
+    $data = [];
+    $labels = [];
+    $today = date('Y-m-d');
+    if ($type === 'weekly') {
+        // Get revenue for each day in the current week (Mon-Sun)
+        $startOfWeek = date('Y-m-d', strtotime('monday this week'));
+        for ($i = 0; $i < 7; $i++) {
+            $date = date('Y-m-d', strtotime("$startOfWeek +$i day"));
+            $labels[] = date('D', strtotime($date));
+            $q = $conn->query("
+                SELECT SUM(r.total_amount) as revenue
+                FROM reservation r
+                INNER JOIN payment p ON r.reservation_id = p.reservation_id
+                WHERE r.status = 'confirmed'
+                  AND p.payment_status = 'verified'
+                  AND DATE(p.payment_date) = '$date'
+            ");
+            $row = $q->fetch_assoc();
+            $data[] = $row['revenue'] ? floatval($row['revenue']) : 0;
+        }
+    } elseif ($type === 'monthly') {
+        // Get revenue for each week in the current month
+        $month = date('m');
+        $year = date('Y');
+        for ($w = 1; $w <= 4; $w++) {
+            $labels[] = "Week $w";
+            $start = date('Y-m-d', strtotime("$year-$month-01 +".(($w-1)*7)." days"));
+            $end = date('Y-m-d', strtotime("$start +6 days"));
+            $q = $conn->query("
+                SELECT SUM(r.total_amount) as revenue
+                FROM reservation r
+                INNER JOIN payment p ON r.reservation_id = p.reservation_id
+                WHERE r.status = 'confirmed'
+                  AND p.payment_status = 'verified'
+                  AND DATE(p.payment_date) BETWEEN '$start' AND '$end'
+            ");
+            $row = $q->fetch_assoc();
+            $data[] = $row['revenue'] ? floatval($row['revenue']) : 0;
+        }
+    } elseif ($type === 'yearly') {
+        // Get revenue for each month in the current year
+        $year = date('Y');
+        for ($m = 1; $m <= 12; $m++) {
+            $labels[] = date('M', strtotime("$year-$m-01"));
+            $start = date('Y-m-01', strtotime("$year-$m-01"));
+            $end = date('Y-m-t', strtotime("$year-$m-01"));
+            $q = $conn->query("
+                SELECT SUM(r.total_amount) as revenue
+                FROM reservation r
+                INNER JOIN payment p ON r.reservation_id = p.reservation_id
+                WHERE r.status = 'confirmed'
+                  AND p.payment_status = 'verified'
+                  AND DATE(p.payment_date) BETWEEN '$start' AND '$end'
+            ");
+            $row = $q->fetch_assoc();
+            $data[] = $row['revenue'] ? floatval($row['revenue']) : 0;
+        }
+    }
+    return ['labels' => $labels, 'data' => $data];
+}
+
+$weeklyRevenue = getRevenueData($conn, 'weekly');
+$monthlyRevenue = getRevenueData($conn, 'monthly');
+$yearlyRevenue = getRevenueData($conn, 'yearly');
+?>
+    <script>
+        // --- Revenue Data from PHP ---
+        const revenueData = {
+            weekly: {
+                labels: <?php echo json_encode($weeklyRevenue['labels']); ?>,
+                data: <?php echo json_encode($weeklyRevenue['data']); ?>
+            },
+            monthly: {
+                labels: <?php echo json_encode($monthlyRevenue['labels']); ?>,
+                data: <?php echo json_encode($monthlyRevenue['data']); ?>
+            },
+            yearly: {
+                labels: <?php echo json_encode($yearlyRevenue['labels']); ?>,
+                data: <?php echo json_encode($yearlyRevenue['data']); ?>
+            }
+        };
+    </script>
     <script src="../js/admin_script.js"></script>
 </body>
 </html>

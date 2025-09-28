@@ -29,103 +29,53 @@ document.addEventListener('DOMContentLoaded', function() {
 // Revenue Chart Initialization
 function initializeRevenueChart() {
     const ctx = document.getElementById('revenueChart').getContext('2d');
-    
-    // Sample data for the chart
-    const weeklyData = {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-            label: 'Revenue ($)',
-            data: [3200, 4500, 3800, 5200, 6100, 7800, 6900],
-            backgroundColor: 'rgba(42, 157, 143, 0.2)',
-            borderColor: 'rgba(42, 157, 143, 1)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true
-        }]
-    };
-    
-    const monthlyData = {
-        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-        datasets: [{
-            label: 'Revenue ($)',
-            data: [18500, 22400, 19800, 25600],
-            backgroundColor: 'rgba(42, 157, 143, 0.2)',
-            borderColor: 'rgba(42, 157, 143, 1)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true
-        }]
-    };
-    
-    const yearlyData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-            label: 'Revenue ($)',
-            data: [85000, 92000, 105000, 98000, 112000, 125000, 134000, 128000, 118000, 132000, 145000, 158000],
-            backgroundColor: 'rgba(42, 157, 143, 0.2)',
-            borderColor: 'rgba(42, 157, 143, 1)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true
-        }]
-    };
-    
-    const chartConfig = {
+    window.revenueChart = new Chart(ctx, {
         type: 'line',
-        data: weeklyData,
+        data: {
+            labels: revenueData.weekly.labels,
+            datasets: [{
+                label: 'Revenue (₱)',
+                data: revenueData.weekly.data,
+                backgroundColor: 'rgba(42, 157, 143, 0.2)',
+                borderColor: 'rgba(42, 157, 143, 1)',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true
+            }]
+        },
         options: {
             responsive: true,
             plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false
-                }
+                legend: { display: false },
+                tooltip: { mode: 'index', intersect: false }
             },
             scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        drawBorder: false
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    }
-                }
+                y: { beginAtZero: true, grid: { drawBorder: false } },
+                x: { grid: { display: false } }
             }
         }
-    };
-    
-    window.revenueChart = new Chart(ctx, chartConfig);
+    });
 }
 
 // Update chart based on selected timeframe
 function updateChart(timeframe) {
     if (!window.revenueChart) return;
-    
-    // In a real application, you would fetch new data from the server
-    // For this example, we'll just update with sample data
-    let newData;
-    
+    let newLabels = [], newData = [];
     switch(timeframe) {
         case 'Weekly':
-            newData = [3200, 4500, 3800, 5200, 6100, 7800, 6900];
-            window.revenueChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            newLabels = revenueData.weekly.labels;
+            newData = revenueData.weekly.data;
             break;
         case 'Monthly':
-            newData = [18500, 22400, 19800, 25600];
-            window.revenueChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+            newLabels = revenueData.monthly.labels;
+            newData = revenueData.monthly.data;
             break;
         case 'Yearly':
-            newData = [85000, 92000, 105000, 98000, 112000, 125000, 134000, 128000, 118000, 132000, 145000, 158000];
-            window.revenueChart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            newLabels = revenueData.yearly.labels;
+            newData = revenueData.yearly.data;
             break;
     }
-    
+    window.revenueChart.data.labels = newLabels;
     window.revenueChart.data.datasets[0].data = newData;
     window.revenueChart.update();
 }
