@@ -11,6 +11,7 @@ if(ISSET($_POST['add_room'])){
     $room_type = mysqli_real_escape_string($conn, $_POST['room_type']);
     $room_price = mysqli_real_escape_string($conn, $_POST['room_price']);
     $room_availability = mysqli_real_escape_string($conn, $_POST['room_availability']);
+    $room_description = isset($_POST['description']) ? mysqli_real_escape_string($conn, $_POST['description']) : '';
     
     // Validate required fields
     if(empty($room_number)) {
@@ -91,8 +92,8 @@ if(ISSET($_POST['add_room'])){
     
     // If no errors, insert into database
     if(empty($errors)) {
-        $sql = "INSERT INTO `room` (`room_number`, `room_type`, `room_price`, `room_availability`, `photo`) 
-                VALUES ('$room_number', '$room_type', '$room_price', '$room_availability', '$photo_name')";
+        $sql = "INSERT INTO `room` (`room_number`, `room_type`, `room_price`, `room_availability`, `photo`, `room_description`) 
+                VALUES ('$room_number', '$room_type', '$room_price', '$room_availability', '$photo_name', '$room_description')";
         
         if($conn->query($sql)) {
             $_SESSION['success'] = "Room added successfully";

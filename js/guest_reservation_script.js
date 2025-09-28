@@ -10,12 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalAmountDisplay = document.getElementById('total_amount');
     const checkInDate = document.getElementById('check_in_date');
     const checkOutDate = document.getElementById('check_out_date');
+    const stayDuration = document.getElementById('stay_duration');
+    const durationDays = document.getElementById('duration_days');
     const form = document.querySelector('.reservation-form');
 
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
     checkInDate.min = today;
     checkOutDate.min = today;
+    
+    // Initial call to update total amount
+    updateTotalAmount();
 
     // Handle reservation type change
     reservationTypeSelect.addEventListener('change', function() {
@@ -72,27 +77,80 @@ document.addEventListener('DOMContentLoaded', function() {
                 checkOutDate.value = '';
             }
         }
+        updateTotalAmount();
+    });
+
+    // Handle check-out date change
+    checkOutDate.addEventListener('change', function() {
+        updateTotalAmount();
     });
 
     // Update total amount function
     function updateTotalAmount() {
         let total = 0;
+        let dailyRate = 0;
+        let numberOfDays = 0;
         
+        // Get daily rate based on selection
         if (reservationTypeSelect.value === 'room' && roomSelect.value) {
             const selectedOption = roomSelect.options[roomSelect.selectedIndex];
             const price = selectedOption.getAttribute('data-price');
             if (price) {
-                total = parseFloat(price);
+                dailyRate = parseFloat(price);
             }
         } else if (reservationTypeSelect.value === 'cottage' && cottageSelect.value) {
             const selectedOption = cottageSelect.options[cottageSelect.selectedIndex];
             const price = selectedOption.getAttribute('data-price');
             if (price) {
-                total = parseFloat(price);
+                dailyRate = parseFloat(price);
             }
         }
         
-        totalAmountDisplay.textContent = '₱' + total.toFixed(2);
+        // Calculate number of days if both dates are selected
+        if (checkInDate.value && checkOutDate.value) {
+            const checkIn = new Date(checkInDate.value);
+            const checkOut = new Date(checkOutDate.value);
+            
+            // Calculate difference in days
+            const timeDiff = checkOut.getTime() - checkIn.getTime();
+            numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            // Ensure at least 1 day
+            if (numberOfDays < 1) {
+                numberOfDays = 1;
+            }
+            
+            // Update duration display
+            durationDays.textContent = numberOfDays;
+            stayDuration.style.display = 'block';
+        } else {
+            // Hide duration display if dates are not complete
+            stayDuration.style.display = 'none';
+        }
+        
+        // Calculate total (rate × days)
+        if (dailyRate > 0 && numberOfDays > 0) {
+            total = dailyRate * numberOfDays;
+        }
+        
+        // Update display with breakdown
+        if (dailyRate > 0 && numberOfDays > 0) {
+            totalAmountDisplay.innerHTML = `
+                <span class="amount-breakdown">
+                    ₱${dailyRate.toFixed(2)} × ${numberOfDays} day${numberOfDays > 1 ? 's' : ''} = 
+                </span>
+                <span class="amount-total">₱${total.toFixed(2)}</span>
+            `;
+        } else if (dailyRate > 0) {
+            totalAmountDisplay.innerHTML = `
+                <span class="amount-breakdown">
+                    ₱${dailyRate.toFixed(2)} × <span style="color: #dc3545;">Select dates</span> = 
+                </span>
+                <span class="amount-total">₱0.00</span>
+            `;
+        } else {
+            totalAmountDisplay.textContent = '₱0.00';
+        }
     }
 
     // Form validation
@@ -261,17 +319,6 @@ document.addEventListener('DOMContentLoaded', function() {
         this.value = value;
     });
 
-    // Email validation
-    const emailInput = document.getElementById('email');
-    emailInput.addEventListener('blur', function() {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (this.value && !emailRegex.test(this.value)) {
-            this.classList.add('is-invalid');
-            showAlert('Please enter a valid email address.', 'error');
-        } else {
-            this.classList.remove('is-invalid');
-        }
-    });
 
     // Initialize tooltips if Bootstrap is available
     if (typeof bootstrap !== 'undefined') {
@@ -290,6 +337,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cottageSelect.style.display = 'none';
             roomLabel.style.display = 'none';
             cottageLabel.style.display = 'none';
+            stayDuration.style.display = 'none';
             totalAmountDisplay.textContent = '₱0.00';
             
             // Remove validation classes

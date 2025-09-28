@@ -6,7 +6,6 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $firstname = $_POST['firstname'];
         $lastname = $_POST['lastname'];
-        $email = $_POST['email'];
         $contactno = $_POST['contactno'];
         $address = $_POST['address'];
         $reservation_type = $_POST['reservation_type'];
@@ -42,26 +41,39 @@
             }
         }
         
-        // Calculate total amount
+        // Calculate   amount (rate × number of days)
         $total_amount = 0;
         if ($reservation_type == 'room' && $room_id) {
             $room_query = $conn->query("SELECT room_price FROM room WHERE room_id = '$room_id'");
             if ($room_query && $room_query->num_rows > 0) {
                 $room_data = $room_query->fetch_array();
-                $total_amount = floatval($room_data['room_price']);
+                $daily_rate = floatval($room_data['room_price']);
+                
+                // Calculate number of days
+                $check_in = new DateTime($check_in_date);
+                $check_out = new DateTime($check_out_date);
+                $number_of_days = $check_out->diff($check_in)->days;
+                
+                $total_amount = $daily_rate * $number_of_days;
             }
         } elseif ($reservation_type == 'cottage' && $cottage_id) {
             $cottage_query = $conn->query("SELECT cottage_price FROM cottage WHERE cottage_id = '$cottage_id'");
             if ($cottage_query && $cottage_query->num_rows > 0) {
                 $cottage_data = $cottage_query->fetch_array();
-                $total_amount = floatval($cottage_data['cottage_price']);
+                $daily_rate = floatval($cottage_data['cottage_price']);
+                
+                // Calculate number of days
+                $check_in = new DateTime($check_in_date);
+                $check_out = new DateTime($check_out_date);
+                $number_of_days = $check_out->diff($check_in)->days;
+                
+                $total_amount = $daily_rate * $number_of_days;
             }
         }
         
         // Insert guest information
-        $name = $firstname . ' ' . $lastname;
-        $guest_query = $conn->query("INSERT INTO guest (firstname, lastname, name, email, address, contactno) 
-                                    VALUES ('$firstname', '$lastname', '$name', '$email', '$address', '$contactno')");
+        $guest_query = $conn->query("INSERT INTO guest (firstname, lastname, address, contactno) 
+                                    VALUES ('$firstname', '$lastname', '$address', '$contactno')");
         
         if ($guest_query) {
             $guest_id = $conn->insert_id;
@@ -73,13 +85,14 @@
             if ($reservation_query) {
                 $reservation_id = $conn->insert_id;
                 
-                // Insert payment
+                // Insert payment record for admin review
                 $receipt_file_sql = $receipt_file ? "'$receipt_file'" : 'NULL';
-                $payment_query = $conn->query("INSERT INTO payment (reservation_id, amount, payment_method, payment_reference, receipt_file) 
-                                             VALUES ('$reservation_id', '$total_amount', '$payment_method', '$payment_reference', $receipt_file_sql)");
+                $payment_reference_sql = !empty($payment_reference) ? "'$payment_reference'" : 'NULL';
+                $payment_query = $conn->query("INSERT INTO payment (reservation_id, amount, payment_method, payment_reference, receipt_file, payment_status) 
+                                             VALUES ('$reservation_id', '$total_amount', '$payment_method', $payment_reference_sql, $receipt_file_sql, 'pending')");
                 
                 if ($payment_query) {
-                    $success_message = "Reservation submitted successfully! Your reservation ID is #$reservation_id";
+                    $success_message = "Reservation submitted successfully! Your reservation ID is #$reservation_id. Please wait for admin approval after receipt verification.";
                 } else {
                     $error_message = "Error creating payment record: " . $conn->error;
                 }
@@ -189,10 +202,6 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="email" class="form-label">Email Address *</label>
-                                        <input type="email" class="form-control" id="email" name="email" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
                                         <label for="contactno" class="form-label">Contact Number *</label>
                                         <input type="tel" class="form-control" id="contactno" name="contactno" required>
                                     </div>
@@ -254,6 +263,14 @@
                                         <input type="date" class="form-control" id="check_out_date" name="check_out_date" required>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <div class="stay-duration" id="stay_duration" style="display: none;">
+                                            <i class="fas fa-calendar-alt me-2"></i>
+                                            <span class="duration-text">Duration: <strong id="duration_days">0</strong> day(s)</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Payment Information -->
@@ -307,7 +324,7 @@
                                 <div class="total-amount">
                                     <div class="amount-display">
                                         <span class="amount-label">Total Amount:</span>
-                                        <span class="amount-value" id="total_amount">₱0.00</span>
+                                        <div id="total_amount">₱0.00</div>
                                     </div>
                                 </div>
                             </div>

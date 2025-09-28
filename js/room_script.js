@@ -50,12 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const roomPrice = button.getAttribute('data-price');
             const roomAvailability = button.getAttribute('data-availability');
             const roomPhoto = button.getAttribute('data-photo');
+            const roomDescription = button.getAttribute('data-description');
 
             document.getElementById('edit_room_id').value = roomId;
             document.getElementById('edit_room_number').value = roomNumber;
             document.getElementById('edit_room_type').value = roomType;
             document.getElementById('edit_room_price').value = roomPrice;
             document.getElementById('edit_room_availability').value = roomAvailability;
+            document.getElementById('edit_room_description').value = roomDescription || '';
             document.getElementById('current_photo').textContent = roomPhoto || 'No photo';
         });
     }

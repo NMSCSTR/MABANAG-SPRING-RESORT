@@ -190,6 +190,7 @@
                                         <th>Room Type</th>
                                         <th>Price</th>
                                         <th>Availability</th>
+                                        <th>Description</th>
                                         <th>Photo</th>
                                         <th>Actions</th>
                                     </tr>
@@ -214,6 +215,16 @@
                                             </span>
                                         </td>
                                         <td>
+                                            <?php 
+                                            $description = isset($fetch['room_description']) ? $fetch['room_description'] : '';
+                                            if(!empty($description)): 
+                                                echo strlen($description) > 50 ? substr($description, 0, 50) . '...' : $description;
+                                            else: 
+                                                echo '<span class="text-muted">No description</span>';
+                                            endif; 
+                                            ?>
+                                        </td>
+                                        <td>
                                             <?php if(!empty($fetch['photo'])): ?>
                                                 <img src="../photos/<?php echo $fetch['photo']?>" alt="Room Photo" class="room-thumbnail">
                                             <?php else: ?>
@@ -228,7 +239,8 @@
                                                     data-type="<?php echo $fetch['room_type']?>"
                                                     data-price="<?php echo $fetch['room_price']?>"
                                                     data-availability="<?php echo $fetch['room_availability']?>"
-                                                    data-photo="<?php echo $fetch['photo']?>">
+                                                    data-photo="<?php echo $fetch['photo']?>"
+                                                    data-description="<?php echo isset($fetch['room_description']) ? htmlspecialchars($fetch['room_description']) : ''?>">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#deleteRoomModal" 
@@ -379,7 +391,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Room</button>
+                        <button type="submit" name="add_room" class="btn btn-primary">Add Room</button>
                     </div>
                 </form>
             </div>

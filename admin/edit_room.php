@@ -12,6 +12,7 @@ if(ISSET($_POST['edit_room'])){
     $room_type = mysqli_real_escape_string($conn, $_POST['room_type']);
     $room_price = mysqli_real_escape_string($conn, $_POST['room_price']);
     $room_availability = mysqli_real_escape_string($conn, $_POST['room_availability']);
+    $room_description = isset($_POST['description']) ? mysqli_real_escape_string($conn, $_POST['description']) : '';
     
     // Validate required fields
     if(empty($room_number)) {
@@ -121,7 +122,8 @@ if(ISSET($_POST['edit_room'])){
                     `room_type` = '$room_type',
                     `room_price` = '$room_price',
                     `room_availability` = '$room_availability',
-                    `photo` = '$photo_name' 
+                    `photo` = '$photo_name',
+                    `room_description` = '$room_description'
                     WHERE `room_id` = '$room_id'";
         } else {
             // Update without changing the photo
@@ -129,7 +131,8 @@ if(ISSET($_POST['edit_room'])){
                     `room_number` = '$room_number',
                     `room_type` = '$room_type',
                     `room_price` = '$room_price',
-                    `room_availability` = '$room_availability'
+                    `room_availability` = '$room_availability',
+                    `room_description` = '$room_description'
                     WHERE `room_id` = '$room_id'";
         }
         

@@ -257,7 +257,7 @@
                                         SELECT r.reservation_id, r.guest_id, r.room_id, r.cottage_id, 
                                                r.reservation_date, r.status as reservation_status,
                                                p.payment_id, p.amount, p.payment_date, p.payment_status, p.payment_method, p.receipt_file,
-                                               g.name as guest_name, g.email as guest_email,
+                                               CONCAT(g.firstname, ' ', g.lastname) as guest_name, g.contactno as guest_contact,
                                                rm.room_number, rm.room_type,
                                                c.cottage_type,
                                                CASE 
@@ -280,7 +280,7 @@
                                         <td>
                                             <div class="guest-info">
                                                 <div class="guest-name"><?php echo $fetch['guest_name']?></div>
-                                                <div class="guest-email"><?php echo $fetch['guest_email']?></div>
+                                                <div class="guest-contact">Contact: <?php echo $fetch['guest_contact'] ?? 'N/A'?></div>
                                             </div>
                                         </td>
                                         <td><?php echo $fetch['reservation_type']?></td>
@@ -324,7 +324,7 @@
                                                 <button class="btn btn-sm btn-view" data-bs-toggle="modal" data-bs-target="#viewTransactionModal"
                                                     data-id="<?php echo $fetch['reservation_id']?>"
                                                     data-guest="<?php echo $fetch['guest_name']?>"
-                                                    data-email="<?php echo $fetch['guest_email']?>"
+                                                    data-contact="<?php echo $fetch['guest_contact']?>"
                                                     data-type="<?php echo $fetch['reservation_type']?>"
                                                     data-date="<?php echo $fetch['reservation_date']?>"
                                                     data-amount="<?php echo $fetch['amount']?>"
@@ -413,8 +413,8 @@
                                 <span id="view_guest_name"></span>
                             </div>
                             <div class="detail-item">
-                                <strong>Email:</strong>
-                                <span id="view_guest_email"></span>
+                                <strong>Contact:</strong>
+                                <span id="view_guest_contact"></span>
                             </div>
                             
                             <h6 class="section-title mt-4">Payment Information</h6>

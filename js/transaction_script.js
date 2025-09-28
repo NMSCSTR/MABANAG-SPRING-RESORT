@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const button = event.relatedTarget;
             const reservationId = button.getAttribute('data-id');
             const guestName = button.getAttribute('data-guest');
-            const guestEmail = button.getAttribute('data-email');
+            const guestContact = button.getAttribute('data-contact');
             const reservationType = button.getAttribute('data-type');
             const reservationDate = button.getAttribute('data-date');
             const amount = button.getAttribute('data-amount');
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             document.getElementById('view_transaction_id').textContent = '#' + reservationId;
             document.getElementById('view_guest_name').textContent = guestName;
-            document.getElementById('view_guest_email').textContent = guestEmail;
+            document.getElementById('view_guest_contact').textContent = guestContact;
             document.getElementById('view_reservation_type').textContent = reservationType;
             document.getElementById('view_reservation_date').textContent = new Date(reservationDate).toLocaleString();
             document.getElementById('view_payment_amount').textContent = amount ? '$' + parseFloat(amount).toFixed(2) : '-';

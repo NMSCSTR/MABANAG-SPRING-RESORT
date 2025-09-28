@@ -101,12 +101,11 @@ CREATE TABLE `reservation` (
   `guest_id` int(11) NOT NULL,
   `room_id` int(11) DEFAULT NULL,
   `cottage_id` int(11) DEFAULT NULL,
-  `reservation_date` datetime NOT NULL DEFAULT current_timestamp(),
   `check_in_date` date NOT NULL,
   `check_out_date` date NOT NULL,
-  `status` enum('pending','confirmed','cancelled') NOT NULL DEFAULT 'pending',
   `total_amount` decimal(10,2) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `reservation_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` enum('pending','confirmed','cancelled') NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -118,13 +117,12 @@ CREATE TABLE `reservation` (
 CREATE TABLE `payment` (
   `payment_id` int(11) NOT NULL,
   `reservation_id` int(11) NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
   `payment_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `amount` decimal(10,2) NOT NULL,
   `payment_method` varchar(50) NOT NULL,
-  `payment_status` enum('pending','verified','rejected') NOT NULL DEFAULT 'pending',
   `payment_reference` varchar(100) DEFAULT NULL,
   `receipt_file` varchar(255) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `payment_status` enum('pending','verified','rejected') NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
