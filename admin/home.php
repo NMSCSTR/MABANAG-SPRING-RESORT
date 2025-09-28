@@ -149,7 +149,9 @@
                                 <i class="fas fa-users"></i>
                             </div>
                             <div class="stat-info">
-                                <h3>156</h3>
+                                <h3> <?php $total_guest = $conn->query("SELECT COUNT(*) as total FROM `guest`")->fetch_array();
+                                    echo $total_guest['total'];
+                                    ?></h3>
                                 <p>Active Guests</p>
                             </div>
                             <div class="stat-badge success">+15</div>

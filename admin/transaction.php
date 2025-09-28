@@ -287,7 +287,7 @@
                                         <td><?php echo date('M j, Y g:i A', strtotime($fetch['reservation_date']))?></td>
                                         <td>
                                             <?php if($fetch['amount']): ?>
-                                                <strong class="text-primary">$<?php echo number_format($fetch['amount'], 2)?></strong>
+                                                <strong class="text-primary">₱<?php echo number_format($fetch['amount'], 2)?></strong>
                                             <?php else: ?>
                                                 <span class="text-muted">-</span>
                                             <?php endif; ?>
