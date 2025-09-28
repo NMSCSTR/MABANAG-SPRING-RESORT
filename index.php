@@ -60,7 +60,7 @@
                 <h1 class="display-3 fw-bold mb-4">Experience Paradise at Mabanag Spring Resort</h1>
                 <p class="lead mb-4">Luxury beachfront resort offering world-class amenities, breathtaking views, and unforgettable experiences.</p>
                 <a href="guest_reservation.php" class="btn btn-resort me-2">Book Your Stay</a>
-                <a href="#about" class="btn btn-outline-light">Explore Resort</a>
+                <a href="#about" class="btn btn-outline-light">Check Reservation</a>
             </div>
         </div>
     </section>

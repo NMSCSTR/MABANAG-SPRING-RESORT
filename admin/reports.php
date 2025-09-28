@@ -33,6 +33,28 @@
         unset($_SESSION['alert_message']);
         unset($_SESSION['alert_title']);
     }
+
+    // Get initial data for the table (last 7 days - weekly)
+    $weeklyStartDate = date('Y-m-d', strtotime('-7 days'));
+    $today = date('Y-m-d');
+    
+    $query = $conn->query("
+        SELECT r.reservation_id, r.reservation_date, r.status as reservation_status,
+               p.amount, p.payment_status,
+               g.firstname as guest_name,
+               CASE 
+                   WHEN r.room_id IS NOT NULL THEN 'Room'
+                   WHEN r.cottage_id IS NOT NULL THEN 'Cottage'
+                   ELSE 'Unknown'
+               END as reservation_type
+        FROM reservation r
+        LEFT JOIN payment p ON r.reservation_id = p.reservation_id
+        LEFT JOIN guest g ON r.guest_id = g.guest_id
+        WHERE p.payment_status = 'verified'
+        AND DATE(r.reservation_date) BETWEEN '$weeklyStartDate' AND '$today'
+        ORDER BY r.reservation_date DESC
+        LIMIT 100
+    ") or die(mysqli_error());
     ?>
 
     <!-- Admin Dashboard Layout -->
@@ -132,13 +154,13 @@
 
             <!-- Reports Content -->
             <div class="content-area">
-                <!-- Page Header with Date Controls -->
+                <!-- Page Header with Period Controls -->
                 <div class="page-header">
                     <div class="header-info">
                         <h4>Business Analytics</h4>
                         <p>Comprehensive reports and insights for your resort</p>
                     </div>
-                    <div class="date-controls">
+                    <div class="period-controls">
                         <div class="btn-group" role="group">
                             <input type="radio" class="btn-check" name="period" id="weekly" autocomplete="off" checked>
                             <label class="btn btn-outline-primary" for="weekly">Weekly</label>
@@ -149,14 +171,9 @@
                             <input type="radio" class="btn-check" name="period" id="yearly" autocomplete="off">
                             <label class="btn btn-outline-primary" for="yearly">Yearly</label>
                         </div>
-                        <div class="date-range">
-                            <input type="date" class="form-control" id="dateFrom" value="<?php echo date('Y-m-d', strtotime('-30 days')); ?>">
-                            <span class="date-separator">to</span>
-                            <input type="date" class="form-control" id="dateTo" value="<?php echo date('Y-m-d'); ?>">
+                        <div class="period-info">
+                            <span id="currentPeriod">This Week</span>
                         </div>
-                        <button class="btn btn-primary" id="generateReport">
-                            <i class="fas fa-sync-alt me-2"></i>Generate Report
-                        </button>
                     </div>
                 </div>
 
@@ -223,7 +240,7 @@
                 <!-- Detailed Reports Table -->
                 <div class="card">
                     <div class="card-header">
-                        <h5>Detailed Transaction Report</h5>
+                        <h5>Detailed Transaction Report - <span id="tablePeriod">This Week</span></h5>
                         <div class="table-controls">
                             <button class="btn btn-outline-primary" id="exportReport">
                                 <i class="fas fa-download me-2"></i>Export Report
@@ -246,24 +263,8 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = $conn->query("
-                                        SELECT r.reservation_id, r.reservation_date, r.status as reservation_status,
-                                               p.amount, p.payment_status,
-                                               g.firstname as guest_name,
-                                               CASE 
-                                                   WHEN r.room_id IS NOT NULL THEN CONCAT('Room')
-                                                   WHEN r.cottage_id IS NOT NULL THEN CONCAT('Cottage')
-                                                   ELSE 'Unknown'
-                                               END as reservation_type
-                                        FROM reservation r
-                                        LEFT JOIN payment p ON r.reservation_id = p.reservation_id
-                                        LEFT JOIN guest g ON r.guest_id = g.guest_id
-                                        WHERE p.payment_status = 'verified'
-                                        ORDER BY r.reservation_date DESC
-                                        LIMIT 50
-                                    ") or die(mysqli_error());
-                                    
-                                    while($fetch = $query->fetch_array()){
+                                    if($query->num_rows > 0) {
+                                        while($fetch = $query->fetch_array()){
                                     ?>
                                     <tr>
                                         <td><?php echo date('M j, Y', strtotime($fetch['reservation_date']))?></td>
@@ -274,7 +275,7 @@
                                                 <?php echo $fetch['reservation_type']?>
                                             </span>
                                         </td>
-                                        <td><strong class="text-primary">$<?php echo number_format($fetch['amount'], 2)?></strong></td>
+                                        <td><strong class="text-primary">₱<?php echo number_format($fetch['amount'], 2)?></strong></td>
                                         <td>
                                             <span class="status-badge status-<?php echo $fetch['reservation_status']?>">
                                                 <?php echo ucfirst($fetch['reservation_status'])?>
@@ -284,6 +285,16 @@
                                             <span class="payment-badge payment-<?php echo $fetch['payment_status']?>">
                                                 <?php echo ucfirst($fetch['payment_status'])?>
                                             </span>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                        }
+                                    } else {
+                                    ?>
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-4">
+                                            <i class="fas fa-inbox fa-3x mb-3"></i>
+                                            <p>No transactions found for this period</p>
                                         </td>
                                     </tr>
                                     <?php

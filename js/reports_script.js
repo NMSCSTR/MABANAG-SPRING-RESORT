@@ -29,239 +29,239 @@ document.addEventListener('DOMContentLoaded', function() {
         body.removeAttribute('data-alert-message');
     }
 
-    // Initialize DataTable
-    const reportsTable = $('#reportsTable').DataTable({
-        "pageLength": 10,
-        "lengthMenu": [10, 25, 50, 100],
-        "order": [[0, 'desc']],
-        "language": {
-            "search": "_INPUT_",
-            "searchPlaceholder": "Search reports...",
-            "lengthMenu": "Show _MENU_ entries",
-            "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-            "infoEmpty": "Showing 0 to 0 of 0 entries",
-            "infoFiltered": "(filtered from _MAX_ total entries)",
-            "paginate": {
-                "first": "First",
-                "last": "Last",
-                "next": "Next",
-                "previous": "Previous"
-            }
+    let reportsTable;
+    let currentPeriod = 'weekly';
+
+    // Initialize DataTable with server-side data
+    function initializeDataTable() {
+        if ($.fn.DataTable.isDataTable('#reportsTable')) {
+            reportsTable.destroy();
         }
-    });
 
-    // Chart instances
-    let revenueChart, bookingPieChart, monthlyChart, typeComparisonChart;
-
-    // Initialize charts
-    function initializeCharts() {
-        // Revenue Chart
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        revenueChart = new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                datasets: [
-                    {
-                        label: 'Revenue',
-                        data: [12000, 19000, 15000, 25000, 22000, 30000, 28000],
-                        borderColor: 'rgba(42, 157, 143, 1)',
-                        backgroundColor: 'rgba(42, 157, 143, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    },
-                    {
-                        label: 'Bookings',
-                        data: [45, 78, 56, 98, 85, 120, 110],
-                        borderColor: 'rgba(231, 111, 81, 1)',
-                        backgroundColor: 'rgba(231, 111, 81, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            drawBorder: false
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return '$' + value.toLocaleString();
-                            }
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // Booking Pie Chart
-        const pieCtx = document.getElementById('bookingPieChart').getContext('2d');
-        bookingPieChart = new Chart(pieCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Rooms', 'Cottages', 'Packages'],
-                datasets: [{
-                    data: [65, 25, 10],
-                    backgroundColor: [
-                        'rgba(26, 111, 163, 0.8)',
-                        'rgba(233, 196, 106, 0.8)',
-                        'rgba(42, 157, 143, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(26, 111, 163, 1)',
-                        'rgba(233, 196, 106, 1)',
-                        'rgba(42, 157, 143, 1)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-
-        // Monthly Performance Chart
-        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
-        monthlyChart = new Chart(monthlyCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [12000, 19000, 15000, 25000, 22000, 30000],
-                    backgroundColor: 'rgba(42, 157, 143, 0.8)',
-                    borderColor: 'rgba(42, 157, 143, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return '$' + value.toLocaleString();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Type Comparison Chart
-        const typeCtx = document.getElementById('typeComparisonChart').getContext('2d');
-        typeComparisonChart = new Chart(typeCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [
-                    {
-                        label: 'Rooms',
-                        data: [8000, 12000, 9000, 15000, 13000, 18000],
-                        backgroundColor: 'rgba(26, 111, 163, 0.8)'
-                    },
-                    {
-                        label: 'Cottages',
-                        data: [4000, 7000, 6000, 10000, 9000, 12000],
-                        backgroundColor: 'rgba(233, 196, 106, 0.8)'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        stacked: false,
-                    },
-                    y: {
-                        stacked: false,
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return '$' + value.toLocaleString();
-                            }
-                        }
-                    }
+        reportsTable = $('#reportsTable').DataTable({
+            "pageLength": 10,
+            "lengthMenu": [10, 25, 50, 100],
+            "order": [[0, 'desc']],
+            "language": {
+                "search": "_INPUT_",
+                "searchPlaceholder": "Search reports...",
+                "lengthMenu": "Show _MENU_ entries",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "infoEmpty": "No transactions found for this period",
+                "infoFiltered": "(filtered from _MAX_ total entries)",
+                "emptyTable": "No transactions found for this period",
+                "zeroRecords": "No matching transactions found",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
                 }
             }
         });
     }
 
-    // Update metrics with sample data
-    function updateMetrics() {
-        // Sample data - in real application, this would come from AJAX
-        const metrics = {
-            totalRevenue: 156840,
-            totalBookings: 342,
-            occupancyRate: 78,
-            avgBookingValue: 458,
-            revenueTrend: 12.5,
-            bookingsTrend: 8.3,
-            occupancyTrend: 5.2,
-            avgValueTrend: 3.7
+    // Update metrics and table based on selected period
+    function updatePeriod(period) {
+        currentPeriod = period;
+        
+        // Update UI text
+        updatePeriodText(period);
+        
+        // Show loading state
+        showLoadingState();
+        
+        // Fetch data for the selected period
+        fetchPeriodData(period);
+    }
+
+    function updatePeriodText(period) {
+        const periodText = {
+            'weekly': 'This Week',
+            'monthly': 'This Month', 
+            'yearly': 'This Year'
+        };
+        
+        document.getElementById('currentPeriod').textContent = periodText[period];
+        document.getElementById('tablePeriod').textContent = periodText[period];
+    }
+
+    function fetchPeriodData(period) {
+        fetch('get_period_data.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `period=${period}`
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            updateMetricsUI(data);
+            updateTableData(data.transactions);
+        })
+        .catch(error => {
+            console.error('Error fetching period data:', error);
+            // Fallback to sample data
+            updateWithSampleData(period);
+        });
+    }
+
+    function updateWithSampleData(period) {
+        console.log('Using sample data for period:', period);
+        
+        // Sample data based on period
+        const sampleData = {
+            weekly: {
+                totalRevenue: 12540,
+                totalBookings: 28,
+                occupancyRate: 65,
+                avgBookingValue: 448,
+                revenueTrend: 12.5,
+                bookingsTrend: 8.3,
+                occupancyTrend: 5.2,
+                avgValueTrend: 3.7,
+                transactions: generateSampleTransactions(25)
+            },
+            monthly: {
+                totalRevenue: 45890,
+                totalBookings: 102,
+                occupancyRate: 72,
+                avgBookingValue: 450,
+                revenueTrend: 15.2,
+                bookingsTrend: 12.8,
+                occupancyTrend: 8.1,
+                avgValueTrend: 2.1,
+                transactions: generateSampleTransactions(80)
+            },
+            yearly: {
+                totalRevenue: 542150,
+                totalBookings: 1208,
+                occupancyRate: 68,
+                avgBookingValue: 449,
+                revenueTrend: 18.7,
+                bookingsTrend: 14.3,
+                occupancyTrend: 6.9,
+                avgValueTrend: 3.8,
+                transactions: generateSampleTransactions(200)
+            }
         };
 
+        const data = sampleData[period] || sampleData.weekly;
+        updateMetricsUI(data);
+        updateTableData(data.transactions);
+    }
+
+    function generateSampleTransactions(count) {
+        const transactions = [];
+        const types = ['Room', 'Cottage'];
+        const statuses = ['confirmed', 'pending', 'cancelled'];
+        const paymentStatuses = ['verified', 'pending', 'rejected'];
+        const guestNames = ['John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 'Robert Wilson', 'Lisa Anderson', 'David Miller', 'Jennifer Taylor'];
+        
+        const today = new Date();
+        
+        for (let i = 0; i < count; i++) {
+            const daysAgo = Math.floor(Math.random() * 365);
+            const date = new Date(today);
+            date.setDate(today.getDate() - daysAgo);
+            
+            transactions.push({
+                date: date.toISOString().split('T')[0],
+                id: 1000 + i,
+                guest: guestNames[Math.floor(Math.random() * guestNames.length)],
+                type: types[Math.floor(Math.random() * types.length)],
+                amount: (Math.random() * 500 + 100).toFixed(2),
+                status: statuses[Math.floor(Math.random() * statuses.length)],
+                paymentStatus: paymentStatuses[Math.floor(Math.random() * paymentStatuses.length)]
+            });
+        }
+        
+        return transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    function updateMetricsUI(data) {
+        console.log('Updating metrics with data:', data);
+        
         // Update metric values
-        document.getElementById('totalRevenue').textContent = '$' + metrics.totalRevenue.toLocaleString();
-        document.getElementById('totalBookings').textContent = metrics.totalBookings.toLocaleString();
-        document.getElementById('occupancyRate').textContent = metrics.occupancyRate + '%';
-        document.getElementById('avgBookingValue').textContent = '$' + metrics.avgBookingValue.toLocaleString();
+        document.getElementById('totalRevenue').textContent = '$' + data.totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('totalBookings').textContent = data.totalBookings.toLocaleString();
+        document.getElementById('occupancyRate').textContent = data.occupancyRate + '%';
+        document.getElementById('avgBookingValue').textContent = '$' + data.avgBookingValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
         // Update trends
-        updateTrend('revenueTrend', metrics.revenueTrend);
-        updateTrend('bookingsTrend', metrics.bookingsTrend);
-        updateTrend('occupancyTrend', metrics.occupancyTrend);
-        updateTrend('avgValueTrend', metrics.avgValueTrend);
+        updateTrend('revenueTrend', data.revenueTrend);
+        updateTrend('bookingsTrend', data.bookingsTrend);
+        updateTrend('occupancyTrend', data.occupancyTrend);
+        updateTrend('avgValueTrend', data.avgValueTrend);
+    }
 
-        // Update summary data
-        document.getElementById('topRoomType').textContent = 'Deluxe Suite';
-        document.getElementById('topCottageType').textContent = 'Beachfront';
-        document.getElementById('bestMonth').textContent = 'June';
-        document.getElementById('peakHours').textContent = '2:00 - 4:00 PM';
-        document.getElementById('avgStay').textContent = '3.2 nights';
-        document.getElementById('repeatGuests').textContent = '42%';
+    function updateTableData(transactions) {
+        console.log('Updating table with transactions:', transactions);
+        
+        if (reportsTable) {
+            reportsTable.destroy();
+        }
 
-        // Update progress bars
-        const monthlyTarget = 15000;
-        const currentRevenue = 12500; // Sample current revenue
-        const monthlyProgress = (currentRevenue / monthlyTarget) * 100;
-        document.getElementById('monthlyTargetProgress').style.width = Math.min(monthlyProgress, 100) + '%';
+        const tbody = document.querySelector('#reportsTable tbody');
+        
+        if (transactions && transactions.length > 0) {
+            tbody.innerHTML = '';
 
-        const occupancyGoal = 85;
-        const currentOccupancy = 78; // Sample current occupancy
-        const occupancyProgress = (currentOccupancy / occupancyGoal) * 100;
-        document.getElementById('occupancyGoalProgress').style.width = Math.min(occupancyProgress, 100) + '%';
+            transactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                
+                const date = new Date(transaction.date);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>#${transaction.id}</td>
+                    <td>${transaction.guest}</td>
+                    <td>
+                        <span class="type-badge type-${transaction.type.toLowerCase()}">
+                            ${transaction.type}
+                        </span>
+                    </td>
+                    <td><strong class="text-primary">$${parseFloat(transaction.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+                    <td>
+                        <span class="status-badge status-${transaction.status}">
+                            ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="payment-badge payment-${transaction.paymentStatus}">
+                            ${transaction.paymentStatus.charAt(0).toUpperCase() + transaction.paymentStatus.slice(1)}
+                        </span>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        } else {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">
+                        <i class="fas fa-inbox fa-3x mb-3"></i>
+                        <p>No transactions found for this period</p>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Reinitialize DataTable
+        initializeDataTable();
     }
 
     function updateTrend(elementId, value) {
@@ -272,38 +272,56 @@ document.addEventListener('DOMContentLoaded', function() {
         element.innerHTML = `<i class="fas fa-arrow-${isPositive ? 'up' : 'down'}"></i> <span>${Math.abs(value)}%</span>`;
     }
 
-    // Generate Report
-    document.getElementById('generateReport').addEventListener('click', function() {
-        const period = document.querySelector('input[name="period"]:checked').id;
-        const dateFrom = document.getElementById('dateFrom').value;
-        const dateTo = document.getElementById('dateTo').value;
-
-        Swal.fire({
-            title: 'Generating Report...',
-            text: `Creating ${period} report from ${dateFrom} to ${dateTo}`,
-            icon: 'info',
-            showConfirmButton: false,
-            allowOutsideClick: false
+    function showLoadingState() {
+        // Add loading animation to metrics
+        const metrics = ['totalRevenue', 'totalBookings', 'occupancyRate', 'avgBookingValue'];
+        metrics.forEach(metric => {
+            const element = document.getElementById(metric);
+            element.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>';
         });
 
-        // Simulate API call
-        setTimeout(() => {
-            updateMetrics();
-            
-            Swal.fire({
-                title: 'Report Generated!',
-                text: 'Your analytics report has been updated with the latest data.',
-                icon: 'success',
-                confirmButtonText: 'Great!'
-            });
-        }, 2000);
+        // Show loading in table
+        const tbody = document.querySelector('#reportsTable tbody');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Loading data...</p>
+                </td>
+            </tr>
+        `;
+    }
+
+    // Period change handlers
+    document.querySelectorAll('input[name="period"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.checked) {
+                updatePeriod(this.id);
+                
+                // Show loading notification
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+                
+                Toast.fire({
+                    icon: 'info',
+                    title: `Loading ${this.id} data...`
+                });
+            }
+        });
     });
 
     // Export Report
     document.getElementById('exportReport').addEventListener('click', function() {
         Swal.fire({
             title: 'Export Report',
-            text: 'Choose export format:',
+            text: `Export ${currentPeriod} report as:`,
             icon: 'info',
             showCancelButton: true,
             confirmButtonText: 'Excel',
@@ -324,57 +342,51 @@ document.addEventListener('DOMContentLoaded', function() {
     function exportReport(format) {
         Swal.fire({
             title: 'Exporting...',
-            text: `Preparing ${format.toUpperCase()} report`,
+            text: `Preparing ${currentPeriod} report as ${format.toUpperCase()}`,
             icon: 'info',
             showConfirmButton: false,
             allowOutsideClick: false
         });
 
-        // Simulate export process
+        // Create form and submit for export
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'export_report.php';
+        form.style.display = 'none';
+
+        const formatInput = document.createElement('input');
+        formatInput.name = 'format';
+        formatInput.value = format;
+        form.appendChild(formatInput);
+
+        const periodInput = document.createElement('input');
+        periodInput.name = 'period';
+        periodInput.value = currentPeriod;
+        form.appendChild(periodInput);
+
+        document.body.appendChild(form);
+        form.submit();
+
+        // Remove form after submission
         setTimeout(() => {
-            Swal.fire({
-                title: 'Export Complete!',
-                text: `Report has been exported as ${format.toUpperCase()}`,
-                icon: 'success',
-                confirmButtonText: 'Download'
-            });
-        }, 2000);
+            document.body.removeChild(form);
+        }, 1000);
     }
 
-    // Date range validation
-    document.getElementById('dateFrom').addEventListener('change', function() {
-        const dateTo = document.getElementById('dateTo');
-        if (this.value > dateTo.value) {
-            dateTo.value = this.value;
-        }
-    });
-
-    document.getElementById('dateTo').addEventListener('change', function() {
-        const dateFrom = document.getElementById('dateFrom');
-        if (this.value < dateFrom.value) {
-            dateFrom.value = this.value;
-        }
-    });
-
-    // Initialize everything
-    initializeCharts();
-    updateMetrics();
+    // Initialize with weekly data on page load
+    initializeDataTable();
+    updatePeriod('weekly');
 
     // Auto-refresh data every 5 minutes
     setInterval(() => {
-        updateMetrics();
+        updatePeriod(currentPeriod);
         
-        // Show subtle notification
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
         });
         
         Toast.fire({

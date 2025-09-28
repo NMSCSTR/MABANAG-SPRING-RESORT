@@ -7,10 +7,6 @@
     --deep-blue: #264653;
     --light-blue: #8ecae6;
     --light-green: #a8dadc;
-    --revenue-color: #2a9d8f;
-    --bookings-color: #e76f51;
-    --rooms-color: #1a6fa3;
-    --cottages-color: #e9c46a;
 }
 
 /* Page Header */
@@ -35,34 +31,23 @@
     margin: 0;
 }
 
-.date-controls {
+.period-controls {
     display: flex;
     align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .btn-group .btn {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+}
+
+.period-info {
     padding: 8px 16px;
-    font-size: 0.9rem;
-}
-
-.date-range {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.date-separator {
-    color: #6c757d;
-    font-weight: 500;
-}
-
-.form-control {
-    border: 1px solid #dee2e6;
+    background: #f8f9fa;
     border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--deep-blue);
 }
 
 .btn-primary {
@@ -92,6 +77,13 @@
     background: var(--seafoam-green);
     color: white;
     transform: translateY(-2px);
+}
+
+.btn-outline-primary:focus,
+.btn-outline-primary.active {
+    background: var(--seafoam-green);
+    color: white;
+    border-color: var(--seafoam-green);
 }
 
 /* Enhanced Stat Cards */
@@ -170,69 +162,6 @@
 .stat-trend.down {
     background: rgba(220, 53, 69, 0.1);
     color: #dc3545;
-}
-
-/* Chart Cards */
-.chart-card {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
-}
-
-.chart-card .card-header {
-    background: white;
-    border-bottom: 1px solid #eee;
-    padding: 20px 25px;
-    border-radius: 10px 10px 0 0 !important;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chart-card .card-header h5 {
-    margin: 0;
-    color: var(--deep-blue);
-    font-weight: 600;
-}
-
-.chart-legend {
-    display: flex;
-    gap: 15px;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-.legend-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 2px;
-}
-
-.legend-color.revenue {
-    background: var(--revenue-color);
-}
-
-.legend-color.bookings {
-    background: var(--bookings-color);
-}
-
-.legend-color.rooms {
-    background: var(--rooms-color);
-}
-
-.legend-color.cottages {
-    background: var(--cottages-color);
-}
-
-.chart-card .card-body {
-    padding: 25px;
 }
 
 /* Table Styles */
@@ -328,101 +257,10 @@
     border: 1px solid rgba(220, 53, 69, 0.2);
 }
 
-/* Summary Cards */
-.summary-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-}
-
-.summary-header {
-    background: linear-gradient(to right, var(--deep-blue), var(--ocean-blue));
-    color: white;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.summary-header i {
-    font-size: 1.2rem;
-}
-
-.summary-header h6 {
-    margin: 0;
-    font-weight: 600;
-}
-
-.summary-body {
-    padding: 20px;
-}
-
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f1f3f4;
-}
-
-.summary-item:last-child {
-    border-bottom: none;
-}
-
-.summary-item span {
-    color: #6c757d;
-    font-size: 0.9rem;
-}
-
-.summary-item strong {
-    color: var(--deep-blue);
-    font-weight: 600;
-}
-
-.progress {
-    height: 8px;
-    background: #e9ecef;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    background: linear-gradient(to right, var(--seafoam-green), var(--ocean-blue));
-    transition: width 0.3s ease;
-}
-
 /* Table Controls */
 .table-controls {
     display: flex;
     gap: 10px;
-}
-
-/* DataTable Customization */
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_paginate {
-    margin: 20px 0;
-    font-size: 0.9rem;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding: 5px 10px;
-    margin: 0 2px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: linear-gradient(to right, var(--seafoam-green), var(--ocean-blue));
-    border-color: var(--seafoam-green);
-    color: white !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #f8f9fa;
-    border-color: #dee2e6;
 }
 
 /* Responsive Design */
@@ -432,33 +270,29 @@
         align-items: flex-start;
     }
     
-    .date-controls {
+    .period-controls {
         flex-direction: column;
         align-items: flex-start;
         width: 100%;
-    }
-    
-    .date-range {
-        width: 100%;
-    }
-    
-    .date-range .form-control {
-        flex: 1;
-    }
-    
-    .chart-card .card-header {
-        flex-direction: column;
         gap: 10px;
-        align-items: flex-start;
     }
     
-    .chart-legend {
-        align-self: flex-start;
+    .btn-group {
+        width: 100%;
     }
     
-    .summary-item {
+    .btn-group .btn {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .stat-card {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
+        text-align: center;
+    }
+    
+    .stat-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
     }
 }
