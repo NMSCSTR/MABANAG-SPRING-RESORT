@@ -41,7 +41,7 @@
             }
         }
         
-        // Calculate   amount (rate × number of days)
+        // Calculate amount (rate × number of days)
         $total_amount = 0;
         if ($reservation_type == 'room' && $room_id) {
             $room_query = $conn->query("SELECT room_price FROM room WHERE room_id = '$room_id'");
@@ -92,7 +92,9 @@
                                              VALUES ('$reservation_id', '$total_amount', '$payment_method', $payment_reference_sql, $receipt_file_sql, 'pending')");
                 
                 if ($payment_query) {
-                    $success_message = "Reservation submitted successfully! Your reservation ID is #$reservation_id. Please wait for admin approval after receipt verification.";
+                    // Redirect to transaction details page
+                    header("Location: transaction_details.php?reservation_id=" . $reservation_id);
+                    exit();
                 } else {
                     $error_message = "Error creating payment record: " . $conn->error;
                 }
@@ -135,10 +137,19 @@
                         <a class="nav-link" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="aboutus.php">About Us</a>
+                        <a class="nav-link" href="index.php#about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="guest_reservation.php">Reservation</a>
+                        <a class="nav-link" href="index.php#rooms">Rooms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#amenities">Amenities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#gallery">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php#contact">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -169,13 +180,6 @@
                             </h2>
                             <p class="card-subtitle">Fill out the form below to make your reservation</p>
                         </div>
-                        
-                        <?php if (isset($success_message)): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i><?php echo $success_message; ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        <?php endif; ?>
                         
                         <?php if (isset($error_message)): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">

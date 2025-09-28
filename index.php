@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/index_style.css">
 </head>
 
@@ -45,10 +46,7 @@
                         <a class="nav-link" href="#contact">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="guest_reservation.php">Reservation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-resort ms-lg-3 mt-2 mt-lg-0" href="guest_reservation.php">Book Now</a>
+                        <a class="btn btn-resort ms-lg-3 mt-2 mt-lg-0" href="guest_reservation.php">Reserve Now</a>
                     </li>
                 </ul>
             </div>
@@ -61,7 +59,7 @@
             <div class="hero-content">
                 <h1 class="display-3 fw-bold mb-4">Experience Paradise at Mabanag Spring Resort</h1>
                 <p class="lead mb-4">Luxury beachfront resort offering world-class amenities, breathtaking views, and unforgettable experiences.</p>
-                <a href="#booking" class="btn btn-resort me-2">Book Your Stay</a>
+                <a href="guest_reservation.php" class="btn btn-resort me-2">Book Your Stay</a>
                 <a href="#about" class="btn btn-outline-light">Explore Resort</a>
             </div>
         </div>
@@ -114,7 +112,7 @@
                                     <h5 class="card-title"><?php echo htmlspecialchars($row['room_type']); ?></h5>
                                     <p class="card-text"><?php echo htmlspecialchars($row['room_description']); ?></p>
                                     <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['room_price']); ?>/night</p>
-                                    <a href="#" class="btn btn-resort mt-2">View Details</a>
+                                    <a href="guest_reservation.php" class="btn btn-resort mt-2">Reserve Now</a>
                                 </div>
                             </div>
                         </div>

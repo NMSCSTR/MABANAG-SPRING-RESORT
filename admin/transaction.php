@@ -185,7 +185,7 @@
                                 <h3>
                                     <?php
                                     $total_revenue = $conn->query("SELECT COALESCE(SUM(amount), 0) as revenue FROM payment WHERE payment_status = 'verified'")->fetch_array();
-                                    echo '$' . number_format($total_revenue['revenue'], 2);
+                                    echo '₱' . number_format($total_revenue['revenue'], 2);
                                     ?>
                                 </h3>
                                 <p>Total Revenue</p>
