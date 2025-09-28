@@ -9,7 +9,8 @@
     }
     
     $reservation_id = $_GET['reservation_id'];
-    
+    $contactno = isset($_GET['contactno']) ? $_GET['contactno'] : '';
+
     // Fetch reservation details
     $query = "
         SELECT 
@@ -32,7 +33,7 @@
         LEFT JOIN payment p ON r.reservation_id = p.reservation_id
         LEFT JOIN room rm ON r.room_id = rm.room_id
         LEFT JOIN cottage c ON r.cottage_id = c.cottage_id
-        WHERE r.reservation_id = '$reservation_id'
+        WHERE r.reservation_id = '$reservation_id' OR g.contactno = '$contactno'
     ";
     
     $result = $conn->query($query);

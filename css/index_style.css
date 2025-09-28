@@ -7,6 +7,8 @@
     --deep-blue: #264653;
     --light-blue: #8ecae6;
     --light-green: #a8dadc;
+    --resort-primary: #009688;
+    --resort-accent: #00796b;
 }
 
 body {
@@ -205,6 +207,53 @@ body {
 .social-icons a:hover {
     background-color: var(--seafoam-green);
     transform: translateY(-3px);
+}
+
+/* Resort Modal Custom Styles */
+.resort-modal .modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    /* Use a gradient background matching the site palette */
+    background: linear-gradient(135deg, var(--light-blue) 0%, var(--seafoam-green) 100%);
+    color: var(--deep-blue);
+}
+
+.resort-modal-header {
+    background: var(--resort-primary, #009688);
+    color: #fff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.resort-modal-header .modal-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.resort-modal-input {
+    border: 2px solid var(--resort-primary, #009688);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    margin-top: 8px;
+}
+
+.resort-modal-btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 8px 24px;
+}
+
+.btn-resort.resort-modal-btn {
+    background: var(--resort-primary, #009688);
+    color: #fff;
+    border: none;
+}
+
+.btn-resort.resort-modal-btn:hover {
+    background: var(--resort-accent, #00796b);
+    color: #fff;
 }
 
 /* Responsive adjustments */

@@ -93,7 +93,7 @@
                 
                 if ($payment_query) {
                     // Redirect to transaction details page
-                    header("Location: transaction_details.php?reservation_id=" . $reservation_id);
+                    header("Location: transaction_details.php?reservation_id=" . $reservation_id . "&contactno=" . $contactno);
                     exit();
                 } else {
                     $error_message = "Error creating payment record: " . $conn->error;

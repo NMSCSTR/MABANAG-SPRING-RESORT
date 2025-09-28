@@ -60,7 +60,7 @@
                 <h1 class="display-3 fw-bold mb-4">Experience Paradise at Mabanag Spring Resort</h1>
                 <p class="lead mb-4">Luxury beachfront resort offering world-class amenities, breathtaking views, and unforgettable experiences.</p>
                 <a href="guest_reservation.php" class="btn btn-resort me-2">Book Your Stay</a>
-                <a href="#about" class="btn btn-outline-light">Check Reservation</a>
+                <a id="checkReservationModal" class="btn btn-outline-light">Check Reservation</a>
             </div>
         </div>
     </section>
@@ -347,6 +347,42 @@
             </div>
         </div>
     </footer>
+
+    <!-- Reservation Check Modal -->
+<div class="modal fade resort-modal" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header resort-modal-header">
+        <h5 class="modal-title" id="reservationModalLabel">Check Reservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="reservationIdInput" class="form-label">Enter Reservation ID</label>
+        <input type="number" class="form-control resort-modal-input" id="reservationIdInput" placeholder="Reservation ID">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary resort-modal-btn" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-resort resort-modal-btn" id="checkReservationBtn">Check</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Show modal when "Check Reservation" is clicked
+document.getElementById('checkReservationModal').addEventListener('click', function() {
+    var modal = new bootstrap.Modal(document.getElementById('reservationModal'));
+    modal.show();
+});
+
+// Redirect on check
+document.getElementById('checkReservationBtn').addEventListener('click', function() {
+    var reservationId = document.getElementById('reservationIdInput').value.trim();
+    if (reservationId) {
+        window.location.href = 'transaction_details.php?reservation_id=' + encodeURIComponent(reservationId);
+    }
+});
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
