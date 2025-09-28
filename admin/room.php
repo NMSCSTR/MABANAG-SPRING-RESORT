@@ -95,6 +95,12 @@
                         <span>Transaction History</span>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="reports.php">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </li>
             </ul>
             <div class="sidebar-footer">
                 <div class="user-info">
