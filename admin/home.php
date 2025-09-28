@@ -53,12 +53,6 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="payment.php">
-                        <i class="fas fa-credit-card"></i>
-                        <span>Payment Management</span>
-                    </a>
-                </li>
-                <li class="menu-item">
                     <a href="transaction.php">
                         <i class="fas fa-exchange-alt"></i>
                         <span>Transaction History</span>
@@ -206,34 +200,43 @@
                             </div>
                             <div class="card-body">
                                 <div class="booking-list">
+                                    <?php
+                                    // Fetch the 4 most recent reservations
+                                    $query = $conn->query("
+                                        SELECT r.*, 
+                                               rm.room_type, 
+                                               c.cottage_type, 
+                                               g.firstname, 
+                                               g.lastname 
+                                        FROM reservation r
+                                        LEFT JOIN room rm ON r.room_id = rm.room_id
+                                        LEFT JOIN cottage c ON r.cottage_id = c.cottage_id
+                                        LEFT JOIN guest g ON r.guest_id = g.guest_id
+                                        ORDER BY r.check_in_date DESC
+                                        LIMIT 4
+                                    ");
+                                    while ($row = $query->fetch_assoc()) {
+                                        // Determine booking type and name
+                                        $type = !empty($row['room_type']) ? $row['room_type'] : $row['cottage_type'];
+                                        $guest = $row['firstname'] . ' ' . $row['lastname'];
+                                        $checkin = date('M d', strtotime($row['check_in_date']));
+                                        $today = date('Y-m-d');
+                                        if ($row['check_in_date'] == $today) $checkin = 'Today';
+                                        elseif ($row['check_in_date'] == date('Y-m-d', strtotime('+1 day'))) $checkin = 'Tomorrow';
+
+                                        // Status class
+                                        $statusClass = strtolower($row['status']); // e.g., confirmed, pending, cancelled
+                                    ?>
                                     <div class="booking-item">
                                         <div class="booking-info">
-                                            <h6>Ocean View Suite</h6>
-                                            <p>John Smith • Check-in: Today</p>
+                                            <h6><?= htmlspecialchars($type) ?></h6>
+                                            <p><?= htmlspecialchars($guest) ?> • Check-in: <?= htmlspecialchars($checkin) ?></p>
                                         </div>
-                                        <span class="booking-status confirmed">Confirmed</span>
+                                        <span class="booking-status <?= $statusClass ?>">
+                                            <?= ucfirst($statusClass) ?>
+                                        </span>
                                     </div>
-                                    <div class="booking-item">
-                                        <div class="booking-info">
-                                            <h6>Beachfront Villa</h6>
-                                            <p>Sarah Johnson • Check-in: Tomorrow</p>
-                                        </div>
-                                        <span class="booking-status pending">Pending</span>
-                                    </div>
-                                    <div class="booking-item">
-                                        <div class="booking-info">
-                                            <h6>Deluxe Room</h6>
-                                            <p>Michael Brown • Check-in: Dec 15</p>
-                                        </div>
-                                        <span class="booking-status confirmed">Confirmed</span>
-                                    </div>
-                                    <div class="booking-item">
-                                        <div class="booking-info">
-                                            <h6>Garden Cottage</h6>
-                                            <p>Emily Davis • Check-in: Dec 18</p>
-                                        </div>
-                                        <span class="booking-status cancelled">Cancelled</span>
-                                    </div>
+                                    <?php } ?>
                                 </div>
                                 <a href="transaction.php" class="btn btn-view-all">View All Bookings</a>
                             </div>

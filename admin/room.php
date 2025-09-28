@@ -20,36 +20,30 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../css/admin_style.css">
     <link rel="stylesheet" href="../css/room_style.css">
+    <script src="../js/swal-message.js"></script>
 </head>
 <body>
     <?php
-        // Display success/error messages
-        if(isset($_SESSION['success'])) {
-            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['success'] . '
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-            unset($_SESSION['success']);
-        }
-
-        if(isset($_SESSION['error'])) {
-            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ' . $_SESSION['error'] . '
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-            unset($_SESSION['error']);
-        }
-
-        if(isset($_SESSION['errors'])) {
-            foreach($_SESSION['errors'] as $error) {
-                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        ' . $error . '
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>';
-            }
-            unset($_SESSION['errors']);
-        }
+        $success = isset($_SESSION['success']) ? $_SESSION['success'] : '';
+        $error = isset($_SESSION['error']) ? $_SESSION['error'] : '';
+        $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
+        unset($_SESSION['success'], $_SESSION['error'], $_SESSION['errors']);
     ?>
+    <script>
+        <?php if(!empty($success)): ?>
+            showSwal("success", <?php echo json_encode($success); ?>, 1500);
+        <?php endif; ?>
+
+        <?php if(!empty($error)): ?>
+            showSwal("error", <?php echo json_encode($error); ?>, 2000);
+        <?php endif; ?>
+
+        <?php if(!empty($errors) && is_array($errors)):
+            foreach($errors as $err): ?>
+            showSwal("error", <?php echo json_encode($err); ?>, 2000);
+        <?php endforeach; endif; ?>
+    </script>
+    </script>
     <!-- Admin Dashboard Layout -->
     <div class="dashboard-container">
         <!-- Sidebar -->
@@ -81,12 +75,6 @@
                     <a href="account.php">
                         <i class="fas fa-users"></i>
                         <span>Account Management</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="payment.php">
-                        <i class="fas fa-credit-card"></i>
-                        <span>Payment Management</span>
                     </a>
                 </li>
                 <li class="menu-item">
