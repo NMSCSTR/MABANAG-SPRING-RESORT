@@ -342,7 +342,7 @@
                     <h5 class="modal-title" id="addCottageModalLabel">Add New Cottage</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="save_cottage.php" method="POST" enctype="multipart/form-data" id="addCottageForm">
+                <form action="add_cottage.php" method="POST" enctype="multipart/form-data" id="addCottageForm">
                     <input type="hidden" name="add_cottage" value="1">
                     <div class="modal-body">
                         <div class="row">
@@ -361,7 +361,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="cottage_price" class="form-label">Price per Night ($) <span class="text-danger">*</span></label>
+                                    <label for="cottage_price" class="form-label">Price(₱) <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="cottage_price" name="cottage_price" step="0.01" min="0" required>
                                 </div>
                             </div>

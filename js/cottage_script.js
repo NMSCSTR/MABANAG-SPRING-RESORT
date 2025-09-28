@@ -82,21 +82,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const output = document.getElementById(outputId);
         
         if (select && output) {
-            select.addEventListener('change', function() {
-                const capacity = capacityMap[this.value] || '2-4 People';
-                output.value = capacity;
-            });
-            
             // Set initial value
             if (select.value) {
                 output.value = capacityMap[select.value] || '2-4 People';
             }
+            
+            select.addEventListener('change', function() {
+                const capacity = capacityMap[this.value] || '2-4 People';
+                output.value = capacity;
+            });
         }
     }
 
-    // Setup capacity updates
-    updateCapacity('cottage_type', 'capacity');
-    updateCapacity('edit_cottage_type', 'edit_capacity');
+    // Initialize capacity updates when modals are shown
+    const addCottageModal = document.getElementById('addCottageModal');
+    if (addCottageModal) {
+        addCottageModal.addEventListener('show.bs.modal', function() {
+            updateCapacity('cottage_type', 'capacity');
+        });
+    }
 
     // Edit Cottage Modal Handler
     const editCottageModal = document.getElementById('editCottageModal');
@@ -118,6 +122,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update capacity
             const capacity = capacityMap[cottageType] || '2-4 People';
             document.getElementById('edit_capacity').value = capacity;
+            
+            // Setup change listener for edit modal
+            updateCapacity('edit_cottage_type', 'edit_capacity');
         });
     }
 
@@ -131,11 +138,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const cottagePrice = button.getAttribute('data-price');
             const cottageAvailability = button.getAttribute('data-availability');
             const cottagePhoto = button.getAttribute('data-photo');
-            const cottageCapacity = button.getAttribute('data-capacity');
+            const cottageCapacity = capacityMap[cottageType] || '2-4 People';
 
             document.getElementById('view_cottage_id').textContent = cottageId;
             document.getElementById('view_cottage_type').textContent = cottageType + ' Cottage';
-            document.getElementById('view_cottage_price').textContent = '$' + cottagePrice + '/night';
+            document.getElementById('view_cottage_price').textContent = '₱' + cottagePrice + '/night';
             document.getElementById('view_cottage_availability').textContent = cottageAvailability;
             document.getElementById('view_cottage_capacity').textContent = cottageCapacity;
             
@@ -206,6 +213,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
+            // Validate price
+            const cottagePrice = formData.get('cottage_price');
+            if (!cottagePrice || cottagePrice <= 0) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please enter a valid price'
+                });
+                return;
+            }
+            
             Swal.fire({
                 title: 'Add New Cottage?',
                 html: `Are you sure you want to add a <strong>${cottageType} Cottage</strong>?`,
@@ -229,6 +248,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(this);
             const cottageType = formData.get('cottage_type');
             
+            // Validate price
+            const cottagePrice = formData.get('cottage_price');
+            if (!cottagePrice || cottagePrice <= 0) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please enter a valid price'
+                });
+                return;
+            }
+            
             Swal.fire({
                 title: 'Update Cottage?',
                 html: `Are you sure you want to update the <strong>${cottageType} Cottage</strong>?`,
@@ -245,6 +276,38 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // File upload validation
+    const photoInputs = document.querySelectorAll('input[type="file"]');
+    photoInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const fileSize = file.size / 1024 / 1024; // MB
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                
+                if (!allowedTypes.includes(file.type)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid File Type',
+                        text: 'Please select a valid image file (JPEG, PNG, GIF, WEBP)'
+                    });
+                    this.value = '';
+                    return;
+                }
+                
+                if (fileSize > 2) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File Too Large',
+                        text: 'File size must be less than 2MB'
+                    });
+                    this.value = '';
+                    return;
+                }
+            }
+        });
+    });
 
     // Real-time statistics update (simulated)
     setInterval(() => {
