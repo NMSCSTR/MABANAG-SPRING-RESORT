@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="../css/admin_style.css">
-    <link rel="stylesheet" href="../css/reports_style.css">
+    <link rel="stylesheet" href="../css/report_style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -182,7 +182,7 @@
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
-                                <i class="fas fa-dollar-sign"></i>
+                                ₱
                             </div>
                             <div class="stat-info">
                                 <h3 id="totalRevenue">$0.00</h3>

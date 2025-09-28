@@ -191,10 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Updating metrics with data:', data);
         
         // Update metric values
-        document.getElementById('totalRevenue').textContent = '$' + data.totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('totalRevenue').textContent = '₱' + data.totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         document.getElementById('totalBookings').textContent = data.totalBookings.toLocaleString();
         document.getElementById('occupancyRate').textContent = data.occupancyRate + '%';
-        document.getElementById('avgBookingValue').textContent = '$' + data.avgBookingValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('avgBookingValue').textContent = '₱' + data.avgBookingValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
         // Update trends
         updateTrend('revenueTrend', data.revenueTrend);
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${transaction.type}
                         </span>
                     </td>
-                    <td><strong class="text-primary">$${parseFloat(transaction.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
+                    <td><strong class="text-primary">₱${parseFloat(transaction.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
                     <td>
                         <span class="status-badge status-${transaction.status}">
                             ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
