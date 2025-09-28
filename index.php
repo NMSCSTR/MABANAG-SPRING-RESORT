@@ -73,13 +73,13 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <h2 class="section-title">About Mabanag Spring Resort</h2>
-                    <p>Nestled along a pristine coastline, Mabanag Spring Resort offers an unparalleled luxury experience. Our resort combines modern elegance with natural beauty to create the perfect getaway.</p>
-                    <p>With over 50 acres of lush tropical gardens, private beaches, and world-class amenities, we provide an oasis of tranquility and relaxation for our guests.</p>
+                    <p>Leave the hustle behind and answer the call of adventure at Mabanag Spring Resort. Dive into our invigorating, crystal-clear springs, surrounded by the lush sounds of nature. This is where you’ll create stories worth telling, from splashing fun with the family to blissful relaxation under the sun. We provide the perfect setting for every moment, making your vacation or random gimiks as lively or as tranquil as you wish. Your ultimate spring getaway is waiting.</p>
+                    <p>Book Your Adventure!</p>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Private beach access</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Award-winning spa</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Spring Vibes</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Stunning Views</li>
                         <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Multiple dining options</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Water sports activities</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Very clear and clean spring water</li>
                     </ul>
                 </div>
                 <div class="col-lg-6">
@@ -89,46 +89,42 @@
         </div>
     </section>
 
+    <?php 
+    require_once 'admin/connect.php';
+    $sql = "SELECT * FROM room WHERE room_availability = 'available'";
+    $result = $conn->query($sql);
+    ?>
+
     <!-- Rooms Section -->
     <section id="rooms" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="section-title text-center">Luxury Accommodations</h2>
-            <p class="text-center mb-5">Choose from our selection of beautifully appointed rooms and suites, each designed with your comfort in mind.</p>
-            
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card room-card h-100">
-                        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Deluxe Room">
-                        <div class="card-body">
-                            <h5 class="card-title">Deluxe Room</h5>
-                            <p class="card-text">Spacious rooms with garden or partial ocean views, perfect for couples and solo travelers.</p>
-                            <p class="h5 text-primary">$299/night</p>
-                            <a href="#" class="btn btn-resort mt-2">View Details</a>
+    <div class="container">
+        <h2 class="section-title text-center">Resort Accommodations</h2>
+        <p class="text-center mb-5">Choose from our selection of beautifully appointed rooms and suites, each designed with your comfort in mind.</p>
+        
+        <div class="row">
+                <?php
+                if ($result->num_rows > 0) {
+                    // Loop through rooms
+                    while($row = $result->fetch_assoc()) {
+                        ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card room-card h-100">
+                                <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['room_type']); ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($row['room_type']); ?></h5>
+                                    <p class="card-text"><?php echo htmlspecialchars($row['room_description']); ?></p>
+                                    <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['room_price']); ?>/night</p>
+                                    <a href="#" class="btn btn-resort mt-2">View Details</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card room-card h-100">
-                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Ocean View Suite">
-                        <div class="card-body">
-                            <h5 class="card-title">Ocean View Suite</h5>
-                            <p class="card-text">Luxurious suites with panoramic ocean views, separate living area, and premium amenities.</p>
-                            <p class="h5 text-primary">$499/night</p>
-                            <a href="#" class="btn btn-resort mt-2">View Details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card room-card h-100">
-                        <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Beachfront Villa">
-                        <div class="card-body">
-                            <h5 class="card-title">Beachfront Villa</h5>
-                            <p class="card-text">Private villas with direct beach access, personal pool, and dedicated butler service.</p>
-                            <p class="h5 text-primary">$899/night</p>
-                            <a href="#" class="btn btn-resort mt-2">View Details</a>
-                        </div>
-                    </div>
-                </div>
+                        <?php
+                    }
+                } else {
+                    echo "<p class='text-center'>No rooms available at the moment.</p>";
+                }
+                $conn->close();
+                ?>
             </div>
         </div>
     </section>
