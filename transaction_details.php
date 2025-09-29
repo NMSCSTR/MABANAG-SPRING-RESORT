@@ -234,7 +234,7 @@
                 <div class="alert alert-info mt-4 no-print">
                     <h5><i class="fas fa-info-circle me-2"></i>Important Information</h5>
                     <ul class="mb-0 mt-2">
-                        <li>Your reservation is currently <strong>pending approval</strong>.</li>
+                        <li>if your reservation is currently <strong>pending approval</strong>.</li>
                         <li>Our team will verify your payment and contact you within 24 hours.</li>
                         <li>Please keep this reservation ID for future reference: <strong>#<?php echo $reservation['reservation_id']; ?></strong></li>
                         <li>For any inquiries, please contact us at +63 123 456 7890.</li>

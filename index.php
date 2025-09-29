@@ -102,7 +102,6 @@
         <div class="row">
                 <?php
                 if ($result->num_rows > 0) {
-                    // Loop through rooms
                     while($row = $result->fetch_assoc()) {
                         ?>
                         <div class="col-md-4 mb-4">
@@ -121,7 +120,6 @@
                 } else {
                     echo "<p class='text-center'>No rooms available at the moment.</p>";
                 }
-                $conn->close();
                 ?>
             </div>
         </div>
@@ -130,38 +128,33 @@
     <!-- Amenities Section -->
     <section id="amenities" class="py-5">
         <div class="container">
-            <h2 class="section-title text-center">Resort Amenities</h2>
+            <h2 class="section-title text-center">Resort Cottages</h2>
             <p class="text-center mb-5">Enjoy our world-class facilities designed to enhance your stay and create unforgettable memories.</p>
-            
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card feature-card h-100">
-                        <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Spa">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Luxury Spa</h5>
-                            <p class="card-text">Indulge in rejuvenating treatments at our award-winning spa with expert therapists.</p>
+                <?php
+                    require_once 'admin/connect.php';
+                    $sql = "SELECT * FROM cottage WHERE cottage_availability = 'available'";
+                    $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card room-card h-100">
+                                <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['cottage_type']); ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($row['cottage_type']); ?></h5>
+                                    <p class="card-text"><?php echo htmlspecialchars($row['cottage_description']); ?></p>
+                                    <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['cottage_price']); ?></p>
+                                    <a href="guest_reservation.php" class="btn btn-resort mt-2">Reserve Now</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card feature-card h-100">
-                        <img src="https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Fine Dining">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Fine Dining</h5>
-                            <p class="card-text">Savor exquisite cuisine at our multiple restaurants offering diverse culinary experiences.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card feature-card h-100">
-                        <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Water Sports">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Water Sports</h5>
-                            <p class="card-text">Experience thrilling water activities including snorkeling, kayaking, and paddleboarding.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        <?php
+                    }
+                } else {
+                    echo "<p class='text-center'>No rooms available at the moment.</p>";
+                }
+                $conn->close();
+                ?>  
         </div>
     </section>
 
