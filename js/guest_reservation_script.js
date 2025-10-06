@@ -1,4 +1,5 @@
 // guest_reservation_script.js
+// guest_reservation_script.js
 
 document.addEventListener('DOMContentLoaded', function() {
     // Get form elements
@@ -13,64 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const stayDuration = document.getElementById('stay_duration');
     const durationDays = document.getElementById('duration_days');
     const form = document.querySelector('.reservation-form');
-
-    // Reset UI when reservation type changes
-    function resetFields() {
-        roomSelect.style.display = "none";
-        cottageSelect.style.display = "none";
-        roomLabel.style.display = "none";
-        cottageLabel.style.display = "none";
-        checkOut.parentElement.style.display = "block";
-        stayDuration.style.display = "none";
-        totalAmountDiv.textContent = "₱0.00";
-        checkIn.value = "";
-        checkOut.value = "";
-    }
-
-    // Format number as PHP currency
-    function formatPeso(value) {
-        return "₱" + value.toLocaleString("en-PH", { minimumFractionDigits: 2 });
-    }
-
-    // Calculate total for room
-    function calculateRoomTotal() {
-        if (reservationType.value !== "room") return;
-
-        const selectedRoom = roomSelect.options[roomSelect.selectedIndex];
-        const price = parseFloat(selectedRoom.dataset.price || 0);
-        const checkInDate = new Date(checkIn.value);
-        const checkOutDate = new Date(checkOut.value);
-
-        if (checkIn.value && checkOut.value && checkOutDate > checkInDate) {
-            const diffTime = checkOutDate - checkInDate;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            stayDuration.style.display = "block";
-            durationDays.textContent = diffDays;
-            const total = price * diffDays;
-            totalAmountDiv.textContent = formatPeso(total);
-        } else {
-            stayDuration.style.display = "none";
-            totalAmountDiv.textContent = "₱0.00";
-        }
-    }
-
-     // Calculate total for cottage
-    function calculateCottageTotal() {
-        if (reservationType.value !== "cottage") return;
-
-        const selectedCottage = cottageSelect.options[cottageSelect.selectedIndex];
-        const price = parseFloat(selectedCottage.dataset.price || 0);
-        if (price > 0) {
-            totalAmountDiv.textContent = formatPeso(price);
-        } else {
-            totalAmountDiv.textContent = "₱0.00";
-        }
-    }
-    
-
-
-
-    
 
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
@@ -89,26 +32,37 @@ document.addEventListener('DOMContentLoaded', function() {
         cottageSelect.style.display = 'none';
         roomLabel.style.display = 'none';
         cottageLabel.style.display = 'none';
+        checkOutDate.parentElement.style.display = 'block'; // default visible
         
         // Reset selections
         roomSelect.value = '';
         cottageSelect.value = '';
-        updateTotalAmount();
+        checkInDate.value = '';
+        checkOutDate.value = '';
+        stayDuration.style.display = 'none';
+        totalAmountDisplay.textContent = '₱0.00';
 
+        // Show appropriate fields based on reservation type
         if (selectedType === 'room') {
             roomSelect.style.display = 'block';
             roomLabel.style.display = 'block';
+            checkOutDate.parentElement.style.display = 'block';
             roomSelect.required = true;
             cottageSelect.required = false;
-        } else if (selectedType === 'cottage') {
+        } 
+        else if (selectedType === 'cottage') {
             cottageSelect.style.display = 'block';
             cottageLabel.style.display = 'block';
+            checkOutDate.parentElement.style.display = 'none'; // hide checkout for cottage
             cottageSelect.required = true;
             roomSelect.required = false;
-        } else {
+        } 
+        else {
             roomSelect.required = false;
             cottageSelect.required = false;
         }
+
+        updateTotalAmount();
     });
 
     // Handle room selection change
@@ -149,64 +103,59 @@ document.addEventListener('DOMContentLoaded', function() {
         let dailyRate = 0;
         let numberOfDays = 0;
         
+        const selectedType = reservationTypeSelect.value;
+
         // Get daily rate based on selection
-        if (reservationTypeSelect.value === 'room' && roomSelect.value) {
+        if (selectedType === 'room' && roomSelect.value) {
             const selectedOption = roomSelect.options[roomSelect.selectedIndex];
             const price = selectedOption.getAttribute('data-price');
-            if (price) {
-                dailyRate = parseFloat(price);
-            }
-        } else if (reservationTypeSelect.value === 'cottage' && cottageSelect.value) {
+            if (price) dailyRate = parseFloat(price);
+        } 
+        else if (selectedType === 'cottage' && cottageSelect.value) {
             const selectedOption = cottageSelect.options[cottageSelect.selectedIndex];
             const price = selectedOption.getAttribute('data-price');
-            if (price) {
-                dailyRate = parseFloat(price);
-            }
+            if (price) dailyRate = parseFloat(price);
         }
-        
-        // Calculate number of days if both dates are selected
-        if (checkInDate.value && checkOutDate.value) {
+
+        // For Room: compute nights × rate
+        if (selectedType === 'room' && checkInDate.value && checkOutDate.value) {
             const checkIn = new Date(checkInDate.value);
             const checkOut = new Date(checkOutDate.value);
-            
-            // Calculate difference in days
             const timeDiff = checkOut.getTime() - checkIn.getTime();
             numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            
-            // Ensure at least 1 day
-            if (numberOfDays < 1) {
-                numberOfDays = 1;
-            }
-            
-            // Update duration display
-            durationDays.textContent = numberOfDays;
+            if (numberOfDays < 1) numberOfDays = 1;
             stayDuration.style.display = 'block';
-        } else {
-            // Hide duration display if dates are not complete
+            durationDays.textContent = numberOfDays;
+            total = dailyRate * numberOfDays;
+        } 
+        // For Cottage: single price, hide duration
+        else if (selectedType === 'cottage' && cottageSelect.value) {
+            stayDuration.style.display = 'none';
+            numberOfDays = 1;
+            total = dailyRate;
+        } 
+        else {
             stayDuration.style.display = 'none';
         }
-        
-        // Calculate total (rate × days)
-        if (dailyRate > 0 && numberOfDays > 0) {
-            total = dailyRate * numberOfDays;
-        }
-        
-        // Update display with breakdown
-        if (dailyRate > 0 && numberOfDays > 0) {
+
+        // Display formatted total
+        if (dailyRate > 0 && selectedType === 'room' && numberOfDays > 0) {
             totalAmountDisplay.innerHTML = `
                 <span class="amount-breakdown">
-                    ₱${dailyRate.toFixed(2)} × ${numberOfDays} day${numberOfDays > 1 ? 's' : ''} = 
+                    ₱${dailyRate.toFixed(2)} × ${numberOfDays} day${numberOfDays > 1 ? 's' : ''} =
                 </span>
-                <span class="amount-total">₱${total.toFixed(2)}</span>
+                <span class="amount-total"> ₱${total.toFixed(2)}</span>
             `;
-        } else if (dailyRate > 0) {
+        } 
+        else if (dailyRate > 0 && selectedType === 'cottage') {
             totalAmountDisplay.innerHTML = `
                 <span class="amount-breakdown">
-                    ₱${dailyRate.toFixed(2)} × <span style="color: #dc3545;">Select dates</span> = 
+                    ₱${dailyRate.toFixed(2)} (Fixed Cottage Rate)
                 </span>
-                <span class="amount-total">₱0.00</span>
+                <span class="amount-total"> = ₱${total.toFixed(2)}</span>
             `;
-        } else {
+        } 
+        else {
             totalAmountDisplay.textContent = '₱0.00';
         }
     }
