@@ -14,6 +14,64 @@ document.addEventListener('DOMContentLoaded', function() {
     const durationDays = document.getElementById('duration_days');
     const form = document.querySelector('.reservation-form');
 
+    // Reset UI when reservation type changes
+    function resetFields() {
+        roomSelect.style.display = "none";
+        cottageSelect.style.display = "none";
+        roomLabel.style.display = "none";
+        cottageLabel.style.display = "none";
+        checkOut.parentElement.style.display = "block";
+        stayDuration.style.display = "none";
+        totalAmountDiv.textContent = "₱0.00";
+        checkIn.value = "";
+        checkOut.value = "";
+    }
+
+    // Format number as PHP currency
+    function formatPeso(value) {
+        return "₱" + value.toLocaleString("en-PH", { minimumFractionDigits: 2 });
+    }
+
+    // Calculate total for room
+    function calculateRoomTotal() {
+        if (reservationType.value !== "room") return;
+
+        const selectedRoom = roomSelect.options[roomSelect.selectedIndex];
+        const price = parseFloat(selectedRoom.dataset.price || 0);
+        const checkInDate = new Date(checkIn.value);
+        const checkOutDate = new Date(checkOut.value);
+
+        if (checkIn.value && checkOut.value && checkOutDate > checkInDate) {
+            const diffTime = checkOutDate - checkInDate;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            stayDuration.style.display = "block";
+            durationDays.textContent = diffDays;
+            const total = price * diffDays;
+            totalAmountDiv.textContent = formatPeso(total);
+        } else {
+            stayDuration.style.display = "none";
+            totalAmountDiv.textContent = "₱0.00";
+        }
+    }
+
+     // Calculate total for cottage
+    function calculateCottageTotal() {
+        if (reservationType.value !== "cottage") return;
+
+        const selectedCottage = cottageSelect.options[cottageSelect.selectedIndex];
+        const price = parseFloat(selectedCottage.dataset.price || 0);
+        if (price > 0) {
+            totalAmountDiv.textContent = formatPeso(price);
+        } else {
+            totalAmountDiv.textContent = "₱0.00";
+        }
+    }
+    
+
+
+
+    
+
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
     checkInDate.min = today;
