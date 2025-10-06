@@ -56,20 +56,18 @@
                 
                 $total_amount = $daily_rate * $number_of_days;
             }
-        } elseif ($reservation_type == 'cottage' && $cottage_id) {
-            $cottage_query = $conn->query("SELECT cottage_price FROM cottage WHERE cottage_id = '$cottage_id'");
-            if ($cottage_query && $cottage_query->num_rows > 0) {
-                $cottage_data = $cottage_query->fetch_array();
-                $daily_rate = floatval($cottage_data['cottage_price']);
-                
-                // Calculate number of days
-                $check_in = new DateTime($check_in_date);
-                $check_out = new DateTime($check_out_date);
-                $number_of_days = $check_out->diff($check_in)->days;
-                
-                $total_amount = $daily_rate * $number_of_days;
-            }
-        }
+} elseif ($reservation_type == 'cottage' && $cottage_id) {
+    $cottage_query = $conn->query("SELECT cottage_price FROM cottage WHERE cottage_id = '$cottage_id'");
+    if ($cottage_query && $cottage_query->num_rows > 0) {
+        $cottage_data = $cottage_query->fetch_array();
+        $daily_rate = floatval($cottage_data['cottage_price']);
+        
+        // Cottage is charged per use (no checkout)
+        $total_amount = $daily_rate;
+        $check_out_date = NULL; // no checkout for cottages
+    }
+}
+
         
         // Insert guest information
         $guest_query = $conn->query("INSERT INTO guest (firstname, lastname, address, contactno) 

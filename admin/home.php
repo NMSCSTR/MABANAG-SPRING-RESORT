@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Serenity Bay Resort</title>
+    <title>Admin Dashboard - Mabanag Spring Resort</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -143,7 +143,7 @@
                                 <i class="fas fa-users"></i>
                             </div>
                             <div class="stat-info">
-                                <h3>                                     <?php $total_guest = $conn->query("SELECT COUNT(*) as total FROM `guest`")->fetch_array();
+                                <h3> <?php $total_guest = $conn->query("SELECT COUNT(*) as total FROM `guest`")->fetch_array();
                                      echo $total_guest['total'];
                                      ?></h3>
                                 <p>Active Guests</p>

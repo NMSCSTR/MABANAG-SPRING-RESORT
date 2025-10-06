@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('view_guest_contact').textContent = guestContact;
             document.getElementById('view_reservation_type').textContent = reservationType;
             document.getElementById('view_reservation_date').textContent = new Date(reservationDate).toLocaleString();
-            document.getElementById('view_payment_amount').textContent = amount ? '$' + parseFloat(amount).toFixed(2) : '-';
+            document.getElementById('view_payment_amount').textContent = amount ? '₱' + parseFloat(amount).toFixed(2) : '-';
             document.getElementById('view_reservation_status').textContent = reservationStatus.charAt(0).toUpperCase() + reservationStatus.slice(1);
             document.getElementById('view_payment_status').textContent = paymentStatus ? paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1) : 'No Payment';
             document.getElementById('view_room_cottage').textContent = room !== 'N/A' ? room : (cottage !== 'N/A' ? cottage : 'N/A');
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             Swal.fire({
                 title: 'Verify Payment?',
-                html: `Are you sure you want to verify this payment of <strong>$${amount}</strong>?`,
+                html: `Are you sure you want to verify this payment of <strong>₱${amount}</strong>?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#28a745',
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             Swal.fire({
                 title: 'Reject Payment?',
-                html: `Are you sure you want to reject this payment of <strong>$${amount}</strong>?`,
+                html: `Are you sure you want to reject this payment of <strong>₱${amount}</strong>?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#dc3545',

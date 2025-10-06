@@ -1,7 +1,4 @@
-// guest_reservation_script.js
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Get form elements
     const reservationTypeSelect = document.getElementById('reservation_type');
     const roomSelect = document.getElementById('room_id');
     const cottageSelect = document.getElementById('cottage_id');
@@ -13,105 +10,97 @@ document.addEventListener('DOMContentLoaded', function() {
     const stayDuration = document.getElementById('stay_duration');
     const durationDays = document.getElementById('duration_days');
 
-    // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
     checkInDate.min = today;
     checkOutDate.min = today;
 
-    // Handle reservation type change
     reservationTypeSelect.addEventListener('change', function() {
         const selectedType = this.value;
 
-        // Hide both selects and labels initially
+        // Reset visibility
         roomSelect.style.display = 'none';
         cottageSelect.style.display = 'none';
         roomLabel.style.display = 'none';
         cottageLabel.style.display = 'none';
-        stayDuration.style.display = 'none';
+        checkOutDate.parentElement.style.display = 'block'; // ensure visible for room
+        checkOutDate.required = true;
 
-        // Reset
+        // Reset selections
         roomSelect.value = '';
         cottageSelect.value = '';
-        checkOutDate.value = '';
 
         if (selectedType === 'room') {
             roomSelect.style.display = 'block';
             roomLabel.style.display = 'block';
-            checkOutDate.parentElement.style.display = 'block'; // show checkout
             roomSelect.required = true;
             cottageSelect.required = false;
+
+            // Show checkout date
+            checkOutDate.parentElement.style.display = 'block';
+            checkOutDate.required = true;
         } 
         else if (selectedType === 'cottage') {
             cottageSelect.style.display = 'block';
             cottageLabel.style.display = 'block';
-            checkOutDate.parentElement.style.display = 'none'; // hide checkout
             cottageSelect.required = true;
             roomSelect.required = false;
-        } 
+
+            // Hide checkout date for cottage
+            checkOutDate.parentElement.style.display = 'none';
+            checkOutDate.required = false;
+            checkOutDate.value = '';
+
+            // Immediately update total (since it’s per-use, not per-day)
+            updateTotalAmount();
+        }
         else {
             roomSelect.required = false;
             cottageSelect.required = false;
-            checkOutDate.parentElement.style.display = 'block';
         }
 
         updateTotalAmount();
     });
 
-    // Handle selection change
-    roomSelect.addEventListener('change', updateTotalAmount);
-    cottageSelect.addEventListener('change', updateTotalAmount);
-    checkInDate.addEventListener('change', updateTotalAmount);
-    checkOutDate.addEventListener('change', updateTotalAmount);
+    // Price calculations
+    [roomSelect, cottageSelect, checkInDate, checkOutDate].forEach(el => {
+        el.addEventListener('change', updateTotalAmount);
+    });
 
-    // Update total amount function
     function updateTotalAmount() {
-        let total = 0;
-        let dailyRate = 0;
-        let numberOfDays = 0;
-        const type = reservationTypeSelect.value;
+        let total = 0, dailyRate = 0, numberOfDays = 1;
 
-        // Get rate based on type
-        if (type === 'room' && roomSelect.value) {
-            const selected = roomSelect.options[roomSelect.selectedIndex];
-            dailyRate = parseFloat(selected.getAttribute('data-price')) || 0;
+        if (reservationTypeSelect.value === 'room' && roomSelect.value) {
+            const price = roomSelect.options[roomSelect.selectedIndex].getAttribute('data-price');
+            dailyRate = parseFloat(price);
         } 
-        else if (type === 'cottage' && cottageSelect.value) {
-            const selected = cottageSelect.options[cottageSelect.selectedIndex];
-            dailyRate = parseFloat(selected.getAttribute('data-price')) || 0;
+        else if (reservationTypeSelect.value === 'cottage' && cottageSelect.value) {
+            const price = cottageSelect.options[cottageSelect.selectedIndex].getAttribute('data-price');
+            dailyRate = parseFloat(price);
         }
 
-        // Room: compute by days
-        if (type === 'room' && checkInDate.value && checkOutDate.value) {
+        // Only compute duration for room type
+        if (reservationTypeSelect.value === 'room' && checkInDate.value && checkOutDate.value) {
             const checkIn = new Date(checkInDate.value);
             const checkOut = new Date(checkOutDate.value);
-            const diff = checkOut.getTime() - checkIn.getTime();
-            numberOfDays = Math.ceil(diff / (1000 * 3600 * 24));
-            if (numberOfDays < 1) numberOfDays = 1;
-
+            const diffTime = checkOut - checkIn;
+            numberOfDays = Math.max(1, diffTime / (1000 * 3600 * 24));
             stayDuration.style.display = 'block';
             durationDays.textContent = numberOfDays;
-
-            total = dailyRate * numberOfDays;
-            totalAmountDisplay.innerHTML = `
-                <span class="amount-breakdown">₱${dailyRate.toFixed(2)} × ${numberOfDays} day${numberOfDays > 1 ? 's' : ''} = </span>
-                <span class="amount-total">₱${total.toFixed(2)}</span>
-            `;
-        } 
-        // Cottage: flat rate
-        else if (type === 'cottage' && dailyRate > 0) {
+        } else {
             stayDuration.style.display = 'none';
-            total = dailyRate;
-            totalAmountDisplay.innerHTML = `
-                <span class="amount-breakdown">Cottage Rate = </span>
-                <span class="amount-total">₱${total.toFixed(2)}</span>
-            `;
-        } 
-        else {
-            stayDuration.style.display = 'none';
-            totalAmountDisplay.textContent = '₱0.00';
         }
-    }
 
+        total = (reservationTypeSelect.value === 'room')
+            ? dailyRate * numberOfDays
+            : dailyRate; // cottage = flat rate
+
+        totalAmountDisplay.innerHTML = `
+            <span class="amount-breakdown">
+                ₱${dailyRate.toFixed(2)} ${reservationTypeSelect.value === 'room' ? `× ${numberOfDays} day${numberOfDays > 1 ? 's' : ''}` : ''} =
+            </span>
+            <span class="amount-total">₱${total.toFixed(2)}</span>
+        `;
+    }
 
 
     // Form validation
