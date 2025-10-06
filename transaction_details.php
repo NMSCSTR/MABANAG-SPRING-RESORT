@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <?php 
-    require_once 'admin/connect.php';
-    
-    // Check if reservation_id is provided
-    if (!isset($_GET['reservation_id']) || empty($_GET['reservation_id'])) {
-        header("Location: guest_reservation.php");
-        exit();
-    }
-    
-    $reservation_id = $_GET['reservation_id'];
-    $contactno = isset($_GET['contactno']) ? $_GET['contactno'] : '';
+require_once 'admin/connect.php';
 
-    // Fetch reservation details
-    $query = "
-        SELECT 
-            r.*,
-            g.firstname, 
-            g.lastname, 
-            g.address, 
-            g.contactno,
-            p.payment_method,
-            p.payment_reference,
-            p.payment_status,
-            p.receipt_file,
-            rm.room_number,
-            rm.room_type,
-            rm.room_price,
-            c.cottage_type,
-            c.cottage_price
-        FROM reservation r
-        JOIN guest g ON r.guest_id = g.guest_id
-        LEFT JOIN payment p ON r.reservation_id = p.reservation_id
-        LEFT JOIN room rm ON r.room_id = rm.room_id
-        LEFT JOIN cottage c ON r.cottage_id = c.cottage_id
-        WHERE r.reservation_id = '$reservation_id' OR g.contactno = '$contactno'
-    ";
-    
-    $result = $conn->query($query);
-    
-    if (!$result || $result->num_rows == 0) {
-        header("Location: guest_reservation.php");
-        exit();
-    }
-    
-    $reservation = $result->fetch_assoc();
-    
-    // Calculate duration
+// Check if reservation_id is provided
+if (!isset($_GET['reservation_id']) || empty($_GET['reservation_id'])) {
+    header("Location: guest_reservation.php");
+    exit();
+}
+
+$reservation_id = $_GET['reservation_id'];
+$contactno = isset($_GET['contactno']) ? $_GET['contactno'] : '';
+
+// Fetch reservation details
+$query = "
+    SELECT 
+        r.*,
+        g.firstname, 
+        g.lastname, 
+        g.address, 
+        g.contactno,
+        p.payment_method,
+        p.payment_reference,
+        p.payment_status,
+        p.receipt_file,
+        rm.room_number,
+        rm.room_type,
+        rm.room_price,
+        c.cottage_type,
+        c.cottage_price
+    FROM reservation r
+    JOIN guest g ON r.guest_id = g.guest_id
+    LEFT JOIN payment p ON r.reservation_id = p.reservation_id
+    LEFT JOIN room rm ON r.room_id = rm.room_id
+    LEFT JOIN cottage c ON r.cottage_id = c.cottage_id
+    WHERE r.reservation_id = '$reservation_id' OR g.contactno = '$contactno'
+";
+
+$result = $conn->query($query);
+
+if (!$result || $result->num_rows == 0) {
+    header("Location: guest_reservation.php");
+    exit();
+}
+
+$reservation = $result->fetch_assoc();
+
+// Calculate duration only if check_out_date exists
+$duration = 0;
+if (!empty($reservation['check_out_date'])) {
     $check_in = new DateTime($reservation['check_in_date']);
     $check_out = new DateTime($reservation['check_out_date']);
     $duration = $check_out->diff($check_in)->days;
+}
 ?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -187,16 +191,23 @@
                     <div class="info-label print-info-label">Check-in Date:</div>
                     <div class="info-value"><?php echo date('F j, Y', strtotime($reservation['check_in_date'])); ?></div>
                 </div>
-                
+
+                <?php if (!empty($reservation['check_out_date'])): ?>
                 <div class="info-row print-info-row">
                     <div class="info-label print-info-label">Check-out Date:</div>
                     <div class="info-value"><?php echo date('F j, Y', strtotime($reservation['check_out_date'])); ?></div>
                 </div>
-                
+
                 <div class="info-row print-info-row">
                     <div class="info-label print-info-label">Duration:</div>
                     <div class="info-value"><?php echo $duration . ' day(s)'; ?></div>
                 </div>
+                <?php else: ?>
+                <div class="info-row print-info-row">
+                    <div class="info-label print-info-label">Duration:</div>
+                    <div class="info-value">1 day (Cottage Reservation)</div>
+                </div>
+                <?php endif; ?>
                 
                 <!-- Payment Information -->
                 <div class="section-title print-section-title">

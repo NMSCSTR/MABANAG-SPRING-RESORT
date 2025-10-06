@@ -331,16 +331,6 @@
                                 </div>
                             </div>
 
-                            <!-- Terms and Conditions -->
-                            <div class="form-section">
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="terms_agreement" required>
-                                    <label class="form-check-label" for="terms_agreement">
-                                        I agree to the <a href="#" class="terms-link">Terms and Conditions</a> and <a href="#" class="terms-link">Privacy Policy</a>
-                                    </label>
-                                </div>
-                            </div>
-
                             <!-- Submit Button -->
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-reserve">
