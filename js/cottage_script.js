@@ -315,22 +315,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Real-time statistics update (simulated)
-    setInterval(() => {
-        const stats = document.querySelectorAll('.stat-info h3');
-        if (stats.length >= 4) {
-            // Rotate the available cottages count slightly
-            const availableStat = stats[1];
-            const current = parseInt(availableStat.textContent);
-            const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, or +1
-            const newValue = Math.max(0, current + variation);
-            availableStat.textContent = newValue;
+    // // Real-time statistics update (simulated)
+    // setInterval(() => {
+    //     const stats = document.querySelectorAll('.stat-info h3');
+    //     if (stats.length >= 4) {
+    //         // Rotate the available cottages count slightly
+    //         const availableStat = stats[1];
+    //         const current = parseInt(availableStat.textContent);
+    //         const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, or +1
+    //         const newValue = Math.max(0, current + variation);
+    //         availableStat.textContent = newValue;
             
-            // Update occupied cottages accordingly
-            const totalStat = parseInt(stats[0].textContent);
-            const maintenanceStat = parseInt(stats[3].textContent);
-            const occupiedStat = stats[2];
-            occupiedStat.textContent = totalStat - newValue - maintenanceStat;
-        }
-    }, 15000); // Update every 15 seconds
+    //         // Update occupied cottages accordingly
+    //         const totalStat = parseInt(stats[0].textContent);
+    //         const maintenanceStat = parseInt(stats[3].textContent);
+    //         const occupiedStat = stats[2];
+    //         occupiedStat.textContent = totalStat - newValue - maintenanceStat;
+    //     }
+    // }, 15000); // Update every 15 seconds
 });

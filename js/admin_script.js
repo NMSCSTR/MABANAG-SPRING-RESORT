@@ -80,21 +80,21 @@ function updateChart(timeframe) {
     window.revenueChart.update();
 }
 
-// Simulate real-time updates (for demo purposes)
-setInterval(() => {
-    // Update stats with random variations
-    const stats = document.querySelectorAll('.stat-info h3');
-    if (stats.length > 0) {
-        // Randomly update the active guests count
-        const guestsElement = stats[2];
-        const currentGuests = parseInt(guestsElement.textContent);
-        const variation = Math.floor(Math.random() * 5) - 2; // -2 to +2
-        const newGuests = Math.max(100, currentGuests + variation);
-        guestsElement.textContent = newGuests;
+// // Simulate real-time updates (for demo purposes)
+// setInterval(() => {
+//     // Update stats with random variations
+//     const stats = document.querySelectorAll('.stat-info h3');
+//     if (stats.length > 0) {
+//         // Randomly update the active guests count
+//         const guestsElement = stats[2];
+//         const currentGuests = parseInt(guestsElement.textContent);
+//         const variation = Math.floor(Math.random() * 5) - 2; // -2 to +2
+//         const newGuests = Math.max(100, currentGuests + variation);
+//         guestsElement.textContent = newGuests;
         
-        // Update the badge
-        const badge = guestsElement.parentElement.nextElementSibling;
-        badge.textContent = variation > 0 ? `+${variation}` : variation;
-        badge.className = `stat-badge ${variation >= 0 ? 'success' : 'warning'}`;
-    }
-}, 10000); // Update every 10 seconds
+//         // Update the badge
+//         const badge = guestsElement.parentElement.nextElementSibling;
+//         badge.textContent = variation > 0 ? `+${variation}` : variation;
+//         badge.className = `stat-badge ${variation >= 0 ? 'success' : 'warning'}`;
+//     }
+// }, 10000); // Update every 10 seconds

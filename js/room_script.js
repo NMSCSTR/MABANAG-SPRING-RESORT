@@ -113,31 +113,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Real-time statistics update (simulated)
-    setInterval(() => {
-        // This would typically fetch data from the server
-        // For demo purposes, we'll just rotate some numbers
-        const stats = document.querySelectorAll('.stat-info h3');
-        if (stats.length >= 4) {
-            // Rotate the available rooms count slightly
-            const availableStat = stats[1];
-            const current = parseInt(availableStat.textContent);
-            const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, or +1
-            const newValue = Math.max(0, current + variation);
-            availableStat.textContent = newValue;
+    // // Real-time statistics update (simulated)
+    // setInterval(() => {
+    //     // This would typically fetch data from the server
+    //     // For demo purposes, we'll just rotate some numbers
+    //     const stats = document.querySelectorAll('.stat-info h3');
+    //     if (stats.length >= 4) {
+    //         // Rotate the available rooms count slightly
+    //         const availableStat = stats[1];
+    //         const current = parseInt(availableStat.textContent);
+    //         const variation = Math.floor(Math.random() * 3) - 1; // -1, 0, or +1
+    //         const newValue = Math.max(0, current + variation);
+    //         availableStat.textContent = newValue;
             
-            // Update occupied rooms accordingly
-            const totalStat = parseInt(stats[0].textContent);
-            const maintenanceStat = parseInt(stats[3].textContent);
-            const occupiedStat = stats[2];
-            occupiedStat.textContent = totalStat - newValue - maintenanceStat;
-        }
-    }, 10000); // Update every 10 seconds
+    //         // Update occupied rooms accordingly
+    //         const totalStat = parseInt(stats[0].textContent);
+    //         const maintenanceStat = parseInt(stats[3].textContent);
+    //         const occupiedStat = stats[2];
+    //         occupiedStat.textContent = totalStat - newValue - maintenanceStat;
+    //     }
+    // }, 10000); // Update every 10 seconds
 });
 
-// Export functionality (for future enhancement)
-function exportRooms(format) {
-    // This would typically make an AJAX call to export data
-    alert(`Exporting rooms data in ${format} format...`);
-    // In a real implementation, this would download a file
-}
+// // Export functionality (for future enhancement)
+// function exportRooms(format) {
+//     // This would typically make an AJAX call to export data
+//     alert(`Exporting rooms data in ${format} format...`);
+//     // In a real implementation, this would download a file
+// }

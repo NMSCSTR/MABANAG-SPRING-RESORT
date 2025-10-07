@@ -365,34 +365,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Real-time statistics update (simulated)
-    setInterval(() => {
-        const stats = document.querySelectorAll('.stat-info h3');
-        if (stats.length >= 4) {
-            // Simulate real-time updates
-            const totalStat = stats[0];
-            const confirmedStat = stats[1];
-            const revenueStat = stats[2];
-            const pendingStat = stats[3];
+    // // Real-time statistics update (simulated)
+    // setInterval(() => {
+    //     const stats = document.querySelectorAll('.stat-info h3');
+    //     if (stats.length >= 4) {
+    //         // Simulate real-time updates
+    //         const totalStat = stats[0];
+    //         const confirmedStat = stats[1];
+    //         const revenueStat = stats[2];
+    //         const pendingStat = stats[3];
             
-            // Random small variations
-            const total = parseInt(totalStat.textContent);
-            const confirmed = parseInt(confirmedStat.textContent);
-            const revenue = parseFloat(revenueStat.textContent.replace('$', '').replace(',', ''));
-            const pending = parseInt(pendingStat.textContent);
+    //         // Random small variations
+    //         const total = parseInt(totalStat.textContent);
+    //         const confirmed = parseInt(confirmedStat.textContent);
+    //         const revenue = parseFloat(revenueStat.textContent.replace('$', '').replace(',', ''));
+    //         const pending = parseInt(pendingStat.textContent);
             
-            // Simulate new transactions
-            if (Math.random() > 0.7) {
-                totalStat.textContent = total + 1;
-                if (Math.random() > 0.5) {
-                    confirmedStat.textContent = confirmed + 1;
-                    revenueStat.textContent = '$' + (revenue + Math.random() * 100).toFixed(2);
-                } else {
-                    pendingStat.textContent = pending + 1;
-                }
-            }
-        }
-    }, 10000); // Update every 10 seconds
+    //         // Simulate new transactions
+    //         if (Math.random() > 0.7) {
+    //             totalStat.textContent = total + 1;
+    //             if (Math.random() > 0.5) {
+    //                 confirmedStat.textContent = confirmed + 1;
+    //                 revenueStat.textContent = '$' + (revenue + Math.random() * 100).toFixed(2);
+    //             } else {
+    //                 pendingStat.textContent = pending + 1;
+    //             }
+    //         }
+    //     }
+    // }, 100000); // Update every 10 seconds
 
     // Receipt modal functionality
     const receiptModal = document.getElementById('receiptModal');
