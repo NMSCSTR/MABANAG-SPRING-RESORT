@@ -419,11 +419,10 @@
                                 <div class="mb-3">
                                     <label for="edit_cottage_type" class="form-label">Cottage Type <span class="text-danger">*</span></label>
                                     <select class="form-select" id="edit_cottage_type" name="cottage_type" required>
-                                        <option value="Beachfront">Beachfront Cottage</option>
-                                        <option value="Garden View">Garden View Cottage</option>
-                                        <option value="Family">Family Cottage</option>
-                                        <option value="Luxury">Luxury Cottage</option>
-                                        <option value="Standard">Standard Cottage</option>
+                                        <option value="Medium Cottage">Small Cottage</option>
+                                        <option value="Medium Cottage">Medium Cottage</option>
+                                        <option value="Large Cottage">Large Cottage</option>
+
                                     </select>
                                 </div>
                             </div>

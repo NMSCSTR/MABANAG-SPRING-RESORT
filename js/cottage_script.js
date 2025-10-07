@@ -69,11 +69,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Capacity mapping based on cottage type
     const capacityMap = {
-        'Standard': '4-6 People',
-        'Garden View': '2-4 People',
-        'Family': '6-8 People',
-        'Luxury': '4-6 People',
-        'Standard': '2-4 People'
+        'Small Cottage': '3-5 People',
+        'Medium Cottage': '6-10 People',
+        'Large Cottage': '10-15 People',
     };
 
     // Update capacity when cottage type changes
