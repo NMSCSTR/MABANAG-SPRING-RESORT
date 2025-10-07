@@ -1,65 +1,68 @@
 // reports_script.js
-
-document.addEventListener('DOMContentLoaded', function() {
-    // SweetAlert for displaying messages
-    const body = document.body;
-    const alertType = body.getAttribute('data-alert-type');
-    const alertTitle = body.getAttribute('data-alert-title');
-    const alertMessage = body.getAttribute('data-alert-message');
-    
-    if (alertType && alertMessage) {
-        Swal.fire({
-            icon: alertType,
-            title: alertTitle || alertType.charAt(0).toUpperCase() + alertType.slice(1),
-            html: alertMessage,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        
-        // Clear the data attributes
-        body.removeAttribute('data-alert-type');
-        body.removeAttribute('data-alert-title');
-        body.removeAttribute('data-alert-message');
-    }
+$(document).ready(function() {
+    const exportButtons = [
+        { extend: 'copy', text: '<i class="fas fa-copy me-1"></i>Copy', className: 'btn btn-outline-secondary btn-sm' },
+        { extend: 'csv', text: '<i class="fas fa-file-csv me-1"></i>CSV', className: 'btn btn-outline-secondary btn-sm' },
+        { extend: 'excel', text: '<i class="fas fa-file-excel me-1"></i>Excel', className: 'btn btn-outline-success btn-sm' },
+        { extend: 'pdf', text: '<i class="fas fa-file-pdf me-1"></i>PDF', className: 'btn btn-outline-danger btn-sm' },
+        { extend: 'print', text: '<i class="fas fa-print me-1"></i>Print', className: 'btn btn-outline-primary btn-sm' }
+    ];
 
     let reportsTable;
     let currentPeriod = 'weekly';
 
-    // Initialize DataTable with server-side data
     function initializeDataTable() {
         if ($.fn.DataTable.isDataTable('#reportsTable')) {
             reportsTable.destroy();
         }
 
         reportsTable = $('#reportsTable').DataTable({
-            "pageLength": 10,
-            "lengthMenu": [10, 25, 50, 100],
-            "order": [[0, 'desc']],
-            "language": {
-                "search": "_INPUT_",
-                "searchPlaceholder": "Search reports...",
-                "lengthMenu": "Show _MENU_ entries",
-                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-                "infoEmpty": "No transactions found for this period",
-                "infoFiltered": "(filtered from _MAX_ total entries)",
-                "emptyTable": "No transactions found for this period",
-                "zeroRecords": "No matching transactions found",
-                "paginate": {
-                    "first": "First",
-                    "last": "Last",
-                    "next": "Next",
-                    "previous": "Previous"
+            dom: '<"d-flex justify-content-between align-items-center mb-3"Bf>rtip',
+            buttons: exportButtons,
+            pageLength: 10,
+            lengthMenu: [10, 25, 50, 100],
+            order: [[0, 'desc']],
+            responsive: true,
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search reports...",
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "No transactions found for this period",
+                infoFiltered: "(filtered from _MAX_ total entries)",
+                emptyTable: "No transactions found for this period",
+                zeroRecords: "No matching transactions found",
+                paginate: {
+                    first: "First",
+                    last: "Last",
+                    next: "Next",
+                    previous: "Previous"
                 }
             }
         });
     }
+
+    // 🟢 Export button (SweetAlert) → triggers corresponding DataTables export
+    document.getElementById('exportReport').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Export Report',
+            text: `Export ${currentPeriod} report as:`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Excel',
+            cancelButtonText: 'PDF',
+            showDenyButton: true,
+            denyButtonText: 'CSV'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                reportsTable.button('.buttons-excel').trigger();
+            } else if (result.isDenied) {
+                reportsTable.button('.buttons-csv').trigger();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                reportsTable.button('.buttons-pdf').trigger();
+            }
+        });
+    });
 
     // Update metrics and table based on selected period
     function updatePeriod(period) {
