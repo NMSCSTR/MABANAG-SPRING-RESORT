@@ -65,27 +65,42 @@
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h2 class="section-title">About Mabanag Spring Resort</h2>
-                    <p>Leave the hustle behind and answer the call of adventure at Mabanag Spring Resort. Dive into our invigorating, crystal-clear springs, surrounded by the lush sounds of nature. This is where you’ll create stories worth telling, from splashing fun with the family to blissful relaxation under the sun. We provide the perfect setting for every moment, making your vacation or random gimiks as lively or as tranquil as you wish. Your ultimate spring getaway is waiting.</p>
-                    <p>Book Your Adventure!</p>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Spring Vibes</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Stunning Views</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Multiple dining options</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Very clear and clean spring water</li>
-                    </ul>
-                </div>
-                <div class="col-lg-6">
-                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Resort Pool" class="img-fluid rounded shadow">
+   <!-- About Section -->
+<section id="about" class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Text Content -->
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="section-title">About Mabanag Spring Resort</h2>
+                <p>
+                    Leave the hustle behind and answer the call of adventure at Mabanag Spring Resort. 
+                    Dive into our invigorating, crystal-clear springs, surrounded by the lush sounds of nature. 
+                    This is where you’ll create stories worth telling — from splashing fun with the family to blissful relaxation under the sun. 
+                    We provide the perfect setting for every moment, making your vacation or random gimiks as lively or as tranquil as you wish. 
+                    Your ultimate spring getaway is waiting.
+                </p>
+                <p><strong>Book Your Adventure!</strong></p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Spring Vibes</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Stunning Views</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Multiple dining options</li>
+                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Very clear and clean spring water</li>
+                </ul>
+            </div>
+
+            <!-- Video Content -->
+            <div class="col-lg-6 text-center">
+                <div class="about-video-wrapper">
+                    <video autoplay muted loop playsinline class="about-video">
+                        <source src="photo/bgvideo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
     <?php 
     require_once 'admin/connect.php';

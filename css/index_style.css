@@ -115,6 +115,24 @@ body {
     transform: translateY(-10px);
 }
 
+/* About Section Video Styling */
+.about-video-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.about-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 15px;
+}
+
 .room-card {
     border: none;
     border-radius: 10px;
@@ -269,6 +287,14 @@ body {
     
     .section-title {
         font-size: 1.8rem;
+    }
+
+     #about .row {
+        text-align: center;
+    }
+
+    .about-video-wrapper {
+        max-width: 100%;
     }
 }
 

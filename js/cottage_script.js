@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Capacity mapping based on cottage type
     const capacityMap = {
-        'Beachfront': '4-6 People',
+        'Standard': '4-6 People',
         'Garden View': '2-4 People',
         'Family': '6-8 People',
         'Luxury': '4-6 People',
