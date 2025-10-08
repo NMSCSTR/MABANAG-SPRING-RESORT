@@ -282,13 +282,10 @@
                                 </h4>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="payment_method" class="form-label">Payment Method *</label>
+                                        <label for="payment_method" class="form-label">Payment Method  <em style="color:red">09506587329</em> Maban *</label>
                                         <select class="form-select" id="payment_method" name="payment_method" required>
                                             <option value="">Select Payment Method</option>
-                                            <option value="cash">Cash</option>
                                             <option value="gcash">GCash</option>
-                                            <option value="bank_transfer">Bank Transfer</option>
-                                            <option value="credit_card">Credit Card</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 mb-3">

@@ -306,7 +306,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h5><i class="fas fa-umbrella-beach me-2"></i>Mabanag Spring Resort</h5>
-                    <p>Luxury beachfront resort offering world-class amenities and unforgettable experiences in a pristine tropical setting.</p>
+                    <p>A place to breathe deeply and soak in panoramic mountain views. Nestled among ancient pines and the gentle sounds of a nearby spring, it’s a simple escape into the heart of nature’s grandeur.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
