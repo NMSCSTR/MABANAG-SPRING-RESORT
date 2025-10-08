@@ -100,7 +100,7 @@
                     </button>
                     <h3>Account Management</h3>
                 </div>
-                <div class="nav-right">
+                <!-- <div class="nav-right">
                     <div class="user-menu">
                         <button class="nav-btn user-dropdown">
                             <i class="fas fa-user-circle"></i>
@@ -108,7 +108,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                     </div>
-                </div>
+                </div> -->
             </nav>
 
             <!-- Account Management Content -->
@@ -256,7 +256,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <!-- <div class="col-xl-3 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-shield-alt"></i>
@@ -266,7 +266,7 @@
                                 <p>System Security</p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

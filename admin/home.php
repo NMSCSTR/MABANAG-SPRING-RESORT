@@ -91,7 +91,7 @@
                     </button>
                     <h3>Dashboard Overview</h3>
                 </div>
-                <div class="nav-right">
+                <!-- <div class="nav-right">
                     <div class="user-menu">
                         <button class="nav-btn user-dropdown">
                             <i class="fas fa-user-circle"></i>
@@ -99,7 +99,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                     </div>
-                </div>
+                </div> -->
             </nav>
 
             <!-- Dashboard Content -->

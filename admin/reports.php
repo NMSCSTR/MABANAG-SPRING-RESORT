@@ -56,6 +56,8 @@ require_once 'connect.php';
             </div>
         </div>
 
+        
+
         <!-- Main Content -->
         <div class="main-content">
             <nav class="top-nav">
@@ -78,8 +80,8 @@ require_once 'connect.php';
                         </div>
                     </div>
                     <div class="card-body">
-                        <table id="reportsTable" class="table table-bordered table-striped">
-                            <thead class="table-dark">
+                        <table id="reportsTable" class="table table-striped">
+                            <thead class="table-white">
                                 <tr>
                                     <th>#</th>
                                     <th>Reservation ID</th>
@@ -139,12 +141,35 @@ require_once 'connect.php';
                     },
                     dataSrc: function(json) {
                         let total = 0;
-                        json.data.forEach(row => total += parseFloat(row.amount));
+                        console.log('=== DEBUG AMOUNTS ===');
+                        json.data.forEach(row => {
+                            const cleanAmount = String(row.amount).replace(/,/g, '');
+                            const parsedAmount = parseFloat(cleanAmount) || 0;
+                            
+                            console.log('Original:', row.amount, 'Cleaned:', cleanAmount, 'Parsed:', parsedAmount);
+                            
+                            total += parsedAmount;
+                        });
+                        console.log('TOTAL:', total);
                         $('#totalRevenue').text('₱' + total.toLocaleString(undefined, {
                             minimumFractionDigits: 2
                         }));
                         return json.data;
                     }
+
+                    //without code debugging
+                    // dataSrc: function(json) {
+                    //     let total = 0;
+                    //     json.data.forEach(row => {
+                    //         // Remove commas and convert to number
+                    //         const cleanAmount = String(row.amount).replace(/,/g, '');
+                    //         total += parseFloat(cleanAmount) || 0;
+                    //     });
+                    //     $('#totalRevenue').text('₱' + total.toLocaleString(undefined, {
+                    //         minimumFractionDigits: 2
+                    //     }));
+                    //     return json.data;
+                    // }
                 },
                 columns: [{
                         data: 'no'

@@ -118,7 +118,7 @@
                     </button>
                     <h3>Room Management</h3>
                 </div>
-                <div class="nav-right">
+                <!-- <div class="nav-right">
                     <div class="user-menu">
                         <button class="nav-btn user-dropdown">
                             <i class="fas fa-user-circle"></i>
@@ -126,7 +126,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                     </div>
-                </div>
+                </div> -->
             </nav>
 
             <!-- Room Management Content -->
