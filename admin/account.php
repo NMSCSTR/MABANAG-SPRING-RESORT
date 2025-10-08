@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="../css/admin_style.css">
     <link rel="stylesheet" href="../css/account_style.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
 </head>
 <body>
     <!-- Admin Dashboard Layout -->
@@ -411,13 +412,60 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="../js/account_script.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+  const resetForm = document.getElementById("resetPasswordForm");
+
+  resetForm.addEventListener("submit", function(e) {
+    e.preventDefault(); // stop normal form submit
+
+    const formData = new FormData(resetForm);
+
+    fetch("reset_password.php", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.message,
+          confirmButtonColor: "#3085d6"
+        }).then(() => {
+          // Hide modal
+          const modal = bootstrap.Modal.getInstance(document.getElementById("resetPasswordModal"));
+          modal.hide();
+          // Refresh DataTable or reload
+          location.reload();
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message,
+          confirmButtonColor: "#d33"
+        });
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong. Please try again later."
+      });
+    });
+  });
+});
+</script>
     <script>
     // Add this before the closing </body> tag
     document.getElementById('logoutBtn').addEventListener('click', function(e) {

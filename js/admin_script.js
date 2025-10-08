@@ -80,6 +80,21 @@ function updateChart(timeframe) {
     window.revenueChart.update();
 }
 
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure you want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'logout.php';
+                }
+            });
+        });
+
 // // Simulate real-time updates (for demo purposes)
 // setInterval(() => {
 //     // Update stats with random variations

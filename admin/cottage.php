@@ -146,11 +146,9 @@
                             <div class="filter-controls">
                                 <select id="typeFilter" class="form-select">
                                     <option value="">All Types</option>
-                                    <option value="Beachfront">Beachfront</option>
-                                    <option value="Garden View">Garden View</option>
-                                    <option value="Family">Family</option>
-                                    <option value="Luxury">Luxury</option>
-                                    <option value="Standard">Standard</option>
+                                    <option value="Small Cottage">Small Cottage</option>
+                                    <option value="Medium Cottage">Medium Cottage</option>
+                                    <option value="Large Cottage">Large Cottage</option>
                                 </select>
                                 <select id="availabilityFilter" class="form-select">
                                     <option value="">All Status</option>
@@ -183,17 +181,14 @@
                                             // Determine capacity based on cottage type
                                             $capacity = '';
                                             switch ($fetch['cottage_type']) {
-                                                case 'Family':
-                                                    $capacity = '6-8 People';
+                                                case 'Small Cottage':
+                                                    $capacity = '3-5 People';
                                                     break;
-                                                case 'Luxury':
-                                                    $capacity = '4-6 People';
+                                                case 'Medium Cottage':
+                                                    $capacity = '6-10 People';
                                                     break;
-                                                case 'Beachfront':
-                                                    $capacity = '4-6 People';
-                                                    break;
-                                                case 'Garden View':
-                                                    $capacity = '2-4 People';
+                                                case 'Large Cottage':
+                                                    $capacity = '10-15 People';
                                                     break;
                                                 default:
                                                     $capacity = '2-4 People';
@@ -349,11 +344,9 @@
                                     <label for="cottage_type" class="form-label">Cottage Type <span class="text-danger">*</span></label>
                                     <select class="form-select" id="cottage_type" name="cottage_type" required>
                                         <option value="">Select Cottage Type</option>
-                                        <option value="Beachfront">Beachfront Cottage</option>
-                                        <option value="Garden View">Garden View Cottage</option>
-                                        <option value="Family">Family Cottage</option>
-                                        <option value="Luxury">Luxury Cottage</option>
-                                        <option value="Standard">Standard Cottage</option>
+                                        <option value="Small Cottage">Small Cottage</option>
+                                        <option value="Medium Cottage">Medium Cottage</option>
+                                        <option value="Large Cottage">Large Cottage</option>
                                     </select>
                                 </div>
                             </div>
@@ -419,7 +412,7 @@
                                 <div class="mb-3">
                                     <label for="edit_cottage_type" class="form-label">Cottage Type <span class="text-danger">*</span></label>
                                     <select class="form-select" id="edit_cottage_type" name="cottage_type" required>
-                                        <option value="Medium Cottage">Small Cottage</option>
+                                        <option value="Small Cottage">Small Cottage</option>
                                         <option value="Medium Cottage">Medium Cottage</option>
                                         <option value="Large Cottage">Large Cottage</option>
 
@@ -428,7 +421,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="edit_cottage_price" class="form-label">Price per Night (₱) <span class="text-danger">*</span></label>
+                                    <label for="edit_cottage_price" class="form-label">Price per day (₱) <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="edit_cottage_price" name="cottage_price" step="0.01" min="0" required>
                                 </div>
                             </div>

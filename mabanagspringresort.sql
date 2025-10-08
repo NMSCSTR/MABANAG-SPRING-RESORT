@@ -271,7 +271,3 @@ COMMIT;
 
 
 
-
-    <link rel="stylesheet" href="../css/admin_style.css">
-
-

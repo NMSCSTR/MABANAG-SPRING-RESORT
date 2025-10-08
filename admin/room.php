@@ -154,9 +154,6 @@
                             <div class="filter-controls">
                                 <select id="typeFilter" class="form-select">
                                     <option value="">All Types</option>
-                                    <option value="Deluxe">Deluxe</option>
-                                    <option value="Suite">Suite</option>
-                                    <option value="Villa">Villa</option>
                                     <option value="Standard">Standard</option>
                                 </select>
                                 <select id="availabilityFilter" class="form-select">
