@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en">
+<?php 
+    require_once 'admin/connect.php';
+    $sql = mysqli_query($conn, " SELECT * FROM `owners_info` WHERE `info_id` = 1");
+    $info = mysqli_fetch_assoc($sql);
 
+
+?>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -327,9 +333,9 @@
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                     <h5>Contact Info</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 123 Beachfront Road, Paradise Island</li>
-                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +1 (555) 123-4567</li>
-                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@mabanagspringresort.com</li>
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> <?php echo $info['address']?></li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> <?php echo $info['phone_number']?></li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> <?php echo $info['email_address']?></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">

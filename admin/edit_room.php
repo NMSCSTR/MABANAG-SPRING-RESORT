@@ -3,7 +3,6 @@ require_once 'connect.php';
 require_once 'validate.php';
 
 if(ISSET($_POST['edit_room'])){
-    // Initialize variables
     $errors = array();
     
     // Validate and sanitize inputs
@@ -28,7 +27,6 @@ if(ISSET($_POST['edit_room'])){
         $errors[] = "Room availability is required";
     }
     
-    // Handle photo upload if provided
     $photo_name = '';
     if(isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
         $photo = $_FILES['photo'];
@@ -87,7 +85,6 @@ if(ISSET($_POST['edit_room'])){
                 }
             }
         } else {
-            // Handle specific upload errors
             $upload_errors = array(
                 1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
                 2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',

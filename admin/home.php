@@ -262,44 +262,7 @@
                     </div>
                 </div>
 
-                <!-- Quick Actions and System Status -->
-                <div class="row content-row">
-                    <!-- Quick Actions -->
-                    <div class="col-lg-12 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Quick Actions</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="quick-actions">
-                                    <a href="room.php" class="action-btn">
-                                        <i class="fas fa-plus"></i>
-                                        <span>Add New Room</span>
-                                    </a>
-                                    <a href="cottage.php" class="action-btn">
-                                        <i class="fas fa-home"></i>
-                                        <span>Manage Cottages</span>
-                                    </a>
-                                    <a href="payment.php" class="action-btn">
-                                        <i class="fas fa-credit-card"></i>
-                                        <span>Process Payment</span>
-                                    </a>
-                                    <a href="account.php" class="action-btn">
-                                        <i class="fas fa-user-plus"></i>
-                                        <span>Create Account</span>
-                                    </a>
-                                    <a href="#" class="action-btn">
-                                        <i class="fas fa-chart-line"></i>
-                                        <span>Generate Report</span>
-                                    </a>
-                                    <!-- <a href="#" class="action-btn">
-                                        <i class="fas fa-cog"></i>
-                                        <span>System Settings</span>
-                                    </a> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        
 
 
   <script src="https://code.jquery.com/jquery-3.7.0.js"></script>

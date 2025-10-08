@@ -162,7 +162,7 @@
                                         <td><?php echo $fetch['address']?></td>
                                         <td><?php echo $fetch['facebook_account']?></td>
                                         <td>
-                                            <button class="btn btn-sm btn-info editBtn" data-id="<?php echo $fetch['info_id']; ?>">
+                                            <button class="btn btn-sm bg-transparent border editBtn" data-id="<?php echo $fetch['info_id']; ?>">
                                                 <i class="fas fa-edit"></i> Edit
                                             </button>
                                         </td>

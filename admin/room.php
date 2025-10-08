@@ -200,11 +200,33 @@
                                             </span>
                                         </td>
                                         <td>₱<?php echo $fetch['room_price']?>/night</td>
-                                        <td>
-                                            <span class="availability-badge availability-<?php echo strtolower($fetch['room_availability'])?>">
-                                                <?php echo $fetch['room_availability']?>
+                                            <td>
+                                            <?php 
+                                                $availability = strtolower($fetch['room_availability']); 
+                                                $badgeClass = '';
+
+                                                // Assign Bootstrap badge colors dynamically
+                                                switch ($availability) {
+                                                case 'available':
+                                                    $badgeClass = 'bg-success'; // green
+                                                    break;
+                                                case 'occupied':
+                                                    $badgeClass = 'bg-danger'; // red
+                                                    break;
+                                                case 'maintenance':
+                                                case 'under maintenance':
+                                                    $badgeClass = 'bg-warning text-dark'; // yellow
+                                                    break;
+                                                default:
+                                                    $badgeClass = 'bg-secondary'; // gray (fallback)
+                                                    break;
+                                                }
+                                            ?>
+                                            <span class="badge <?php echo $badgeClass; ?> px-3 py-2">
+                                                <?php echo ucfirst($fetch['room_availability']); ?>
                                             </span>
-                                        </td>
+                                            </td>
+
                                         <td>
                                             <?php 
                                             $description = isset($fetch['room_description']) ? $fetch['room_description'] : '';
@@ -363,9 +385,9 @@
                                 <div class="mb-3">
                                     <label for="room_availability" class="form-label">Availability <span class="text-danger">*</span></label>
                                     <select class="form-select" id="room_availability" name="room_availability" required>
-                                        <option value="Available">Available</option>
-                                        <option value="Occupied">Occupied</option>
-                                        <option value="Maintenance">Under Maintenance</option>
+                                        <option value="available">Available</option>
+                                        <option value="occupied">Occupied</option>
+                                        <option value="maintenance">Under Maintenance</option>
                                     </select>
                                 </div>
                             </div>
@@ -430,9 +452,9 @@
                                 <div class="mb-3">
                                     <label for="edit_room_availability" class="form-label">Availability <span class="text-danger">*</span></label>
                                     <select class="form-select" id="edit_room_availability" name="room_availability" required>
-                                        <option value="Available">Available</option>
-                                        <option value="Occupied">Occupied</option>
-                                        <option value="Maintenance">Under Maintenance</option>
+                                        <option value="available">Available</option>
+                                        <option value="occupied">Occupied</option>
+                                        <option value="maintenance">Under Maintenance</option>
                                     </select>
                                 </div>
                             </div>
