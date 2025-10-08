@@ -8,7 +8,9 @@
 		
 		if($row > 0){
 			session_start();
+			$admin_id = $fetch['admin_id'];
 			$_SESSION['admin_id'] = $fetch['admin_id'];
+			$conn->query("UPDATE `admin` SET `last_login` = NOW() WHERE `admin_id` = '$admin_id'");
 			header('location:home.php');
 		}else{
 			echo "<center><labe style = 'color:red;'>Invalid username or password</label></center>";

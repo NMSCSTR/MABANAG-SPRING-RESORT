@@ -221,10 +221,6 @@
                     <div class="card-header">
                         <h5>All Transactions</h5>
                         <div class="table-controls">
-                            <div class="search-box">
-                                <i class="fas fa-search"></i>
-                                <input type="text" id="searchInput" placeholder="Search transactions...">
-                            </div>
                             <div class="filter-controls">
                                 <select id="statusFilter" class="form-select">
                                     <option value="">All Status</option>

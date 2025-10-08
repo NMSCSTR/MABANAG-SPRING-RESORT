@@ -165,7 +165,7 @@
                                 <select id="availabilityFilter" class="form-select">
                                     <option value="">All Status</option>
                                     <option value="Available">Available</option>
-                                    <option value="Occupied">Occupied</option>
+                                    <!-- <option value="Occupied">Occupied</option> -->
                                     <option value="Maintenance">Maintenance</option>
                                 </select>
                             </div>
@@ -204,21 +204,19 @@
                                             <?php 
                                                 $availability = strtolower($fetch['room_availability']); 
                                                 $badgeClass = '';
-
-                                                // Assign Bootstrap badge colors dynamically
                                                 switch ($availability) {
                                                 case 'available':
-                                                    $badgeClass = 'bg-success'; // green
+                                                    $badgeClass = 'bg-success'; 
                                                     break;
                                                 case 'occupied':
-                                                    $badgeClass = 'bg-danger'; // red
+                                                    $badgeClass = 'bg-danger';
                                                     break;
                                                 case 'maintenance':
                                                 case 'under maintenance':
-                                                    $badgeClass = 'bg-warning text-dark'; // yellow
+                                                    $badgeClass = 'bg-warning text-dark';
                                                     break;
                                                 default:
-                                                    $badgeClass = 'bg-secondary'; // gray (fallback)
+                                                    $badgeClass = 'bg-secondary'; 
                                                     break;
                                                 }
                                             ?>
@@ -275,7 +273,7 @@
 
                 <!-- Statistics Cards -->
                 <div class="row stats-row">
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-bed"></i>
@@ -291,7 +289,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-check-circle"></i>
@@ -307,7 +305,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <!-- <div class="col-xl-3 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-user-friends"></i>
@@ -322,8 +320,8 @@
                                 <p>Occupied Rooms</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    </div> -->
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-tools"></i>
@@ -386,7 +384,7 @@
                                     <label for="room_availability" class="form-label">Availability <span class="text-danger">*</span></label>
                                     <select class="form-select" id="room_availability" name="room_availability" required>
                                         <option value="available">Available</option>
-                                        <option value="occupied">Occupied</option>
+                                        <!-- <option value="occupied">Occupied</option> -->
                                         <option value="maintenance">Under Maintenance</option>
                                     </select>
                                 </div>
@@ -453,7 +451,7 @@
                                     <label for="edit_room_availability" class="form-label">Availability <span class="text-danger">*</span></label>
                                     <select class="form-select" id="edit_room_availability" name="room_availability" required>
                                         <option value="available">Available</option>
-                                        <option value="occupied">Occupied</option>
+                                        <!-- <option value="occupied">Occupied</option> -->
                                         <option value="maintenance">Under Maintenance</option>
                                     </select>
                                 </div>

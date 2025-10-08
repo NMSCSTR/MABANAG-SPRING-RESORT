@@ -184,7 +184,6 @@
                                     <?php
                                         $query = $conn->query("SELECT * FROM `cottage` ORDER BY `cottage_id` DESC") or die(mysqli_error());
                                         while ($fetch = $query->fetch_array()) {
-                                            // Determine capacity based on cottage type
                                             $capacity = '';
                                             switch ($fetch['cottage_type']) {
                                                 case 'Small Cottage':
@@ -264,7 +263,7 @@
 
                 <!-- Statistics Cards -->
                 <div class="row stats-row">
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-home"></i>
@@ -280,7 +279,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-check-circle"></i>
@@ -296,7 +295,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <!-- <div class="col-xl-3 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-user-friends"></i>
@@ -311,8 +310,8 @@
                                 <p>Occupied Cottages</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    </div> -->
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-tools"></i>
@@ -368,9 +367,8 @@
                                 <div class="mb-3">
                                     <label for="cottage_availability" class="form-label">Availability <span class="text-danger">*</span></label>
                                     <select class="form-select" id="cottage_availability" name="cottage_availability" required>
-                                        <option value="Available">Available</option>
-                                        <option value="Occupied">Occupied</option>
-                                        <option value="Maintenance">Under Maintenance</option>
+                                        <option value="available">Available</option>
+                                        <option value="maintenance">Under Maintenance</option>
                                     </select>
                                 </div>
                             </div>

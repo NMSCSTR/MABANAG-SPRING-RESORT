@@ -135,19 +135,19 @@
                 <div class="card">
                     <div class="card-header">
                         <h5>All Administrator Accounts</h5>
-                        <div class="table-controls">
-                            <div class="search-box">
+                        <!-- <div class="table-controls"> -->
+                            <!-- <div class="search-box">
                                 <i class="fas fa-search"></i>
                                 <input type="text" id="searchInput" placeholder="Search accounts...">
-                            </div>
-                            <div class="filter-controls">
+                            </div> -->
+                            <!-- <div class="filter-controls">
                                 <select id="statusFilter" class="form-select">
                                     <option value="">All Status</option>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                 </select>
-                            </div>
-                        </div>
+                            </div> -->
+                        <!-- </div> -->
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -187,7 +187,16 @@
                                             </span>
                                         </td>
                                         <td><?php echo date('M j, Y', strtotime($fetch['creation_date']))?></td>
-                                        <td><?php echo date('M j, Y', strtotime($last_login))?></td>
+                                        <td>
+                                            <?php 
+                                                if (!empty($fetch['last_login'])) {
+                                                    echo date('M j, Y', strtotime($fetch['last_login']));
+                                                } else {
+                                                    echo '<span class="text-muted">No login records</span>';
+                                                }
+                                            ?>
+                                        </td>
+
                                         <td>
                                             <div class="action-buttons">
                                                 <button class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#editAccountModal" 
@@ -220,7 +229,7 @@
 
                 <!-- Statistics Cards -->
                 <div class="row stats-row">
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-users"></i>
@@ -236,7 +245,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-user-check"></i>
@@ -252,17 +261,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>7</h3>
-                                <p>Days Since Last Login</p>
-                            </div>
+                    <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-warning text-white">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>
+                                <?php
+                                    $result = $conn->query("SELECT TIMESTAMPDIFF(HOUR, last_login, NOW()) AS hours 
+                                                            FROM admin 
+                                                            WHERE last_login IS NOT NULL 
+                                                            ORDER BY last_login DESC LIMIT 1");
+                                    $data = $result->fetch_array();
+                                    echo $data['hours'] . ' hours ago';
+                                ?>
+                            </h3>
+                            <p>Days Since Last Login</p>
                         </div>
                     </div>
+                </div>
+
+
                     <!-- <div class="col-xl-3 col-md-6 mb-4">
                         <div class="stat-card">
                             <div class="stat-icon">
