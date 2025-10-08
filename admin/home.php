@@ -65,6 +65,12 @@
                         <span>Reports & Analytics</span>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="owners_info.php">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Owners Info</span>
+                    </a>
+                </li>
             </ul>
             <div class="sidebar-footer">
                 <div class="user-info">

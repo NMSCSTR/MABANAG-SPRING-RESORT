@@ -42,6 +42,12 @@ require_once 'connect.php';
                             History</span></a></li>
                 <li class="menu-item active"><a href="reports.php"><i class="fas fa-chart-bar"></i><span>Reports &
                             Analytics</span></a></li>
+                <li class="menu-item">
+                    <a href="owners_info.php">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Owners Info</span>
+                    </a>
+                </li>
             </ul>
             <div class="sidebar-footer">
                 <div class="user-info">
@@ -56,7 +62,7 @@ require_once 'connect.php';
             </div>
         </div>
 
-        
+
 
         <!-- Main Content -->
         <div class="main-content">
@@ -145,9 +151,10 @@ require_once 'connect.php';
                         json.data.forEach(row => {
                             const cleanAmount = String(row.amount).replace(/,/g, '');
                             const parsedAmount = parseFloat(cleanAmount) || 0;
-                            
-                            console.log('Original:', row.amount, 'Cleaned:', cleanAmount, 'Parsed:', parsedAmount);
-                            
+
+                            console.log('Original:', row.amount, 'Cleaned:', cleanAmount,
+                                'Parsed:', parsedAmount);
+
                             total += parsedAmount;
                         });
                         console.log('TOTAL:', total);
