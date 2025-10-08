@@ -371,8 +371,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <label for="reservationIdInput" class="form-label">Enter Reservation ID</label>
-        <input type="number" class="form-control resort-modal-input" id="reservationIdInput" placeholder="Reservation ID">
+        <label for="transacRefInput" class="form-label">Enter Transaction Reference</label>
+        <input type="text" class="form-control resort-modal-input" id="transacRefInput" placeholder="Transaction Ref...">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary resort-modal-btn" data-bs-dismiss="modal">Close</button>
@@ -391,9 +391,9 @@ document.getElementById('checkReservationModal').addEventListener('click', funct
 
 // Redirect on check
 document.getElementById('checkReservationBtn').addEventListener('click', function() {
-    var reservationId = document.getElementById('reservationIdInput').value.trim();
-    if (reservationId) {
-        window.location.href = 'transaction_details.php?reservation_id=' + encodeURIComponent(reservationId);
+    var transacRef = document.getElementById('transacRefInput').value.trim();
+    if (transacRef) {
+        window.location.href = 'transaction_details.php?transaction_ref=' + encodeURIComponent(transacRef);
     }
 });
 </script>

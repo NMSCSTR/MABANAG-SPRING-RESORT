@@ -16,6 +16,9 @@
         $payment_method    = $_POST['payment_method'];
         $payment_reference = $_POST['payment_reference'] ?? '';
 
+        $transaction_ref = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 6);
+
+
         // Handle file upload
         $receipt_file = null;
         if (isset($_FILES['receipt_file']) && $_FILES['receipt_file']['error'] == 0) {
@@ -76,8 +79,8 @@
             $guest_id = $conn->insert_id;
 
             // Insert reservation
-            $reservation_query = $conn->query("INSERT INTO reservation (guest_id, room_id, cottage_id, check_in_date, check_out_date, total_amount)
-                                             VALUES ('$guest_id', " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', '$check_out_date', '$total_amount')");
+            $reservation_query = $conn->query("INSERT INTO reservation (guest_id, transaction_reference, room_id, cottage_id, check_in_date, check_out_date, total_amount)
+                                             VALUES ('$guest_id', '$transaction_ref' " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', '$check_out_date', '$total_amount')");
 
             if ($reservation_query) {
                 $reservation_id = $conn->insert_id;

@@ -2,13 +2,25 @@
 <?php 
 require_once 'admin/connect.php';
 
-// Check if reservation_id is provided
-if (!isset($_GET['reservation_id']) || empty($_GET['reservation_id'])) {
-    header("Location: guest_reservation.php");
+// Check if transaction_ref is provided
+if (!isset($_GET['transaction_ref']) || empty($_GET['transaction_ref'])) {
+    echo "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Reference',
+            text: 'Transaction reference is required!',
+        }).then(() => {
+            window.location.href = 'index.php';
+        });
+    </script>";
     exit();
 }
 
-$reservation_id = $_GET['reservation_id'];
+
+
+$transaction_ref = $_GET['transaction_ref'];
 $contactno = isset($_GET['contactno']) ? $_GET['contactno'] : '';
 
 // Fetch reservation details
@@ -33,15 +45,33 @@ $query = "
     LEFT JOIN payment p ON r.reservation_id = p.reservation_id
     LEFT JOIN room rm ON r.room_id = rm.room_id
     LEFT JOIN cottage c ON r.cottage_id = c.cottage_id
-    WHERE r.reservation_id = '$reservation_id' OR g.contactno = '$contactno'
+    WHERE r.transaction_reference = '$transaction_ref' OR g.contactno = '$contactno'
 ";
 
 $result = $conn->query($query);
 
 if (!$result || $result->num_rows == 0) {
-    header("Location: guest_reservation.php");
+    $msg = "The transaction you are trying to access does not exist.";
+    echo "<script>
+    (function(){
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+      s.onload = function(){
+        Swal.fire({
+          icon: 'error',
+          title: 'No Record Found',
+          text: " . json_encode($msg) . "
+        }).then(function(){
+          window.location.href = 'index.php';
+        });
+      };
+      document.head.appendChild(s);
+    })();
+    </script>";
     exit();
 }
+
+
 
 $reservation = $result->fetch_assoc();
 
@@ -119,7 +149,7 @@ if (!empty($reservation['check_out_date'])) {
         <div class="details-card">
             <div class="card-header">
                 <h2 class="card-title">
-                    <i class="fas fa-check-circle me-2"></i>Reservation #<?php echo $reservation['reservation_id']; ?>
+                    <i class="fas fa-check-circle me-2"></i>Transaction Ref: <?php echo $reservation['transaction_reference']; ?>
                 </h2>
                 <p class="card-subtitle">Thank you for choosing Mabanag Spring Resort</p>
             </div>
@@ -247,7 +277,7 @@ if (!empty($reservation['check_out_date'])) {
                     <ul class="mb-0 mt-2">
                         <li>if your reservation is currently <strong>pending approval</strong>.</li>
                         <li>Our team will verify your payment and contact you within 24 hours.</li>
-                        <li>Please keep this reservation ID for future reference: <strong>#<?php echo $reservation['reservation_id']; ?></strong></li>
+                        <li>Please keep this transaction reference for future reference: <strong><?php echo $reservation['transaction_reference']; ?></strong></li>
                         <li>For any inquiries, please contact us at +63 123 456 7890.</li>
                     </ul>
                 </div>
