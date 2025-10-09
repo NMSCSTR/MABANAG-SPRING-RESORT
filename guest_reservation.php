@@ -67,7 +67,7 @@
 
                 // Cottage is charged per use (no checkout)
                 $total_amount   = $daily_rate;
-                $check_out_date = null;
+                $check_out_date = 'NULL';
             }
         }
 
@@ -80,7 +80,7 @@
 
             // Insert reservation
             $reservation_query = $conn->query("INSERT INTO reservation (guest_id, transaction_reference, room_id, cottage_id, check_in_date, check_out_date, total_amount)
-                                             VALUES ('$guest_id', '$transaction_ref' " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', '$check_out_date', '$total_amount')");
+                                             VALUES ('$guest_id', '$transaction_ref' " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', " . ($check_out_date === 'NULL' ? 'NULL' : "'$check_out_date'") . ", '$total_amount')");
 
             if ($reservation_query) {
                 $reservation_id = $conn->insert_id;
@@ -93,7 +93,7 @@
 
                 if ($payment_query) {
                     // Redirect to transaction details page
-                    header("Location: transaction_details.php?reservation_id=" . $reservation_id . "&contactno=" . $contactno);
+                    header("Location: transaction_details.php?reservation_id=" . $reservation_id . "&transaction_ref=" . $transaction_ref);
                     exit();
                 } else {
                     $error_message = "Error creating payment record: " . $conn->error;
