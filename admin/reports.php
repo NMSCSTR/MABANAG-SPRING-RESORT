@@ -31,7 +31,7 @@ require_once 'connect.php';
                 <p>Admin Dashboard</p>
             </div>
             <ul class="sidebar-menu">
-                <li class="menu-item"><a href="dashboard.php"><i
+                <li class="menu-item"><a href="home.php"><i
                             class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                 <li class="menu-item"><a href="room.php"><i class="fas fa-bed"></i><span>Room Management</span></a></li>
                 <li class="menu-item"><a href="cottage.php"><i class="fas fa-home"></i><span>Cottage

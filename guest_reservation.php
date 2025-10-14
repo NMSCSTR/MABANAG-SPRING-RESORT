@@ -80,7 +80,7 @@
 
             // Insert reservation
             $reservation_query = $conn->query("INSERT INTO reservation (guest_id, transaction_reference, room_id, cottage_id, check_in_date, check_out_date, total_amount)
-                                             VALUES ('$guest_id', '$transaction_ref' " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', " . ($check_out_date === 'NULL' ? 'NULL' : "'$check_out_date'") . ", '$total_amount')");
+                                             VALUES ('$guest_id', '$transaction_ref', " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', " . ($check_out_date === 'NULL' ? 'NULL' : "'$check_out_date'") . ", '$total_amount')");
 
             if ($reservation_query) {
                 $reservation_id = $conn->insert_id;

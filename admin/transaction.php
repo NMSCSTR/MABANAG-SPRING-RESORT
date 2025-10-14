@@ -242,7 +242,7 @@
                             <table id="transactionsTable" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Transaction ID</th>
+                                        <th>Transaction Ref</th>
                                         <th>Guest</th>
                                         <th>Reservation Type</th>
                                         <th>Reservation Date</th>
@@ -256,7 +256,7 @@
                                 <tbody>
                                     <?php
                                     $query = $conn->query("
-                                        SELECT r.reservation_id, r.guest_id, r.room_id, r.cottage_id, 
+                                        SELECT r.reservation_id, r.guest_id, transaction_reference, r.room_id, r.cottage_id, 
                                                r.reservation_date, r.status as reservation_status,
                                                p.payment_id, p.amount, p.payment_date, p.payment_status, p.payment_method, p.receipt_file,
                                                CONCAT(g.firstname, ' ', g.lastname) as guest_name, g.contactno as guest_contact,
@@ -278,7 +278,8 @@
                                     while($fetch = $query->fetch_array()){
                                     ?>
                                     <tr>
-                                        <td>#<?php echo $fetch['reservation_id']?></td>
+                                        <!-- <td>#<?php echo $fetch['reservation_id']?></td> -->
+                                        <td><?php echo $fetch['transaction_reference']?></td>
                                         <td>
                                             <div class="guest-info">
                                                 <div class="guest-name"><?php echo $fetch['guest_name']?></div>
