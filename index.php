@@ -1,58 +1,182 @@
 <!doctype html>
 <html lang="en">
 <?php 
-    require_once 'admin/connect.php';
-    $sql = mysqli_query($conn, " SELECT * FROM `owners_info` WHERE `info_id` = 1");
-    $info = mysqli_fetch_assoc($sql);
-
-
+require_once 'admin/connect.php';
+$sql = mysqli_query($conn, "SELECT * FROM `owners_info` WHERE `info_id` = 1");
+$info = mysqli_fetch_assoc($sql);
 ?>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mabanag Spring Resort</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/index_style.css">
-</head>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+    :root {
+        --ocean-blue: #1a6fa3;
+        --seafoam-green: #2a9d8f;
+        --sand: #f4a261;
+        --coral: #e76f51;
+        --deep-blue: #264653;
+        --light-blue: #8ecae6;
+        --resort-primary: #009688;
+        --resort-accent: #00796b;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    /* Navbar */
+    .navbar {
+        padding: 1rem;
+        transition: all 0.4s ease;
+    }
+
+    .navbar.sticky {
+        background-color: rgba(38, 70, 83, 0.9);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar-brand {
+        font-weight: 600;
+        color: var(--sand) !important;
+    }
+
+    .navbar-nav .nav-link {
+        color: white !important;
+        font-weight: 500;
+        margin-left: 15px;
+        transition: 0.3s;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: var(--sand) !important;
+    }
+
+    .btn-reserve,
+    .btn-resort {
+        background-color: var(--resort-primary);
+        color: #fff;
+        border: none;
+        transition: 0.3s;
+    }
+
+    .btn-reserve:hover,
+    .btn-resort:hover {
+        background-color: var(--resort-accent);
+    }
+
+    /* Hero */
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+            url('photo/bgmabanag.jpg') center/cover no-repeat;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        color: white;
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 3.2rem;
+        font-weight: 700;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Section Titles */
+    .section-title {
+        color: var(--resort-accent);
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    /* Cards */
+    .room-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    .room-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Footer */
+    .footer {
+        background-color: var(--deep-blue);
+        color: white;
+        padding: 60px 0 30px;
+    }
+
+    .footer h5 {
+        color: var(--sand);
+    }
+
+    .footer a {
+        color: #ddd;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .footer a:hover {
+        color: var(--sand);
+    }
+
+    .social-icons a {
+        margin-right: 10px;
+        color: #fff;
+        font-size: 1.2rem;
+        transition: 0.3s;
+    }
+
+    .social-icons a:hover {
+        color: var(--sand);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-content h1 {
+            font-size: 2rem;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+        }
+    }
+    </style>
 
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-umbrella-beach me-2"></i>Mabanag Spring Resort
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#"><i class="fas fa-water me-2"></i>Mabanag Spring Resort</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aboutus.php">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="rooms.php">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cottages.php">Cottages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#rooms">Rooms</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#amenities">Amenities</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#gallery">Gallery</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-resort ms-lg-3 mt-2 mt-lg-0" href="guest_reservation.php">Reserve Now</a>
+                        <a class="btn btn-reserve ms-lg-3 mt-2 mt-lg-0" href="guest_reservation.php">Reserve Now</a>
                     </li>
                 </ul>
             </div>
@@ -61,51 +185,14 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="display-3 fw-bold mb-4">Experience Paradise at Mabanag Spring Resort</h1>
-                <p class="lead mb-4">Luxury beachfront resort offering world-class amenities, breathtaking views, and unforgettable experiences.</p>
-                <a href="guest_reservation.php" class="btn btn-resort me-2">Book Your Stay</a>
-                <a id="checkReservationModal" class="btn btn-outline-light">Check Reservation</a>
-            </div>
+        <div class="container hero-content">
+            <h1>Experience Paradise at Mabanag Spring Resort</h1>
+            <p>Luxury beachfront resort offering world-class amenities, breathtaking views, and unforgettable
+                experiences.</p>
+            <a href="guest_reservation.php" class="btn btn-resort me-2">Book Your Stay</a>
+            <a id="checkReservationModal" class="btn btn-outline-light">Check Reservation</a>
         </div>
     </section>
-
-   <!-- About Section -->
-<section id="about" class="py-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <!-- Text Content -->
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <h2 class="section-title">About Mabanag Spring Resort</h2>
-                <p>
-                    Leave the hustle behind and answer the call of adventure at Mabanag Spring Resort. 
-                    Dive into our invigorating, crystal-clear springs, surrounded by the lush sounds of nature. 
-                    This is where you’ll create stories worth telling — from splashing fun with the family to blissful relaxation under the sun. 
-                    We provide the perfect setting for every moment, making your vacation or random gimiks as lively or as tranquil as you wish. 
-                    Your ultimate spring getaway is waiting.
-                </p>
-                <p><strong>Book Your Adventure!</strong></p>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Spring Vibes</li>
-                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Stunning Views</li>
-                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Multiple dining options</li>
-                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Very clear and clean spring water</li>
-                </ul>
-            </div>
-
-            <!-- Video Content -->
-            <div class="col-lg-6 text-center">
-                <div class="about-video-wrapper">
-                    <video autoplay muted loop playsinline class="about-video">
-                        <source src="photo/bgvideo.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 
     <?php 
@@ -116,27 +203,29 @@
 
     <!-- Rooms Section -->
     <section id="rooms" class="py-5 bg-light">
-    <div class="container">
-        <h2 class="section-title text-center">Resort Accommodations</h2>
-        <p class="text-center mb-5">Choose from our selection of beautifully appointed rooms and suites, each designed with your comfort in mind.</p>
-        
-        <div class="row">
+        <div class="container">
+            <h2 class="section-title text-center">Resort Accommodations</h2>
+            <p class="text-center mb-5">Choose from our selection of beautifully appointed rooms and suites, each
+                designed with your comfort in mind.</p>
+
+            <div class="row">
                 <?php
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         ?>
-                        <div class="col-md-4 mb-4">
-                            <div class="card room-card h-100">
-                                <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['room_type']); ?>">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($row['room_type']); ?></h5>
-                                    <p class="card-text"><?php echo htmlspecialchars($row['room_description']); ?></p>
-                                    <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['room_price']); ?>/night</p>
-                                    <a href="guest_reservation.php" class="btn btn-resort mt-2">Reserve Now</a>
-                                </div>
-                            </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card room-card h-100">
+                        <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top"
+                            alt="<?php echo htmlspecialchars($row['room_type']); ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo htmlspecialchars($row['room_type']); ?></h5>
+                            <p class="card-text"><?php echo htmlspecialchars($row['room_description']); ?></p>
+                            <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['room_price']); ?>/night</p>
+                            <a href="guest_reservation.php" class="btn btn-resort mt-2">Reserve Now</a>
                         </div>
-                        <?php
+                    </div>
+                </div>
+                <?php
                     }
                 } else {
                     echo "<p class='text-center'>No rooms available at the moment.</p>";
@@ -150,32 +239,34 @@
     <section id="amenities" class="py-5">
         <div class="container">
             <h2 class="section-title text-center">Resort Cottages</h2>
-            <p class="text-center mb-5">Enjoy our world-class facilities designed to enhance your stay and create unforgettable memories.</p>
-                <?php
+            <p class="text-center mb-5">Enjoy our world-class facilities designed to enhance your stay and create
+                unforgettable memories.</p>
+            <?php
                     require_once 'admin/connect.php';
                     $sql = "SELECT * FROM cottage WHERE cottage_availability = 'available'";
                     $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         ?>
-                        <div class="col-md-4 mb-4">
-                            <div class="card room-card h-100">
-                                <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['cottage_type']); ?>">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($row['cottage_type']); ?></h5>
-                                    <p class="card-text"><?php echo htmlspecialchars($row['cottage_description']); ?></p>
-                                    <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['cottage_price']); ?></p>
-                                    <a href="guest_reservation.php" class="btn btn-resort mt-2">Reserve Now</a>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
+            <div class="col-md-4 mb-4">
+                <div class="card room-card h-100">
+                    <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top"
+                        alt="<?php echo htmlspecialchars($row['cottage_type']); ?>">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo htmlspecialchars($row['cottage_type']); ?></h5>
+                        <p class="card-text"><?php echo htmlspecialchars($row['cottage_description']); ?></p>
+                        <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['cottage_price']); ?></p>
+                        <a href="guest_reservation.php" class="btn btn-resort mt-2">Reserve Now</a>
+                    </div>
+                </div>
+            </div>
+            <?php
                     }
                 } else {
                     echo "<p class='text-center'>No rooms available at the moment.</p>";
                 }
                 $conn->close();
-                ?>  
+                ?>
         </div>
     </section>
 
@@ -184,26 +275,30 @@
         <div class="container">
             <h2 class="section-title text-center">Resort Gallery</h2>
             <p class="text-center mb-5">Take a visual journey through our beautiful resort and facilities.</p>
-            
+
             <div class="row">
                 <div class="col-md-3 mb-4">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="img-fluid rounded" alt="Resort Beach">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                            class="img-fluid rounded" alt="Resort Beach">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="img-fluid rounded" alt="Resort Pool">
+                        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                            class="img-fluid rounded" alt="Resort Pool">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="img-fluid rounded" alt="Resort Restaurant">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                            class="img-fluid rounded" alt="Resort Restaurant">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="img-fluid rounded" alt="Resort Garden">
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                            class="img-fluid rounded" alt="Resort Garden">
                     </div>
                 </div>
             </div>
@@ -215,13 +310,19 @@
         <div class="container">
             <h2 class="section-title text-center">Guest Experiences</h2>
             <p class="text-center mb-5">See what our guests have to say about their stay at Mabanag Spring Resort.</p>
-            
+
             <div class="row">
+                <?php 
+                require 'admin/connect.php'
+                
+                ?>
                 <div class="col-md-4 mb-4">
                     <div class="testimonial-card p-4 h-100">
-                        <p class="fst-italic">"Absolutely breathtaking! The service was impeccable and the views were stunning. We'll definitely be back!"</p>
+                        <p class="fst-italic">"Absolutely breathtaking! The service was impeccable and the views were
+                            stunning. We'll definitely be back!"</p>
                         <div class="d-flex align-items-center">
-                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Johnson" class="rounded-circle me-3" width="50">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Johnson"
+                                class="rounded-circle me-3" width="50">
                             <div>
                                 <h6 class="mb-0">Sarah Johnson</h6>
                                 <small>New York, USA</small>
@@ -231,9 +332,11 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="testimonial-card p-4 h-100">
-                        <p class="fst-italic">"The perfect honeymoon destination. The private villa was incredible and the staff went above and beyond."</p>
+                        <p class="fst-italic">"The perfect honeymoon destination. The private villa was incredible and
+                            the staff went above and beyond."</p>
                         <div class="d-flex align-items-center">
-                            <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Michael Chen" class="rounded-circle me-3" width="50">
+                            <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Michael Chen"
+                                class="rounded-circle me-3" width="50">
                             <div>
                                 <h6 class="mb-0">Michael & Emma Chen</h6>
                                 <small>London, UK</small>
@@ -243,9 +346,11 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="testimonial-card p-4 h-100">
-                        <p class="fst-italic">"Our family had an amazing time. The kids loved the pools and activities. Truly a memorable vacation!"</p>
+                        <p class="fst-italic">"Our family had an amazing time. The kids loved the pools and activities.
+                            Truly a memorable vacation!"</p>
                         <div class="d-flex align-items-center">
-                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lisa Rodriguez" class="rounded-circle me-3" width="50">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lisa Rodriguez"
+                                class="rounded-circle me-3" width="50">
                             <div>
                                 <h6 class="mb-0">Lisa Rodriguez</h6>
                                 <small>Toronto, Canada</small>
@@ -263,7 +368,8 @@
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <h2 class="mb-3">Ready for Your Dream Vacation?</h2>
-                    <p class="mb-0">Book your stay today and experience the luxury and tranquility of Mabanag Spring Resort.</p>
+                    <p class="mb-0">Book your stay today and experience the luxury and tranquility of Mabanag Spring
+                        Resort.</p>
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     <a href="#" class="btn btn-light btn-lg px-4">Check Availability</a>
@@ -277,7 +383,7 @@
         <div class="container">
             <h2 class="section-title text-center">Contact Us</h2>
             <p class="text-center mb-5">Get in touch with us for any inquiries or special requests.</p>
-            
+
             <div class="row">
                 <div class="col-md-8 mx-auto">
                     <form>
@@ -312,7 +418,9 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h5><i class="fas fa-umbrella-beach me-2"></i>Mabanag Spring Resort</h5>
-                    <p>A place to breathe deeply and soak in panoramic mountain views. Nestled among ancient pines and the gentle sounds of a nearby spring, it’s a simple escape into the heart of nature’s grandeur.</p>
+                    <p>A place to breathe deeply and soak in panoramic mountain views. Nestled among ancient pines and
+                        the gentle sounds of a nearby spring, it’s a simple escape into the heart of nature’s grandeur.
+                    </p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -363,44 +471,61 @@
     </footer>
 
     <!-- Reservation Check Modal -->
-<div class="modal fade resort-modal" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header resort-modal-header">
-        <h5 class="modal-title" id="reservationModalLabel">Check Reservation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <label for="transacRefInput" class="form-label">Enter Transaction Reference</label>
-        <input type="text" class="form-control resort-modal-input" id="transacRefInput" placeholder="Transaction Ref...">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary resort-modal-btn" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-resort resort-modal-btn" id="checkReservationBtn">Check</button>
-      </div>
+    <div class="modal fade resort-modal" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header resort-modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Check Reservation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="transacRefInput" class="form-label">Enter Transaction Reference</label>
+                    <input type="text" class="form-control resort-modal-input" id="transacRefInput"
+                        placeholder="Transaction Ref...">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary resort-modal-btn"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-resort resort-modal-btn"
+                        id="checkReservationBtn">Check</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-// Show modal when "Check Reservation" is clicked
-document.getElementById('checkReservationModal').addEventListener('click', function() {
-    var modal = new bootstrap.Modal(document.getElementById('reservationModal'));
-    modal.show();
-});
+    <script>
+    // Show modal when "Check Reservation" is clicked
+    document.getElementById('checkReservationModal').addEventListener('click', function() {
+        var modal = new bootstrap.Modal(document.getElementById('reservationModal'));
+        modal.show();
+    });
 
-// Redirect on check
-document.getElementById('checkReservationBtn').addEventListener('click', function() {
-    var transacRef = document.getElementById('transacRefInput').value.trim();
-    if (transacRef) {
-        window.location.href = 'transaction_details.php?transaction_ref=' + encodeURIComponent(transacRef);
-    }
-});
-</script>
+    // Redirect on check
+    document.getElementById('checkReservationBtn').addEventListener('click', function() {
+        var transacRef = document.getElementById('transacRefInput').value.trim();
+        if (transacRef) {
+            window.location.href = 'transaction_details.php?transaction_ref=' + encodeURIComponent(transacRef);
+        }
+    });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+    // Sticky navbar on scroll
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 20) {
+            navbar.classList.add('sticky');
+        } else {
+            navbar.classList.remove('sticky');
+        }
+    });
+    </script>
 </body>
+
 </html>
