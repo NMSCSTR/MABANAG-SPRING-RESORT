@@ -12,36 +12,54 @@ $info = mysqli_fetch_assoc($sql);
     <title>Mabanag Spring Resort</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
     :root {
-        --ocean-blue: #1a6fa3;
-        --seafoam-green: #2a9d8f;
-        --sand: #f4a261;
-        --coral: #e76f51;
+        --forest-green: #2d5a27;
+        --spring-green: #4a7c59;
+        --leaf-green: #8cb369;
+        --water-blue: #4d9de0;
+        --sky-blue: #a1c6ea;
+        --earth-brown: #8b5a2b;
+        --sand: #e6ccb2;
+        --sunset: #e76f51;
         --deep-blue: #264653;
         --light-blue: #8ecae6;
-        --resort-primary: #009688;
-        --resort-accent: #00796b;
+        --resort-primary: #2d5a27;
+        --resort-accent: #4a7c59;
     }
 
     body {
         font-family: 'Poppins', sans-serif;
         background-color: #f9f9f9;
+        overflow-x: hidden;
+    }
+
+    /* Nature-inspired elements */
+    .leaf-pattern {
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%232d5a27' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    .water-pattern {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234d9de0' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
 
     /* Navbar */
     .navbar {
         padding: 1rem;
         transition: all 0.4s ease;
+        background-color: rgba(45, 90, 39, 0.95);
     }
 
     .navbar.sticky {
-        background-color: rgba(38, 70, 83, 0.9);
+        background-color: rgba(45, 90, 39, 0.98);
         backdrop-filter: blur(6px);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     }
@@ -56,10 +74,26 @@ $info = mysqli_fetch_assoc($sql);
         font-weight: 500;
         margin-left: 15px;
         transition: 0.3s;
+        position: relative;
     }
 
     .navbar-nav .nav-link:hover {
         color: var(--sand) !important;
+    }
+
+    .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--sand);
+        transition: width 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+        width: 100%;
     }
 
     .btn-reserve,
@@ -68,11 +102,15 @@ $info = mysqli_fetch_assoc($sql);
         color: #fff;
         border: none;
         transition: 0.3s;
+        border-radius: 30px;
+        padding: 10px 25px;
     }
 
     .btn-reserve:hover,
     .btn-resort:hover {
         background-color: var(--resort-accent);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
     /* Hero */
@@ -84,16 +122,43 @@ $info = mysqli_fetch_assoc($sql);
         align-items: center;
         color: white;
         text-align: center;
+        position: relative;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: linear-gradient(to top, #f9f9f9, transparent);
     }
 
     .hero-content h1 {
         font-size: 3.2rem;
         font-weight: 700;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        margin-bottom: 1.5rem;
     }
 
     .hero-content p {
         font-size: 1.1rem;
         margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-outline-light {
+        border-radius: 30px;
+        padding: 10px 25px;
+        transition: 0.3s;
+    }
+
+    .btn-outline-light:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
     }
 
     /* Section Titles */
@@ -101,6 +166,19 @@ $info = mysqli_fetch_assoc($sql);
         color: var(--resort-accent);
         font-weight: 600;
         margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        background: linear-gradient(to right, var(--resort-primary), var(--leaf-green));
+        bottom: -10px;
+        left: 25%;
+        border-radius: 3px;
     }
 
     /* Cards */
@@ -110,10 +188,78 @@ $info = mysqli_fetch_assoc($sql);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         transition: 0.3s;
+        background-color: white;
     }
 
     .room-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .testimonial-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        background-color: white;
+        transition: 0.3s;
+        border-top: 4px solid var(--resort-primary);
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .gallery-item {
+        overflow: hidden;
+        border-radius: 12px;
+        position: relative;
+        transition: 0.3s;
+    }
+
+    .gallery-item img {
+        transition: 0.5s;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.05);
+    }
+
+    .gallery-item::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+        opacity: 0;
+        transition: 0.3s;
+    }
+
+    .gallery-item:hover::after {
+        opacity: 1;
+    }
+
+    /* Booking Section */
+    .booking-section {
+        background: linear-gradient(135deg, var(--resort-primary), var(--resort-accent));
+        color: white;
+        padding: 60px 0;
+    }
+
+    .booking-section h2 {
+        color: white;
+    }
+
+    .booking-section .btn-light {
+        border-radius: 30px;
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .booking-section .btn-light:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     /* Footer */
@@ -121,10 +267,22 @@ $info = mysqli_fetch_assoc($sql);
         background-color: var(--deep-blue);
         color: white;
         padding: 60px 0 30px;
+        position: relative;
+    }
+
+    .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(to right, var(--resort-primary), var(--leaf-green));
     }
 
     .footer h5 {
         color: var(--sand);
+        margin-bottom: 1.5rem;
     }
 
     .footer a {
@@ -138,6 +296,13 @@ $info = mysqli_fetch_assoc($sql);
     }
 
     .social-icons a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
         margin-right: 10px;
         color: #fff;
         font-size: 1.2rem;
@@ -145,7 +310,51 @@ $info = mysqli_fetch_assoc($sql);
     }
 
     .social-icons a:hover {
-        color: var(--sand);
+        background-color: var(--sand);
+        color: var(--deep-blue);
+        transform: translateY(-3px);
+    }
+
+    /* Modal */
+    .resort-modal .modal-content {
+        border-radius: 15px;
+        overflow: hidden;
+        border: none;
+    }
+
+    .resort-modal-header {
+        background-color: var(--resort-primary);
+        color: white;
+        border-bottom: none;
+    }
+
+    .resort-modal-input {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        transition: 0.3s;
+    }
+
+    .resort-modal-input:focus {
+        border-color: var(--resort-primary);
+        box-shadow: 0 0 0 0.2rem rgba(45, 90, 39, 0.25);
+    }
+
+    .resort-modal-btn {
+        border-radius: 30px;
+        padding: 8px 20px;
+    }
+
+    /* Nature elements */
+    .nature-badge {
+        background-color: var(--leaf-green);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 10px;
     }
 
     /* Responsive */
@@ -157,13 +366,46 @@ $info = mysqli_fetch_assoc($sql);
         .hero-content p {
             font-size: 1rem;
         }
+
+        .navbar-nav .nav-link {
+            margin-left: 0;
+            padding: 10px 0;
+        }
+
+        .section-title::after {
+            width: 70%;
+            left: 15%;
+        }
+
+        .booking-section .text-lg-end {
+            text-align: left !important;
+            margin-top: 20px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-content h1 {
+            font-size: 1.8rem;
+        }
+
+        .btn-reserve,
+        .btn-resort,
+        .btn-outline-light {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .hero-content .btn {
+            margin-right: 0 !important;
+        }
     }
     </style>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-water me-2"></i>Mabanag Spring Resort</a>
+            <a class="navbar-brand" href="#"><i class="fas fa-leaf me-2"></i>Mabanag Spring Resort</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -174,7 +416,7 @@ $info = mysqli_fetch_assoc($sql);
                     <li class="nav-item"><a class="nav-link" href="rooms.php">Rooms</a></li>
                     <li class="nav-item"><a class="nav-link" href="cottages.php">Cottages</a></li>
                     <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contactus.php">Contact</a></li>
                     <li class="nav-item">
                         <a class="btn btn-reserve ms-lg-3 mt-2 mt-lg-0" href="guest_reservation.php">Reserve Now</a>
                     </li>
@@ -185,128 +427,130 @@ $info = mysqli_fetch_assoc($sql);
 
     <!-- Hero Section -->
     <section class="hero-section">
-        <div class="container hero-content">
-            <h1>Experience Paradise at Mabanag Spring Resort</h1>
-            <p>Luxury beachfront resort offering world-class amenities, breathtaking views, and unforgettable
-                experiences.</p>
+        <div class="container hero-content" data-aos="fade-up" data-aos-duration="1000">
+            <span class="nature-badge">Nature's Paradise</span>
+            <h1>Experience Nature's Paradise at Mabanag Spring Resort</h1>
+            <p>Immerse yourself in the tranquility of nature with luxury accommodations, pristine waters, and
+                unforgettable experiences.</p>
             <a href="guest_reservation.php" class="btn btn-resort me-2">Book Your Stay</a>
             <a id="checkReservationModal" class="btn btn-outline-light">Check Reservation</a>
         </div>
     </section>
 
-
-    <?php 
-    require_once 'admin/connect.php';
-    $sql = "SELECT * FROM room WHERE room_availability = 'available'";
-    $result = $conn->query($sql);
-    ?>
-
-    <!-- Rooms Section -->
-    <section id="rooms" class="py-5 bg-light">
+    <!-- About Section -->
+    <section class="py-5 leaf-pattern">
         <div class="container">
-            <h2 class="section-title text-center">Resort Accommodations</h2>
-            <p class="text-center mb-5">Choose from our selection of beautifully appointed rooms and suites, each
-                designed with your comfort in mind.</p>
-
-            <div class="row">
-                <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card room-card h-100">
-                        <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top"
-                            alt="<?php echo htmlspecialchars($row['room_type']); ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo htmlspecialchars($row['room_type']); ?></h5>
-                            <p class="card-text"><?php echo htmlspecialchars($row['room_description']); ?></p>
-                            <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['room_price']); ?>/night</p>
-                            <a href="guest_reservation.php" class="btn btn-resort mt-2">Reserve Now</a>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                    <h2 class="section-title">Our Natural Sanctuary</h2>
+                    <p class="mb-4">Nestled amidst lush forests and fed by natural springs, Mabanag Spring Resort offers
+                        a unique escape where nature's beauty meets modern comfort.</p>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-tree text-success"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Lush Greenery</h5>
+                                    <small>Surrounded by nature</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-water text-primary"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Natural Springs</h5>
+                                    <small>Pristine water sources</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-utensils text-warning"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Organic Dining</h5>
+                                    <small>Farm-to-table cuisine</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-spa text-info"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Wellness Focus</h5>
+                                    <small>Rejuvenate your senses</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <?php
-                    }
-                } else {
-                    echo "<p class='text-center'>No rooms available at the moment.</p>";
-                }
-                ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Amenities Section -->
-    <section id="amenities" class="py-5">
-        <div class="container">
-            <h2 class="section-title text-center">Resort Cottages</h2>
-            <p class="text-center mb-5">Enjoy our world-class facilities designed to enhance your stay and create
-                unforgettable memories.</p>
-            <?php
-                    require_once 'admin/connect.php';
-                    $sql = "SELECT * FROM cottage WHERE cottage_availability = 'available'";
-                    $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        ?>
-            <div class="col-md-4 mb-4">
-                <div class="card room-card h-100">
-                    <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top"
-                        alt="<?php echo htmlspecialchars($row['cottage_type']); ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo htmlspecialchars($row['cottage_type']); ?></h5>
-                        <p class="card-text"><?php echo htmlspecialchars($row['cottage_description']); ?></p>
-                        <p class="h5 text-primary">₱<?php echo htmlspecialchars($row['cottage_price']); ?></p>
-                        <a href="guest_reservation.php" class="btn btn-resort mt-2">Reserve Now</a>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            class="img-fluid rounded shadow" alt="Resort Nature">
+                        <div class="position-absolute bottom-0 start-0 bg-white p-3 m-3 rounded shadow-sm">
+                            <h5 class="mb-0">Eco-Certified Resort</h5>
+                            <small>Sustainable tourism practices</small>
+                        </div>
                     </div>
                 </div>
             </div>
-            <?php
-                    }
-                } else {
-                    echo "<p class='text-center'>No rooms available at the moment.</p>";
-                }
-                $conn->close();
-                ?>
         </div>
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" class="py-5 bg-light">
+    <section id="gallery" class="py-5 water-pattern">
         <div class="container">
-            <h2 class="section-title text-center">Resort Gallery</h2>
-            <p class="text-center mb-5">Take a visual journey through our beautiful resort and facilities.</p>
+            <h2 class="section-title text-center">Nature's Gallery</h2>
+            <p class="text-center mb-5">Immerse yourself in the beauty of our natural surroundings and facilities.</p>
 
             <div class="row">
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="100">
                     <div class="gallery-item">
                         <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
                             class="img-fluid rounded" alt="Resort Beach">
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="200">
                     <div class="gallery-item">
                         <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
                             class="img-fluid rounded" alt="Resort Pool">
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="300">
                     <div class="gallery-item">
                         <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
                             class="img-fluid rounded" alt="Resort Restaurant">
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
                     <div class="gallery-item">
                         <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
                             class="img-fluid rounded" alt="Resort Garden">
                     </div>
                 </div>
             </div>
+
+            <div class="text-center mt-4">
+                <a href="#" class="btn btn-outline-resort">View More Photos</a>
+            </div>
         </div>
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-5">
+    <section class="py-5 leaf-pattern">
         <div class="container">
             <h2 class="section-title text-center">Guest Experiences</h2>
             <p class="text-center mb-5">See what our guests have to say about their stay at Mabanag Spring Resort.</p>
@@ -314,12 +558,12 @@ $info = mysqli_fetch_assoc($sql);
             <div class="row">
                 <?php 
                 require 'admin/connect.php'
-                
                 ?>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="testimonial-card p-4 h-100">
-                        <p class="fst-italic">"Absolutely breathtaking! The service was impeccable and the views were
-                            stunning. We'll definitely be back!"</p>
+                        <div class="nature-badge mb-3">Nature Lover</div>
+                        <p class="fst-italic">"Absolutely breathtaking! Waking up to the sounds of nature and the
+                            pristine spring waters was a soul-reviving experience. We'll definitely be back!"</p>
                         <div class="d-flex align-items-center">
                             <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Johnson"
                                 class="rounded-circle me-3" width="50">
@@ -330,10 +574,11 @@ $info = mysqli_fetch_assoc($sql);
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="testimonial-card p-4 h-100">
-                        <p class="fst-italic">"The perfect honeymoon destination. The private villa was incredible and
-                            the staff went above and beyond."</p>
+                        <div class="nature-badge mb-3">Honeymoon</div>
+                        <p class="fst-italic">"The perfect honeymoon destination. The private villa surrounded by lush
+                            greenery was incredible and the staff went above and beyond to make our stay special."</p>
                         <div class="d-flex align-items-center">
                             <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Michael Chen"
                                 class="rounded-circle me-3" width="50">
@@ -344,10 +589,12 @@ $info = mysqli_fetch_assoc($sql);
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
                     <div class="testimonial-card p-4 h-100">
-                        <p class="fst-italic">"Our family had an amazing time. The kids loved the pools and activities.
-                            Truly a memorable vacation!"</p>
+                        <div class="nature-badge mb-3">Family Vacation</div>
+                        <p class="fst-italic">"Our family had an amazing time. The kids loved exploring the natural
+                            springs and forests. The eco-friendly approach made us feel good about our vacation choice!"
+                        </p>
                         <div class="d-flex align-items-center">
                             <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lisa Rodriguez"
                                 class="rounded-circle me-3" width="50">
@@ -367,8 +614,8 @@ $info = mysqli_fetch_assoc($sql);
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <h2 class="mb-3">Ready for Your Dream Vacation?</h2>
-                    <p class="mb-0">Book your stay today and experience the luxury and tranquility of Mabanag Spring
+                    <h2 class="mb-3">Ready for Your Nature Escape?</h2>
+                    <p class="mb-0">Book your stay today and experience the tranquility and luxury of Mabanag Spring
                         Resort.</p>
                 </div>
                 <div class="col-lg-4 text-lg-end">
@@ -378,49 +625,16 @@ $info = mysqli_fetch_assoc($sql);
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="section-title text-center">Contact Us</h2>
-            <p class="text-center mb-5">Get in touch with us for any inquiries or special requests.</p>
-
-            <div class="row">
-                <div class="col-md-8 mx-auto">
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="name" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="subject" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-resort">Send Message</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5><i class="fas fa-umbrella-beach me-2"></i>Mabanag Spring Resort</h5>
-                    <p>A place to breathe deeply and soak in panoramic mountain views. Nestled among ancient pines and
-                        the gentle sounds of a nearby spring, it’s a simple escape into the heart of nature’s grandeur.
-                    </p>
+                    <h5><i class="fas fa-leaf me-2"></i>Mabanag Spring Resort</h5>
+                    <p>A sanctuary to breathe deeply and soak in panoramic mountain views. Nestled among ancient trees
+                        and the gentle sounds of natural springs, it's a peaceful escape into the heart of nature's
+                        grandeur.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -447,8 +661,8 @@ $info = mysqli_fetch_assoc($sql);
                     </ul>
                 </div>
                 <div class="col-lg-3">
-                    <h5>Newsletter</h5>
-                    <p>Subscribe to our newsletter for special offers and updates.</p>
+                    <h5>Nature Newsletter</h5>
+                    <p>Subscribe to our newsletter for special offers, eco-tips, and updates.</p>
                     <form>
                         <div class="input-group">
                             <input type="email" class="form-control" placeholder="Your email">
@@ -494,26 +708,34 @@ $info = mysqli_fetch_assoc($sql);
         </div>
     </div>
 
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-    // Show modal when "Check Reservation" is clicked
-    document.getElementById('checkReservationModal').addEventListener('click', function() {
-        var modal = new bootstrap.Modal(document.getElementById('reservationModal'));
-        modal.show();
-    });
+    AOS.init();
+    </script>
 
-    // Redirect on check
-    document.getElementById('checkReservationBtn').addEventListener('click', function() {
-        var transacRef = document.getElementById('transacRefInput').value.trim();
-        if (transacRef) {
-            window.location.href = 'transaction_details.php?transaction_ref=' + encodeURIComponent(transacRef);
-        }
+
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+   
+
+    <script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Show modal when "Check Reservation" is clicked
+        document.getElementById('checkReservationModal').addEventListener('click', function() {
+            var modal = new bootstrap.Modal(document.getElementById('reservationModal'));
+            modal.show();
+        });
+
+        // Redirect on check
+        document.getElementById('checkReservationBtn').addEventListener('click', function() {
+            var transacRef = document.getElementById('transacRefInput').value.trim();
+            if (transacRef) {
+                window.location.href = 'transaction_details.php?transaction_ref=' + encodeURIComponent(transacRef);
+            }
+        });
     });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
-    </script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <script>
     // Sticky navbar on scroll
@@ -526,6 +748,7 @@ $info = mysqli_fetch_assoc($sql);
         }
     });
     </script>
+     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

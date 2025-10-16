@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mabanag Spring Resort - Rooms</title>
+    <title>Mabanag Spring Resort - Cottages</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -81,8 +81,25 @@
         transform: translateY(0);
     }
 
-    /* Enhanced Room cards */
-    .card.room-card {
+    .btn-outline-resort {
+        background-color: transparent;
+        color: var(--resort-primary);
+        border: 2px solid var(--resort-primary);
+        border-radius: 50px;
+        padding: 0.5rem 1.25rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-outline-resort:hover,
+    .btn-outline-resort.active {
+        background-color: var(--resort-primary);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Enhanced Cottage cards */
+    .card.cottage-card {
         border: none;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
@@ -92,22 +109,22 @@
         background-color: white;
     }
 
-    .card.room-card:hover {
+    .card.cottage-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .card.room-card .card-img-top {
+    .card.cottage-card .card-img-top {
         height: 220px;
         object-fit: cover;
         transition: transform 0.5s ease;
     }
 
-    .card.room-card:hover .card-img-top {
+    .card.cottage-card:hover .card-img-top {
         transform: scale(1.05);
     }
 
-    .card.room-card .card-body {
+    .card.cottage-card .card-body {
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
@@ -258,7 +275,7 @@
             font-size: 1.25rem;
         }
         
-        .card.room-card .card-img-top {
+        .card.cottage-card .card-img-top {
             height: 180px;
         }
         
@@ -280,8 +297,8 @@
         margin-bottom: 10px;
     }
 
-    /* Room counter badge */
-    .room-counter {
+    /* Cottage counter badge */
+    .cottage-counter {
         position: absolute;
         top: 15px;
         right: 15px;
@@ -298,10 +315,10 @@
         z-index: 1;
     }
 
-    /* Hero Section for Rooms */
-    .rooms-hero {
+    /* Hero Section for Cottages */
+    .cottages-hero {
         background: linear-gradient(rgba(45, 90, 39, 0.7), rgba(74, 124, 89, 0.7)),
-            url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
         height: 50vh;
         display: flex;
         align-items: center;
@@ -312,29 +329,29 @@
         margin-top: 76px;
     }
 
-    .rooms-hero h1 {
+    .cottages-hero h1 {
         font-size: 3rem;
         font-weight: 700;
         text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
         margin-bottom: 1rem;
     }
 
-    .rooms-hero p {
+    .cottages-hero p {
         font-size: 1.2rem;
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
     }
 
-    /* Room Features */
-    .room-features {
+    /* Cottage Features */
+    .cottage-features {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         margin: 15px 0;
     }
 
-    .room-feature {
+    .cottage-feature {
         background-color: var(--resort-light);
         color: var(--resort-primary);
         padding: 5px 12px;
@@ -374,6 +391,19 @@
         margin-bottom: 2rem;
     }
 
+    /* Capacity Badge */
+    .capacity-badge {
+        background: linear-gradient(135deg, var(--resort-primary), var(--resort-accent));
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
     </style>
 </head>
 
@@ -393,8 +423,8 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="aboutus.php">About</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="rooms.php">Rooms</a></li>
-                    <li class="nav-item"><a class="nav-link" href="cottages.php">Cottages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="rooms.php">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="cottages.php">Cottages</a></li>
                     <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
                     <li class="nav-item"><a class="nav-link" href="contactus.php">Contact</a></li>
                     <li class="nav-item mt-2 mt-lg-0 ms-lg-3">
@@ -406,38 +436,38 @@
         </div>
     </nav>
 
-    <!-- Rooms Hero Section -->
-    <section class="rooms-hero">
+    <!-- Cottages Hero Section -->
+    <section class="cottages-hero">
         <div class="container" data-aos="fade-up">
-            <span class="nature-badge">Nature-Inspired Accommodations</span>
-            <h1>Our Rooms & Suites</h1>
-            <p>Experience comfort surrounded by nature in our thoughtfully designed accommodations</p>
+            <span class="nature-badge">Nature-Immersed Retreats</span>
+            <h1>Our Cozy Cottages</h1>
+            <p>Experience authentic relaxation in our charming cottages nestled within nature's embrace</p>
         </div>
     </section>
 
     <?php 
     require_once 'admin/connect.php';
-    $sql = "SELECT * FROM room WHERE room_availability = 'available'";
+    $sql = "SELECT * FROM cottage WHERE cottage_availability = 'available'";
     $result = $conn->query($sql);
-    $roomCount = $result->num_rows;
+    $cottageCount = $result->num_rows;
     ?>
 
-    <!-- Rooms Section -->
-    <section id="rooms" class="py-5 leaf-pattern position-relative">
+    <!-- Cottages Section -->
+    <section id="cottages" class="py-5 leaf-pattern position-relative">
         <div class="container">
             <!-- Filter Section -->
             <div class="filter-section" data-aos="fade-up">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h4 class="mb-0">Find Your Perfect Room</h4>
-                        <p class="text-muted mb-0">Filter by preferences</p>
+                        <h4 class="mb-0">Find Your Perfect Cottage</h4>
+                        <p class="text-muted mb-0">Filter by size and amenities</p>
                     </div>
                     <div class="col-md-6 text-md-end">
                         <div class="d-flex justify-content-md-end gap-2 flex-wrap">
-                            <button class="btn btn-outline-resort active">All Rooms</button>
-                            <button class="btn btn-outline-resort">Standard</button>
-                            <button class="btn btn-outline-resort">Deluxe</button>
-                            <button class="btn btn-outline-resort">Suites</button>
+                            <button class="btn btn-outline-resort active">All Cottages</button>
+                            <button class="btn btn-outline-resort">Small</button>
+                            <button class="btn btn-outline-resort">Medium</button>
+                            <button class="btn btn-outline-resort">Large</button>
                         </div>
                     </div>
                 </div>
@@ -445,12 +475,11 @@
 
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-10 text-center">
-                    <h2 class="section-title text-center mb-3"><i class="fas fa-bed me-2"></i>Resort Accommodations</h2>
-                    <p class="text-center mb-4 fs-5 text-secondary">Choose from our selection of beautifully appointed rooms
-                        and suites, designed with your comfort in mind and inspired by nature.</p>
+                    <h2 class="section-title text-center mb-3"><i class="fas fa-home me-2"></i>Resort Cottages</h2>
+                    <p class="text-center mb-4 fs-5 text-secondary">Enjoy our charming cottages designed to enhance your stay and create unforgettable memories surrounded by nature.</p>
                     <div class="d-flex justify-content-center align-items-center">
                         <span class="badge bg-resort-primary rounded-pill px-3 py-2 text-white fs-6" style="background-color: var(--resort-primary);">
-                            <i class="fas fa-home me-1"></i><?php echo $roomCount; ?> Rooms Available
+                            <i class="fas fa-campground me-1"></i><?php echo $cottageCount; ?> Cottages Available
                         </span>
                     </div>
                 </div>
@@ -462,35 +491,47 @@
                     $count = 0;
                     while($row = $result->fetch_assoc()) {
                         $count++;
+                        // Determine capacity based on cottage type
+                        $capacity = 4; // Default
+                        if (strpos(strtolower($row['cottage_type']), 'small') !== false) $capacity = 2;
+                        if (strpos(strtolower($row['cottage_type']), 'large') !== false) $capacity = 8;
+                        if (strpos(strtolower($row['cottage_type']), 'family') !== false) $capacity = 6;
                         ?>
                 <div class="col-md-6 col-lg-4 fade-in" style="transition-delay: <?= $count * 0.15 ?>s;" data-aos="fade-up" data-aos-delay="<?= $count * 100 ?>">
-                    <div class="card room-card h-100" tabindex="0" aria-label="<?php echo htmlspecialchars($row['room_type']); ?> room card">
+                    <div class="card cottage-card h-100" tabindex="0" aria-label="<?php echo htmlspecialchars($row['cottage_type']); ?> cottage card">
                         <div class="position-relative">
                             <img src="photos/<?php echo htmlspecialchars($row['photo']); ?>" class="card-img-top"
-                                alt="Photo of <?php echo htmlspecialchars($row['room_type']); ?>">
-                            <div class="room-counter"><?php echo $count; ?></div>
+                                alt="Photo of <?php echo htmlspecialchars($row['cottage_type']); ?> cottage">
+                            <div class="cottage-counter"><?php echo $count; ?></div>
                         </div>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">
-                                <i class="fas fa-door-open"></i><?php echo htmlspecialchars($row['room_type']); ?>
+                                <i class="fas fa-home"></i><?php echo htmlspecialchars($row['cottage_type']); ?>
                             </h5>
                             
-                            <!-- Room Features -->
-                            <div class="room-features">
-                                <span class="room-feature"><i class="fas fa-user-friends me-1"></i>2 Guests</span>
-                                <span class="room-feature"><i class="fas fa-bed me-1"></i>1 Bed</span>
-                                <span class="room-feature"><i class="fas fa-wifi me-1"></i>WiFi</span>
+                            <!-- Capacity Badge -->
+                            <div class="mb-3">
+                                <span class="capacity-badge">
+                                    <i class="fas fa-users me-1"></i>Up to <?php echo $capacity; ?> People
+                                </span>
+                            </div>
+                            
+                            <!-- Cottage Features -->
+                            <div class="cottage-features">
+                                <span class="cottage-feature"><i class="fas fa-utensils me-1"></i>Picnic Area</span>
+                                <span class="cottage-feature"><i class="fas fa-fan me-1"></i>Ventilated</span>
+                                <span class="cottage-feature"><i class="fas fa-tree me-1"></i>Nature View</span>
                             </div>
                             
                             <p class="card-text">
                                 <i class="fas fa-info-circle me-1"></i>
-                                <?php echo htmlspecialchars($row['room_description']); ?>
+                                <?php echo htmlspecialchars($row['cottage_description']); ?>
                             </p>
                             <div class="mt-auto">
                                 <p class="text-success mb-3">
-                                    <i class="fas fa-tag me-1"></i>₱<?php echo number_format($row['room_price'], 2); ?> / night
+                                    <i class="fas fa-tag me-1"></i>₱<?php echo number_format($row['cottage_price'], 2); ?> / day
                                 </p>
-                                <a href="guest_reservation.php" class="btn btn-resort w-100" aria-label="Reserve <?php echo htmlspecialchars($row['room_type']); ?> room">
+                                <a href="guest_reservation.php" class="btn btn-resort w-100" aria-label="Reserve <?php echo htmlspecialchars($row['cottage_type']); ?> cottage">
                                     <i class="fas fa-calendar-check me-2"></i>Reserve Now
                                 </a>
                             </div>
@@ -500,8 +541,9 @@
                 <?php
                     }
                 } else {
-                    echo "<div class='col-12 text-center' data-aos='fade-up'><p class='text-muted fs-5'><i class='fas fa-bed me-2'></i>No rooms available at the moment. Please check back later.</p></div>";
+                    echo "<div class='col-12 text-center' data-aos='fade-up'><p class='text-muted fs-5'><i class='fas fa-home me-2'></i>No cottages available at the moment. Please check back later.</p></div>";
                 }
+                $conn->close();
                 ?>
             </div>
         </div>
@@ -514,17 +556,66 @@
         </div>
     </section>
 
-    <!-- Call to Action -->
+    <!-- Additional Info Section -->
     <section class="py-5 water-pattern">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                    <h2 class="section-title">Cottage Amenities</h2>
+                    <p class="mb-4">All our cottages come with standard amenities to ensure your comfort and enjoyment during your stay.</p>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-umbrella-beach text-success"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Proximity to Springs</h5>
+                            <small>Easy access to natural spring pools</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-parking text-success"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Nearby Parking</h5>
+                            <small>Convenient parking areas</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-shield-alt text-success"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Safety & Security</h5>
+                            <small>24/7 security personnel</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                             class="img-fluid rounded shadow" alt="Cottage Amenities">
+                        <div class="position-absolute bottom-0 start-0 bg-white p-3 m-3 rounded shadow-sm">
+                            <h5 class="mb-0">Family Friendly</h5>
+                            <small>Perfect for gatherings and bonding</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5" style="background: linear-gradient(135deg, var(--resort-primary), var(--resort-accent)); color: white;">
         <div class="container text-center" data-aos="fade-up">
-            <h2 class="section-title">Need Help Choosing?</h2>
-            <p class="mb-4">Our team is here to help you find the perfect accommodation for your stay.</p>
+            <h2 class="mb-4">Ready to Book Your Cottage?</h2>
+            <p class="mb-4">Experience the perfect blend of nature and comfort in our charming cottages.</p>
             <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="contact.php" class="btn btn-resort btn-lg">
-                    <i class="fas fa-phone-alt me-2"></i>Contact Us
+                <a href="guest_reservation.php" class="btn btn-light btn-lg px-5">
+                    <i class="fas fa-calendar-alt me-2"></i>Book Now
                 </a>
-                <a href="guest_reservation.php" class="btn btn-outline-resort btn-lg">
-                    <i class="fas fa-question-circle me-2"></i>FAQ
+                <a href="contact.php" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-phone-alt me-2"></i>Contact Us
                 </a>
             </div>
         </div>
@@ -579,7 +670,7 @@
             window.addEventListener("scroll", checkFade);
             
             // Add subtle hover effect to cards
-            const cards = document.querySelectorAll('.room-card');
+            const cards = document.querySelectorAll('.cottage-card');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', () => {
                     card.style.transform = 'translateY(-8px)';
