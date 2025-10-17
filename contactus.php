@@ -16,7 +16,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -182,11 +183,11 @@
             width: 100%;
             text-align: center;
         }
-        
+
         .navbar .navbar-brand {
             font-size: 1.25rem;
         }
-        
+
         .section-title.text-center::after {
             left: 10%;
             width: 80%;
@@ -345,7 +346,6 @@
         font-weight: 500;
         margin-top: 4rem;
     }
-
     </style>
 </head>
 
@@ -392,8 +392,10 @@
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8 text-center">
-                    <h2 class="section-title text-center mb-3"><i class="fas fa-envelope me-2"></i>Contact Information</h2>
-                    <p class="text-center mb-4 fs-5 text-secondary">Reach out to us through any of these channels. We're always happy to assist you with your inquiries and reservations.</p>
+                    <h2 class="section-title text-center mb-3"><i class="fas fa-envelope me-2"></i>Contact Information
+                    </h2>
+                    <p class="text-center mb-4 fs-5 text-secondary">Reach out to us through any of these channels. We're
+                        always happy to assist you with your inquiries and reservations.</p>
                 </div>
             </div>
 
@@ -407,7 +409,8 @@
                         <h4>Visit Us</h4>
                         <p class="text-muted">Come and experience nature's beauty at our resort</p>
                         <div class="mt-3">
-                            <p class="fw-bold mb-0"><i class="fas fa-location-dot me-2 text-resort-primary"></i>Address</p>
+                            <p class="fw-bold mb-0"><i class="fas fa-location-dot me-2 text-resort-primary"></i>Address
+                            </p>
                             <p><?php echo htmlspecialchars($info['address'] ?? 'Mabanag, Juban, Sorsogon'); ?></p>
                         </div>
                     </div>
@@ -422,7 +425,8 @@
                         <h4>Call Us</h4>
                         <p class="text-muted">Speak directly with our friendly staff</p>
                         <div class="mt-3">
-                            <p class="fw-bold mb-0"><i class="fas fa-phone me-2 text-resort-primary"></i>Phone Number</p>
+                            <p class="fw-bold mb-0"><i class="fas fa-phone me-2 text-resort-primary"></i>Phone Number
+                            </p>
                             <p><?php echo htmlspecialchars($info['phone_number'] ?? '+63 912 345 6789'); ?></p>
                         </div>
                     </div>
@@ -437,7 +441,8 @@
                         <h4>Email Us</h4>
                         <p class="text-muted">Send us your inquiries and we'll respond promptly</p>
                         <div class="mt-3">
-                            <p class="fw-bold mb-0"><i class="fas fa-envelope me-2 text-resort-primary"></i>Email Address</p>
+                            <p class="fw-bold mb-0"><i class="fas fa-envelope me-2 text-resort-primary"></i>Email
+                                Address</p>
                             <p><?php echo htmlspecialchars($info['email_address'] ?? 'info@mabanagresort.com'); ?></p>
                         </div>
                     </div>
@@ -454,9 +459,11 @@
                         <h4>Follow Us</h4>
                         <p class="text-muted">Stay updated with our latest news and promotions</p>
                         <div class="mt-3">
-                            <p class="fw-bold mb-0"><i class="fab fa-facebook me-2 text-resort-primary"></i>Facebook Page</p>
+                            <p class="fw-bold mb-0"><i class="fab fa-facebook me-2 text-resort-primary"></i>Facebook
+                                Page</p>
                             <p>facebook.com/MabanagSpringResort</p>
-                            <a href="https://facebook.com/MabanagSpringResort" target="_blank" class="btn btn-resort mt-2">
+                            <a href="https://facebook.com/MabanagSpringResort" target="_blank"
+                                class="btn btn-resort mt-2">
                                 <i class="fab fa-facebook-f me-2"></i>Visit Our Page
                             </a>
                         </div>
@@ -469,7 +476,8 @@
                 <div class="col-12 text-center">
                     <h4 class="mb-4">Connect With Us on Social Media</h4>
                     <div class="social-icons">
-                        <a href="https://facebook.com/MabanagSpringResort" class="social-icon" target="_blank" aria-label="Facebook">
+                        <a href="https://facebook.com/MabanagSpringResort" class="social-icon" target="_blank"
+                            aria-label="Facebook">
                             <i class="fab fa-facebook-f"></i>
                         </a>
                         <a href="#" class="social-icon" target="_blank" aria-label="Instagram">
@@ -537,15 +545,7 @@
                     <div class="mb-5">
                         <h3 class="section-title mb-4"><i class="fas fa-map me-2"></i>Find Us</h3>
                         <div class="map-container">
-                            <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3881.2345678901234!2d123.45678901234567!3d12.345678901234567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDIwJzQ0LjQiTiAxMjPCsDI3JzM0LjUiVw!5e0!3m2!1sen!2sph!4v1234567890123!5m2!1sen!2sph" 
-                                width="100%" 
-                                height="100%" 
-                                style="border:0;" 
-                                allowfullscreen="" 
-                                loading="lazy" 
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5502.725963889533!2d123.4715908302647!3d8.140097826251901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32545d31dfed875b%3A0x3a4ef9f0dfb8b2d0!2sMabanag%20Spring%20Resort!5e1!3m2!1sen!2sph!4v1760665502209!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
 
@@ -576,7 +576,9 @@
                                 </li>
                             </ul>
                             <div class="mt-3 p-3 rounded" style="background-color: var(--resort-light);">
-                                <p class="mb-0 text-center"><i class="fas fa-info-circle me-2 text-resort-primary"></i>Reservation office opens 30 minutes earlier</p>
+                                <p class="mb-0 text-center"><i
+                                        class="fas fa-info-circle me-2 text-resort-primary"></i>Reservation office opens
+                                    30 minutes earlier</p>
                             </div>
                         </div>
                     </div>
@@ -590,44 +592,52 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <h2 class="section-title text-center mb-5"><i class="fas fa-question-circle me-2"></i>Frequently Asked Questions</h2>
-                    
+                    <h2 class="section-title text-center mb-5"><i class="fas fa-question-circle me-2"></i>Frequently
+                        Asked Questions</h2>
+
                     <div class="accordion" id="faqAccordion">
                         <div class="accordion-item" data-aos="fade-up">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq1">
                                     What are your check-in and check-out times?
                                 </button>
                             </h2>
                             <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Check-in time is 2:00 PM and check-out time is 12:00 PM. Early check-in and late check-out may be available upon request and subject to availability.
+                                    Check-in time is 2:00 PM and check-out time is 12:00 PM. Early check-in and late
+                                    check-out may be available upon request and subject to availability.
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq2">
                                     Do you allow pets in the resort?
                                 </button>
                             </h2>
                             <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    We love animals, but to ensure the comfort and safety of all our guests, we only allow pets in specific designated areas. Please contact us in advance if you plan to bring your pet.
+                                    We love animals, but to ensure the comfort and safety of all our guests, we only
+                                    allow pets in specific designated areas. Please contact us in advance if you plan to
+                                    bring your pet.
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq3">
                                     Is there parking available?
                                 </button>
                             </h2>
                             <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Yes, we provide complimentary parking for all our guests. Our parking area is secure and monitored.
+                                    Yes, we provide complimentary parking for all our guests. Our parking area is secure
+                                    and monitored.
                                 </div>
                             </div>
                         </div>
@@ -647,46 +657,46 @@
     <!-- AOS Animation -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init();
+    AOS.init();
     </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Navbar background toggle on scroll
-        document.addEventListener("DOMContentLoaded", () => {
-            const navbar = document.querySelector(".navbar");
+    // Navbar background toggle on scroll
+    document.addEventListener("DOMContentLoaded", () => {
+        const navbar = document.querySelector(".navbar");
 
-            function toggleNavbarBackground() {
-                if (window.scrollY > 60) {
-                    navbar.classList.add("scrolled");
-                } else {
-                    navbar.classList.remove("scrolled");
-                }
+        function toggleNavbarBackground() {
+            if (window.scrollY > 60) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
             }
+        }
 
-            toggleNavbarBackground();
-            window.addEventListener("scroll", toggleNavbarBackground);
+        toggleNavbarBackground();
+        window.addEventListener("scroll", toggleNavbarBackground);
 
-            // Contact form submission
-            document.getElementById('contactForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Simple form validation
-                const firstName = document.getElementById('firstName').value;
-                const email = document.getElementById('email').value;
-                const message = document.getElementById('message').value;
-                
-                if (firstName && email && message) {
-                    // Show success message (in a real application, you would send this to a server)
-                    alert('Thank you for your message! We will get back to you soon.');
-                    document.getElementById('contactForm').reset();
-                } else {
-                    alert('Please fill in all required fields.');
-                }
-            });
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Simple form validation
+            const firstName = document.getElementById('firstName').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            if (firstName && email && message) {
+                // Show success message (in a real application, you would send this to a server)
+                alert('Thank you for your message! We will get back to you soon.');
+                document.getElementById('contactForm').reset();
+            } else {
+                alert('Please fill in all required fields.');
+            }
         });
+    });
     </script>
 </body>
 
