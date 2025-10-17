@@ -4,6 +4,11 @@
 require_once 'admin/connect.php';
 $sql = mysqli_query($conn, "SELECT * FROM `owners_info` WHERE `info_id` = 1");
 $info = mysqli_fetch_assoc($sql);
+
+$sql2 = "SELECT review_text, guest_name, guest_location, badge_category, rating FROM testimonials ORDER BY review_date DESC, testimonial_id DESC LIMIT 3";
+
+
+$result = $conn->query($sql2);
 ?>
 
 <head>
@@ -34,6 +39,7 @@ $info = mysqli_fetch_assoc($sql);
         --light-blue: #8ecae6;
         --resort-primary: #2d5a27;
         --resort-accent: #4a7c59;
+        --white: #fff;
     }
 
     body {
@@ -81,6 +87,10 @@ $info = mysqli_fetch_assoc($sql);
         color: var(--sand) !important;
     }
 
+    .navbar .navbar-nav .nav-link.active::after {
+        width: 100%;
+    }
+
     .navbar-nav .nav-link::after {
         content: '';
         position: absolute;
@@ -96,10 +106,14 @@ $info = mysqli_fetch_assoc($sql);
         width: 100%;
     }
 
+        .navbar .navbar-nav .nav-link.active {
+        color: var(--sand) !important;
+    }
+
     .btn-reserve,
     .btn-resort {
-        background-color: var(--resort-primary);
-        color: #fff;
+        background-color: var(--white);
+        color: var(--resort-primary);
         border: none;
         transition: 0.3s;
         border-radius: 30px;
@@ -108,7 +122,7 @@ $info = mysqli_fetch_assoc($sql);
 
     .btn-reserve:hover,
     .btn-resort:hover {
-        background-color: var(--resort-accent);
+        background-color: var(--white);
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
@@ -341,6 +355,8 @@ $info = mysqli_fetch_assoc($sql);
     }
 
     .resort-modal-btn {
+        background-color: var(--white);
+        color: var(--resort-primary);
         border-radius: 30px;
         padding: 8px 20px;
     }
@@ -356,6 +372,48 @@ $info = mysqli_fetch_assoc($sql);
         display: inline-block;
         margin-bottom: 10px;
     }
+
+
+    .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: left;
+            padding: 0;
+            margin: 0;
+            /* To ensure stars look clickable */
+            cursor: pointer;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 2.5em; /* Large stars */
+            color: #ccc;
+            padding: 0 5px;
+            transition: color 0.2s;
+        }
+
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: gold;
+        }
+        
+        /* Form Specific Styles */
+        .testimonial-form-card {
+            background-color: #f8f9fa; /* Light background */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .rating-star { color: gold; }
+        
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -498,7 +556,7 @@ $info = mysqli_fetch_assoc($sql);
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                        <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4noTE1Fg95FHX11ctnQDFEItHXhXJTwyX5B8Mgf1YN2zOdIwYTwb-eu0MdEf6XLMZOfEBG7Z2WApTLfM8hfzQHWhMgeUoYsVd2UwF0zZ96FgQf2AvGqCyW19JT0wJf-9NLy0Sl4=s680-w680-h510-rw"
                             class="img-fluid rounded shadow" alt="Resort Nature">
                         <div class="position-absolute bottom-0 start-0 bg-white p-3 m-3 rounded shadow-sm">
                             <h5 class="mb-0">Eco-Certified Resort</h5>
@@ -519,25 +577,49 @@ $info = mysqli_fetch_assoc($sql);
             <div class="row">
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="100">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                        <img src="https://pbs.twimg.com/media/FBsTuwEUcAUbxXN.jpg"
                             class="img-fluid rounded" alt="Resort Beach">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="200">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEik6BBPBX3S6RTekoCa0ppMauqftJITnhI5PpfFsd48cpDC74vgkofp4XAPpqzM7rmi5FHf3JIhBIJvIreKdXeHTxKN1EfXpiCtpOQADvEEts-uEAESj9vQObWWuZ3IT2kZCpH_mYcmcOcT/s1600/jfldfh.jpg"
                             class="img-fluid rounded" alt="Resort Pool">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="300">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                        <img src="https://i.pinimg.com/736x/74/c0/65/74c0651764e50c6f7badaecde1f34433.jpg"
                             class="img-fluid rounded" alt="Resort Restaurant">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                        <img src="https://cdns.app/wgsdkw2F/assets/image/properties/5a0787e1a6b20b39c55cbf47b6f7959c_1653700483.jpg"
+                            class="img-fluid rounded" alt="Resort Garden">
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="gallery-item">
+                        <img src="photo/g1.jpg"
+                            class="img-fluid rounded" alt="Resort Garden">
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="gallery-item">
+                        <img src="photo/g2.jpg"
+                            class="img-fluid rounded" alt="Resort Garden">
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="gallery-item">
+                        <img src="photo/g3.jpg"
+                            class="img-fluid rounded" alt="Resort Garden">
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="gallery-item">
+                        <img src="photo/bgmabanag.jpg"
                             class="img-fluid rounded" alt="Resort Garden">
                     </div>
                 </div>
@@ -549,7 +631,70 @@ $info = mysqli_fetch_assoc($sql);
         </div>
     </section>
 
+    <section>
+        <div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8" 
+             data-aos="fade-up" 
+             data-aos-duration="1000">
+
+            <div class="testimonial-form-card">
+                <h2 class="text-center mb-4">Share Your Mabanag Spring Resort Experience</h2>
+                <p class="text-center mb-5 text-muted">We'd love to hear what you thought of your stay!</p>
+
+                <form action="submit_rating.php" method="POST">
+                    
+                    <div class="row">
+                        <div class="col-md-6 form-group" data-aos="fade-right" data-aos-delay="100">
+                            <label for="guest_name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="guest_name" name="guest_name" required>
+                        </div>
+                        <div class="col-md-6 form-group" data-aos="fade-left" data-aos-delay="200">
+                            <label for="guest_location" class="form-label">Your Location (e.g., New York, USA)</label>
+                            <input type="text" class="form-control" id="guest_location" name="guest_location">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="300">
+                        <label class="form-label d-block">Overall Rating (1-5 Stars)</label>
+                        <div class="star-rating">
+                            <input type="radio" id="5-star" name="rating" value="5" required><label for="5-star" title="5 Stars">★</label>
+                            <input type="radio" id="4-star" name="rating" value="4"><label for="4-star" title="4 Stars">★</label>
+                            <input type="radio" id="3-star" name="rating" value="3"><label for="3-star" title="3 Stars">★</label>
+                            <input type="radio" id="2-star" name="rating" value="2"><label for="2-star" title="2 Stars">★</label>
+                            <input type="radio" id="1-star" name="rating" value="1"><label for="1-star" title="1 Star">★</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="400">
+                        <label for="review_text" class="form-label">Your Experience/Testimonial</label>
+                        <textarea class="form-control" id="review_text" name="review_text" rows="5" placeholder="Tell us about your stay..." required></textarea>
+                    </div>
+
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="500">
+                        <label for="badge_category" class="form-label">Best describes your experience (Optional Badge)</label>
+                        <select class="form-select" id="badge_category" name="badge_category">
+                            <option value="">Choose one...</option>
+                            <option value="Nature Lover">Nature Lover</option>
+                            <option value="Family Getaway">Family Getaway</option>
+                            <option value="Relaxation Seeker">Relaxation Seeker</option>
+                            <option value="Adventure Traveler">Adventure Traveler</option>
+                            <option value="Food Enthusiast">Food Enthusiast</option>
+                        </select>
+                    </div>
+
+                    <div class="text-center" data-aos="zoom-in" data-aos-delay="600">
+                        <button type="submit" class="btn btn-success btn-lg mt-3">Submit Testimonial</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    </section>
+
     <!-- Testimonials Section -->
+<!-- Testimonials Section -->
     <section class="py-5 leaf-pattern">
         <div class="container">
             <h2 class="section-title text-center">Guest Experiences</h2>
@@ -557,54 +702,55 @@ $info = mysqli_fetch_assoc($sql);
 
             <div class="row">
                 <?php 
-                require 'admin/connect.php'
+                if ($result && $result->num_rows > 0) {
+      
+                    while($row = $result->fetch_assoc()) {
+                 
+                        $review_text_display = htmlspecialchars($row['review_text']);
+                        $guest_name_display = htmlspecialchars($row['guest_name']);
+                        $guest_location_display = htmlspecialchars($row['guest_location']);
+                        $badge_class = htmlspecialchars(str_replace(' ', '-', $row['badge_category'])); // Convert spaces to hyphens for CSS class
+                        $badge_text = htmlspecialchars($row['badge_category']);
+                        $rating_value = (int)$row['rating'];
+
+        
+                        $stars_html = '';
+                        for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= $rating_value) {
+                                $stars_html .= '<span class="rating-star">★</span>'; // Full star
+                            } else {
+                                $stars_html .= '<span class="rating-star" style="color:#e0e0e0;">★</span>'; // Empty/faded star
+                            }
+                        }
+                        
+                
+                        ?>
+                        <div class="col-md-4 mb-4" data-aos="fade-up">
+                            <div class="testimonial-card p-4 h-100 d-flex flex-column">
+                                <div class="nature-badge mb-3"><?php echo $badge_text; ?></div>
+                                <div class="mb-3"><?php echo $stars_html; ?></div>
+                                <p class="fst-italic flex-grow-1">"<?php echo $review_text_display; ?>"</p>
+                                <div class="d-flex align-items-center mt-3">
+                                    <div>
+                                        <h6 class="mb-0"><?php echo $guest_name_display; ?></h6>
+                                        <small><?php echo $guest_location_display; ?></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    // Display a message if no testimonials are found
+                    echo '<div class="col-12"><p class="text-center">No testimonials found yet. Be the first to leave one!</p></div>';
+                }
+                
+                // 4. Free result set and close connection
+                if (isset($result) && is_object($result)) {
+                    $result->free();
+                }
+                $conn->close();
                 ?>
-                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-card p-4 h-100">
-                        <div class="nature-badge mb-3">Nature Lover</div>
-                        <p class="fst-italic">"Absolutely breathtaking! Waking up to the sounds of nature and the
-                            pristine spring waters was a soul-reviving experience. We'll definitely be back!"</p>
-                        <div class="d-flex align-items-center">
-                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Johnson"
-                                class="rounded-circle me-3" width="50">
-                            <div>
-                                <h6 class="mb-0">Sarah Johnson</h6>
-                                <small>New York, USA</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="testimonial-card p-4 h-100">
-                        <div class="nature-badge mb-3">Honeymoon</div>
-                        <p class="fst-italic">"The perfect honeymoon destination. The private villa surrounded by lush
-                            greenery was incredible and the staff went above and beyond to make our stay special."</p>
-                        <div class="d-flex align-items-center">
-                            <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Michael Chen"
-                                class="rounded-circle me-3" width="50">
-                            <div>
-                                <h6 class="mb-0">Michael & Emma Chen</h6>
-                                <small>London, UK</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="testimonial-card p-4 h-100">
-                        <div class="nature-badge mb-3">Family Vacation</div>
-                        <p class="fst-italic">"Our family had an amazing time. The kids loved exploring the natural
-                            springs and forests. The eco-friendly approach made us feel good about our vacation choice!"
-                        </p>
-                        <div class="d-flex align-items-center">
-                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lisa Rodriguez"
-                                class="rounded-circle me-3" width="50">
-                            <div>
-                                <h6 class="mb-0">Lisa Rodriguez</h6>
-                                <small>Toronto, Canada</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

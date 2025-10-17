@@ -35,6 +35,7 @@
         --light-blue: #8ecae6;
         --resort-primary: #2d5a27;
         --resort-accent: #4a7c59;
+        --white: #fff;
     }
 
     body {
@@ -82,7 +83,13 @@
         position: relative;
     }
 
+    
+
     .navbar-nav .nav-link:hover {
+        color: var(--sand) !important;
+    }
+    
+    .navbar .navbar-nav .nav-link.active {
         color: var(--sand) !important;
     }
 
@@ -100,10 +107,14 @@
     .navbar-nav .nav-link:hover::after {
         width: 100%;
     }
+    
+    .navbar .navbar-nav .nav-link.active::after {
+        width: 100%;
+    }
 
     .btn-resort {
-        background-color: var(--resort-primary);
-        color: white;
+        background-color: var(--white);
+        color: var(--resort-primary);
         border-radius: 30px;
         padding: 0.5rem 1.5rem;
         transition: background-color 0.3s;
@@ -111,7 +122,7 @@
     }
 
     .btn-resort:hover {
-        background-color: var(--resort-accent);
+        background-color: var(--white);
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }

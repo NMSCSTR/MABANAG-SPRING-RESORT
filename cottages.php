@@ -37,6 +37,7 @@
         --resort-accent: #4a7c59;
         --resort-light: #e8f5e8;
         --resort-dark: #1e3d20;
+        --white: #fff;
     }
 
     body {
@@ -58,8 +59,8 @@
 
     /* Enhanced Buttons */
     .btn-resort {
-        background-color: var(--resort-primary);
-        color: white;
+        background-color: var(--white);
+        color: var(--resort-primary);
         border-radius: 50px;
         padding: 0.75rem 1.5rem;
         transition: all 0.3s ease;
