@@ -319,7 +319,7 @@
     /* Hero Section for Cottages */
     .cottages-hero {
         background: linear-gradient(rgba(45, 90, 39, 0.7), rgba(74, 124, 89, 0.7)),
-            url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            url('photo/g3.jpg') center/cover no-repeat;
         height: 50vh;
         display: flex;
         align-items: center;

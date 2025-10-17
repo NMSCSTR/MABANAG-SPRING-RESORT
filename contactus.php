@@ -210,7 +210,7 @@
     /* Hero Section for Contact */
     .contact-hero {
         background: linear-gradient(rgba(45, 90, 39, 0.7), rgba(74, 124, 89, 0.7)),
-            url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            url('photo/g1.jpg') center/cover no-repeat;
         height: 50vh;
         display: flex;
         align-items: center;

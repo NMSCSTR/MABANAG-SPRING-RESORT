@@ -190,10 +190,10 @@ $result = $conn->query($sql2);
                     </div>
                 </div>
             </div>
-
+<!-- 
             <div class="text-center mt-4">
                 <a href="#" class="btn btn-outline-resort">View More Photos</a>
-            </div>
+            </div> -->
         </div>
     </section>
 
@@ -238,8 +238,8 @@ $result = $conn->query($sql2);
                     </div>
 
                     <div class="form-group" data-aos="fade-up" data-aos-delay="500">
-                        <label for="badge_category" class="form-label">Best describes your experience (Optional Badge)</label>
-                        <select class="form-select" id="badge_category" name="badge_category">
+                        <label for="badge_category" class="form-label">Best describes your experience</label>
+                        <select class="form-select" id="badge_category" name="badge_category" required>
                             <option value="">Choose one...</option>
                             <option value="Nature Lover">Nature Lover</option>
                             <option value="Family Getaway">Family Getaway</option>
@@ -250,7 +250,7 @@ $result = $conn->query($sql2);
                     </div>
 
                     <div class="text-center" data-aos="zoom-in" data-aos-delay="600">
-                        <button type="submit" class="btn btn-success btn-lg mt-3">Submit Testimonial</button>
+                        <button type="submit" class="btn btn-resort shadow shadow-success btn-lg mt-3">Submit Testimonial</button>
                     </div>
                 </form>
             </div>

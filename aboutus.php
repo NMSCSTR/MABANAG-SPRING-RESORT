@@ -130,7 +130,7 @@
     /* Hero Section */
     .hero-section {
         background: linear-gradient(rgba(38, 70, 83, 0.6), rgba(0, 0, 0, 0.5)),
-            url('photo/bgmabanag.jpg') center/cover no-repeat;
+            url('photo/g1.jpg') center/cover no-repeat;
         height: 100vh;
         display: flex;
         align-items: center;
@@ -413,7 +413,7 @@
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <div class="position-relative">
-                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                    <img src="photo/g2.jpg" 
                          class="img-fluid rounded shadow" alt="Eco Resort">
                     <div class="position-absolute bottom-0 start-0 bg-white p-3 m-3 rounded shadow-sm">
                         <h5 class="mb-0">Green Certified</h5>
