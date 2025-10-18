@@ -343,16 +343,16 @@
         // --- Revenue Data from PHP ---
         const revenueData = {
             weekly: {
-                labels:                        <?php echo json_encode($weeklyRevenue['labels']); ?>,
-                data:                      <?php echo json_encode($weeklyRevenue['data']); ?>
+                labels: <?php echo json_encode($weeklyRevenue['labels']); ?>,
+                data:   <?php echo json_encode($weeklyRevenue['data']); ?>
             },
             monthly: {
-                labels:                        <?php echo json_encode($monthlyRevenue['labels']); ?>,
-                data:                      <?php echo json_encode($monthlyRevenue['data']); ?>
+                labels: <?php echo json_encode($monthlyRevenue['labels']); ?>,
+                data:   <?php echo json_encode($monthlyRevenue['data']); ?>
             },
             yearly: {
-                labels:                        <?php echo json_encode($yearlyRevenue['labels']); ?>,
-                data:                      <?php echo json_encode($yearlyRevenue['data']); ?>
+                labels: <?php echo json_encode($yearlyRevenue['labels']); ?>,
+                data:   <?php echo json_encode($yearlyRevenue['data']); ?>
             }
         };
     </script>

@@ -23,7 +23,7 @@
                 <div class="col-lg-5 col-md-7">
                     <div class="login-card">
                         <div class="login-header text-center">
-                            <h2>Welcome Back Admin</h2>
+                            <h2>Welcome Back Admin 👋</h2>
                             <p>Sign in to your Mabanag Spring Resort account</p>
                         </div>
                         <form class="login-form" method="POST">

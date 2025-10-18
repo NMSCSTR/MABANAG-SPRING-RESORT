@@ -195,12 +195,12 @@
                                         <!-- <td><?php echo $fetch['room_id']?></td> -->
                                         <td><?php echo $fetch['room_number']?></td>
                                         <td>
-                                            <span class="room-type-badge room-type-<?php echo strtolower($fetch['room_type'])?>">
+                                            <span class="">
                                                 <?php echo $fetch['room_type']?>
                                             </span>
                                         </td>
                                         <td>₱<?php echo $fetch['room_price']?>/night</td>
-                                            <td>
+                                        <td>
                                             <?php 
                                                 $availability = strtolower($fetch['room_availability']); 
                                                 $badgeClass = '';
@@ -362,13 +362,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="room_type" class="form-label">Room Type <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="room_type" name="room_type" required>
-                                        <option value="">Select Room Type</option>
-                                        <option value="Deluxe">Deluxe Room</option>
-                                        <option value="Suite">Suite</option>
-                                        <option value="Villa">Villa</option>
-                                        <option value="Standard">Standard Room</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="room_type" id="room_type" placeholder="ex: Standard room...." required>
                                 </div>
                             </div>
                         </div>
@@ -430,12 +424,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_room_type" class="form-label">Room Type <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="edit_room_type" name="room_type" required>
-                                        <option value="Deluxe">Deluxe Room</option>
-                                        <option value="Suite">Suite</option>
-                                        <option value="Villa">Villa</option>
-                                        <option value="Standard">Standard Room</option>
-                                    </select>
+                                    <input type="text" name="room_type" class="form-control" id="edit_room_type" required>
                                 </div>
                             </div>
                         </div>
