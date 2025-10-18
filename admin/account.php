@@ -180,7 +180,7 @@
                                                 <span><?php echo $fetch['name']?></span>
                                             </div>
                                         </td>
-                                        <td>@<?php echo $fetch['username']?></td>
+                                        <td><?php echo $fetch['username']?></td>
                                         <td>
                                             <span class="status-badge status-active">
                                                 <i class="fas fa-circle"></i> Active
@@ -190,7 +190,7 @@
                                         <td>
                                             <?php 
                                                 if (!empty($fetch['last_login'])) {
-                                                    echo date('M j, Y', strtotime($fetch['last_login']));
+                                                    echo date('M j, Y, h:i A', strtotime($fetch['creation_date']));
                                                 } else {
                                                     echo '<span class="text-muted">No login records</span>';
                                                 }

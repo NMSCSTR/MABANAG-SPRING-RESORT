@@ -466,27 +466,28 @@
     </div>
 
     <!-- Delete Room Modal -->
-    <div class="modal fade" id="deleteRoomModal" tabindex="-1" aria-labelledby="deleteRoomModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteRoomModalLabel">Confirm Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="delete_room.php" method="POST">
-                    <input type="hidden" id="delete_room_id" name="room_id">
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete room <strong id="delete_room_number"></strong>?</p>
-                        <p class="text-danger">This action cannot be undone. All associated data will be permanently deleted.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger">Delete Room</button>
-                    </div>
-                </form>
+<div class="modal fade" id="deleteRoomModal" tabindex="-1" aria-labelledby="deleteRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteRoomModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            
+            <input type="hidden" id="delete_room_id"> 
+            
+            <div class="modal-body">
+                <p class="modal-body-text">Are you sure you want to delete this room?</p>
+                <p class="text-danger">This action cannot be undone and the associated image will be deleted. (We'll check for active reservations first).</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Room</button>
+            </div>
+            
         </div>
     </div>
+</div>
 
     <!-- Image Zoom Modal -->
     <div class="modal fade" id="zoomImageModal" tabindex="-1" aria-labelledby="zoomImageModalLabel" aria-hidden="true">
@@ -530,6 +531,61 @@
                 }
             });
         });
+    </script>
+    <script>
+        // Example using jQuery to handle the modal confirmation and AJAX request
+
+// 1. Capture the ID when the table button is clicked and pass it to the modal
+$(document).on('click', '.btn-delete', function() {
+    var room_id = $(this).data('id');
+    var room_number = $(this).data('number');
+    
+    // Store the ID in the hidden input and set the display text
+    $('#delete_room_id').val(room_id);
+    $('.modal-body-text').html('Are you sure you want to delete **Room Number ' + room_number + '** (ID: ' + room_id + ')?');
+});
+
+// 2. Handle the click on the confirm delete button within the modal
+$(document).on('click', '#confirmDeleteBtn', function() {
+    var room_id_to_delete = $('#delete_room_id').val();
+    
+    // Disable the button to prevent double-click
+    $(this).prop('disabled', true).text('Deleting...');
+
+    // Send AJAX request to the PHP backend
+    $.ajax({
+        url: 'delete_room.php', // The PHP script file
+        method: 'POST',
+        data: {
+            room_id: room_id_to_delete
+        },
+        dataType: 'json',
+        success: function(response) {
+            // Re-enable button
+            $('#confirmDeleteBtn').prop('disabled', false).text('Delete Room');
+            
+            // Close the modal
+            $('#deleteRoomModal').modal('hide');
+            
+            if (response.status === 'success') {
+                alert('Success: ' + response.message);
+                // Refresh the table/page to reflect the deletion
+                location.reload(); 
+            } else {
+                // Show the error message from the PHP script (e.g., active reservations)
+                alert('Deletion Failed: ' + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            // Re-enable button
+            $('#confirmDeleteBtn').prop('disabled', false).text('Delete Room');
+            // Close the modal
+            $('#deleteRoomModal').modal('hide');
+            alert('An unexpected network error occurred.');
+            console.log(xhr.responseText);
+        }
+    });
+});
     </script>
 </body>
 </html>

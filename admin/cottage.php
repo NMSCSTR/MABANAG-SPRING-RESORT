@@ -66,12 +66,6 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="payment.php">
-                        <i class="fas fa-credit-card"></i>
-                        <span>Payment Management</span>
-                    </a>
-                </li>
-                <li class="menu-item">
                     <a href="transaction.php">
                         <i class="fas fa-exchange-alt"></i>
                         <span>Transaction History</span>

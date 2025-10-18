@@ -53,6 +53,7 @@ INSERT INTO `admin` (`admin_id`, `name`, `username`, `password`, `creation_date`
 CREATE TABLE `cottage` (
   `cottage_id` int(11) NOT NULL,
   `cottage_type` varchar(50) NOT NULL,
+  `capacity` varchar(50) NOT NULL,
   `cottage_price` decimal(10,2) NOT NULL,
   `cottage_availability` enum('available','unavailable') NOT NULL DEFAULT 'available',
   `photo` varchar(100) NOT NULL,

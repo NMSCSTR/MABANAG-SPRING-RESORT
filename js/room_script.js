@@ -75,18 +75,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    
+
     // Form validation for room price
-    const roomPriceInputs = document.querySelectorAll('input[name="room_price"]');
-    roomPriceInputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            const value = parseFloat(this.value);
-            if (value < 0) {
-                this.value = 0;
-            } else if (value > 10000) {
-                this.value = 10000;
-            }
-        });
-    });
+    // const roomPriceInputs = document.querySelectorAll('input[name="room_price"]');
+    // roomPriceInputs.forEach(input => {
+    //     input.addEventListener('blur', function() {
+    //         const value = parseFloat(this.value);
+    //         if (value < 0) {
+    //             this.value = 0;
+    //         } else if (value > 10000) {
+    //             this.value = 10000;
+    //         }
+    //     });
+    // });
 
     // Photo upload preview (for future enhancement)
     const photoInputs = document.querySelectorAll('input[type="file"]');
