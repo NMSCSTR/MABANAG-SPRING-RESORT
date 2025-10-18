@@ -214,6 +214,7 @@
                                                 <button class="btn btn-sm btn-edit" data-bs-toggle="modal" data-bs-target="#editCottageModal"
                                                     data-id="<?php echo $fetch['cottage_id'] ?>"
                                                     data-type="<?php echo $fetch['cottage_type'] ?>"
+                                                    data-capacity="<?php echo $fetch['capacity'] ?>"
                                                     data-price="<?php echo $fetch['cottage_price'] ?>"
                                                     data-availability="<?php echo $fetch['cottage_availability'] ?>"
                                                     data-description="<?php echo htmlspecialchars($fetch['cottage_description'], ENT_QUOTES); ?>"
@@ -228,6 +229,7 @@
                                                 <button class="btn btn-sm btn-view" data-bs-toggle="modal" data-bs-target="#viewCottageModal"
                                                     data-id="<?php echo $fetch['cottage_id'] ?>"
                                                     data-type="<?php echo $fetch['cottage_type'] ?>"
+                                                    data-capacity="<?php echo $fetch['capacity'] ?>"
                                                     data-price="<?php echo $fetch['cottage_price'] ?>"
                                                     data-availability="<?php echo $fetch['cottage_availability'] ?>"
                                                     data-description="<?php echo htmlspecialchars($fetch['cottage_description'], ENT_QUOTES); ?>"
@@ -395,12 +397,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_cottage_type" class="form-label">Cottage Type <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="edit_cottage_type" name="cottage_type" required>
-                                        <option value="Small Cottage">Small Cottage</option>
-                                        <option value="Medium Cottage">Medium Cottage</option>
-                                        <option value="Large Cottage">Large Cottage</option>
-
-                                    </select>
+                                    <input type="text" class="form-control" name="cottage_type" id="edit_cottage_type" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -424,8 +421,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="edit_capacity" class="form-label">Capacity</label>
-                                    <input type="text" class="form-control" id="edit_capacity" readonly>
-                                    <div class="form-text">Capacity is automatically determined by cottage type</div>
+                                    <input type="text" class="form-control" name="capacity" id="edit_cottage_capacity" required>
+                                    <div class="form-text">Change this when needed</div>
                                 </div>
                             </div>
                         </div>

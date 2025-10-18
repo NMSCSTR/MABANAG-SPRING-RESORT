@@ -12,6 +12,7 @@ if(ISSET($_POST['edit_cottage'])){
     $cottage_price = mysqli_real_escape_string($conn, $_POST['cottage_price']);
     $cottage_availability = mysqli_real_escape_string($conn, $_POST['cottage_availability']);
     $description = mysqli_real_escape_string($conn, $_POST['description'] ?? '');
+    $capacity = mysqli_real_escape_string($conn, $_POST['capacity'] ?? '');
     
     // Validate required fields
     if(empty($cottage_type)) {
@@ -114,6 +115,7 @@ if(ISSET($_POST['edit_cottage'])){
             // Update with new photo
             $sql = "UPDATE `cottage` SET 
                     `cottage_type` = '$cottage_type',
+                    `capacity` = '$capacity',
                     `cottage_price` = '$cottage_price',
                     `cottage_availability` = '$cottage_availability',
                     `photo` = '$photo_name',
@@ -123,6 +125,7 @@ if(ISSET($_POST['edit_cottage'])){
             // Update without changing the photo
             $sql = "UPDATE `cottage` SET 
                     `cottage_type` = '$cottage_type',
+                    `capacity` = '$capacity',
                     `cottage_price` = '$cottage_price',
                     `cottage_availability` = '$cottage_availability',
                     `cottage_description` = '$description'
