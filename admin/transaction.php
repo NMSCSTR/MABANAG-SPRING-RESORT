@@ -337,7 +337,7 @@
                                                     data-cottage="<?php echo $fetch['cottage_type'] ?? 'N/A'?>">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
-                                                <?php if($fetch['reservation_status'] == 'pending'): ?>
+                                                <!-- <?php if($fetch['reservation_status'] == 'pending'): ?>
                                                     <button class="btn btn-sm btn-confirm" 
                                                         data-id="<?php echo $fetch['reservation_id']?>"
                                                         data-guest="<?php echo $fetch['guest_name']?>">
@@ -348,7 +348,7 @@
                                                         data-guest="<?php echo $fetch['guest_name']?>">
                                                         <i class="fas fa-times"></i>
                                                     </button>
-                                                <?php endif; ?>
+                                                <?php endif; ?> -->
                                                 <?php if($fetch['payment_status'] == 'pending' && $fetch['payment_id']): ?>
                                                     <button class="btn btn-sm btn-verify" 
                                                         data-id="<?php echo $fetch['payment_id']?>"

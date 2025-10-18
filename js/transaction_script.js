@@ -96,90 +96,90 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Confirm Reservation
-    const confirmButtons = document.querySelectorAll('.btn-confirm');
-    confirmButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const reservationId = this.getAttribute('data-id');
-            const guestName = this.getAttribute('data-guest');
+    // const confirmButtons = document.querySelectorAll('.btn-confirm');
+    // confirmButtons.forEach(button => {
+    //     button.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         const reservationId = this.getAttribute('data-id');
+    //         const guestName = this.getAttribute('data-guest');
             
-            Swal.fire({
-                title: 'Confirm Reservation?',
-                html: `Are you sure you want to confirm the reservation for <strong>${guestName}</strong>?`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#28a745',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, confirm!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit confirmation
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = 'update_reservation.php';
+    //         Swal.fire({
+    //             title: 'Confirm Reservation?',
+    //             html: `Are you sure you want to confirm the reservation for <strong>${guestName}</strong>?`,
+    //             icon: 'question',
+    //             showCancelButton: true,
+    //             confirmButtonColor: '#28a745',
+    //             cancelButtonColor: '#6c757d',
+    //             confirmButtonText: 'Yes, confirm!',
+    //             cancelButtonText: 'Cancel'
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 // Submit confirmation
+    //                 const form = document.createElement('form');
+    //                 form.method = 'POST';
+    //                 form.action = 'update_reservation.php';
                     
-                    const reservationInput = document.createElement('input');
-                    reservationInput.type = 'hidden';
-                    reservationInput.name = 'reservation_id';
-                    reservationInput.value = reservationId;
+    //                 const reservationInput = document.createElement('input');
+    //                 reservationInput.type = 'hidden';
+    //                 reservationInput.name = 'reservation_id';
+    //                 reservationInput.value = reservationId;
                     
-                    const statusInput = document.createElement('input');
-                    statusInput.type = 'hidden';
-                    statusInput.name = 'status';
-                    statusInput.value = 'confirmed';
+    //                 const statusInput = document.createElement('input');
+    //                 statusInput.type = 'hidden';
+    //                 statusInput.name = 'status';
+    //                 statusInput.value = 'confirmed';
                     
-                    form.appendChild(reservationInput);
-                    form.appendChild(statusInput);
-                    document.body.appendChild(form);
-                    form.submit();
-                }
-            });
-        });
-    });
+    //                 form.appendChild(reservationInput);
+    //                 form.appendChild(statusInput);
+    //                 document.body.appendChild(form);
+    //                 form.submit();
+    //             }
+    //         });
+    //     });
+    // });
 
     // Cancel Reservation
-    const cancelButtons = document.querySelectorAll('.btn-cancel');
-    cancelButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const reservationId = this.getAttribute('data-id');
-            const guestName = this.getAttribute('data-guest');
+    // const cancelButtons = document.querySelectorAll('.btn-cancel');
+    // cancelButtons.forEach(button => {
+    //     button.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         const reservationId = this.getAttribute('data-id');
+    //         const guestName = this.getAttribute('data-guest');
             
-            Swal.fire({
-                title: 'Cancel Reservation?',
-                html: `Are you sure you want to cancel the reservation for <strong>${guestName}</strong>?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#dc3545',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, cancel!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit cancellation
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = 'update_reservation.php';
+    //         Swal.fire({
+    //             title: 'Cancel Reservation?',
+    //             html: `Are you sure you want to cancel the reservation for <strong>${guestName}</strong>?`,
+    //             icon: 'warning',
+    //             showCancelButton: true,
+    //             confirmButtonColor: '#dc3545',
+    //             cancelButtonColor: '#6c757d',
+    //             confirmButtonText: 'Yes, cancel!',
+    //             cancelButtonText: 'Cancel'
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 // Submit cancellation
+    //                 const form = document.createElement('form');
+    //                 form.method = 'POST';
+    //                 form.action = 'update_reservation.php';
                     
-                    const reservationInput = document.createElement('input');
-                    reservationInput.type = 'hidden';
-                    reservationInput.name = 'reservation_id';
-                    reservationInput.value = reservationId;
+    //                 const reservationInput = document.createElement('input');
+    //                 reservationInput.type = 'hidden';
+    //                 reservationInput.name = 'reservation_id';
+    //                 reservationInput.value = reservationId;
                     
-                    const statusInput = document.createElement('input');
-                    statusInput.type = 'hidden';
-                    statusInput.name = 'status';
-                    statusInput.value = 'cancelled';
+    //                 const statusInput = document.createElement('input');
+    //                 statusInput.type = 'hidden';
+    //                 statusInput.name = 'status';
+    //                 statusInput.value = 'cancelled';
                     
-                    form.appendChild(reservationInput);
-                    form.appendChild(statusInput);
-                    document.body.appendChild(form);
-                    form.submit();
-                }
-            });
-        });
-    });
+    //                 form.appendChild(reservationInput);
+    //                 form.appendChild(statusInput);
+    //                 document.body.appendChild(form);
+    //                 form.submit();
+    //             }
+    //         });
+    //     });
+    // });
 
     // Verify Payment
     const verifyButtons = document.querySelectorAll('.btn-verify');
@@ -190,8 +190,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const amount = this.getAttribute('data-amount');
             
             Swal.fire({
-                title: 'Verify Payment?',
-                html: `Are you sure you want to verify this payment of <strong>₱${amount}</strong>?`,
+                title: 'Approved Payment and Reservation?',
+                html: `Are you sure you want to approved reservation and verify this payment of <strong>₱${amount}</strong>?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#28a745',
@@ -233,8 +233,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const amount = this.getAttribute('data-amount');
             
             Swal.fire({
-                title: 'Reject Payment?',
-                html: `Are you sure you want to reject this payment of <strong>₱${amount}</strong>?`,
+                title: 'Reject Reservation?',
+                html: `Are you sure you want to reject this reservation with the amount of <strong>₱${amount}</strong>?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#dc3545',
