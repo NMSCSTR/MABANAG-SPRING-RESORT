@@ -457,7 +457,7 @@
     <section id="cottages" class="py-5 leaf-pattern position-relative">
         <div class="container">
             <!-- Filter Section -->
-            <div class="filter-section" data-aos="fade-up">
+            <!-- <div class="filter-section" data-aos="fade-up">
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h4 class="mb-0">Find Your Perfect Cottage</h4>
@@ -466,13 +466,10 @@
                     <div class="col-md-6 text-md-end">
                         <div class="d-flex justify-content-md-end gap-2 flex-wrap">
                             <button class="btn btn-outline-resort active">All Cottages</button>
-                            <button class="btn btn-outline-resort">Small</button>
-                            <button class="btn btn-outline-resort">Medium</button>
-                            <button class="btn btn-outline-resort">Large</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-10 text-center">
@@ -492,11 +489,6 @@
                     $count = 0;
                     while($row = $result->fetch_assoc()) {
                         $count++;
-                        // Determine capacity based on cottage type
-                        $capacity = 4; // Default
-                        if (strpos(strtolower($row['cottage_type']), 'small') !== false) $capacity = 2;
-                        if (strpos(strtolower($row['cottage_type']), 'large') !== false) $capacity = 8;
-                        if (strpos(strtolower($row['cottage_type']), 'family') !== false) $capacity = 6;
                         ?>
                 <div class="col-md-6 col-lg-4 fade-in" style="transition-delay: <?= $count * 0.15 ?>s;" data-aos="fade-up" data-aos-delay="<?= $count * 100 ?>">
                     <div class="card cottage-card h-100" tabindex="0" aria-label="<?php echo htmlspecialchars($row['cottage_type']); ?> cottage card">
@@ -513,17 +505,17 @@
                             <!-- Capacity Badge -->
                             <div class="mb-3">
                                 <span class="capacity-badge">
-                                    <i class="fas fa-users me-1"></i>Up to <?php echo $capacity; ?> People
+                                    <i class="fas fa-users me-1"></i>Up to <?php echo $row['capacity']; ?> 
                                 </span>
                             </div>
                             
                             <!-- Cottage Features -->
-                            <div class="cottage-features">
+                            <!-- <div class="cottage-features">
                                 <span class="cottage-feature"><i class="fas fa-utensils me-1"></i>Picnic Area</span>
                                 <span class="cottage-feature"><i class="fas fa-fan me-1"></i>Ventilated</span>
                                 <span class="cottage-feature"><i class="fas fa-tree me-1"></i>Nature View</span>
                             </div>
-                            
+                             -->
                             <p class="card-text">
                                 <i class="fas fa-info-circle me-1"></i>
                                 <?php echo htmlspecialchars($row['cottage_description']); ?>
@@ -594,7 +586,7 @@
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                        <img src="photo/g1.jpg" 
                              class="img-fluid rounded shadow" alt="Cottage Amenities">
                         <div class="position-absolute bottom-0 start-0 bg-white p-3 m-3 rounded shadow-sm">
                             <h5 class="mb-0">Family Friendly</h5>
@@ -615,7 +607,7 @@
                 <a href="guest_reservation.php" class="btn btn-light btn-lg px-5">
                     <i class="fas fa-calendar-alt me-2"></i>Book Now
                 </a>
-                <a href="contact.php" class="btn btn-outline-light btn-lg">
+                <a href="contactus.php" class="btn btn-outline-light btn-lg">
                     <i class="fas fa-phone-alt me-2"></i>Contact Us
                 </a>
             </div>
@@ -682,13 +674,13 @@
             });
 
             // Filter buttons
-            const filterButtons = document.querySelectorAll('.btn-outline-resort');
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
+            // const filterButtons = document.querySelectorAll('.btn-outline-resort');
+            // filterButtons.forEach(button => {
+            //     button.addEventListener('click', function() {
+            //         filterButtons.forEach(btn => btn.classList.remove('active'));
+            //         this.classList.add('active');
+            //     });
+            // });
         });
     </script>
 </body>

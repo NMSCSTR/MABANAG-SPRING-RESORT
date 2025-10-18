@@ -477,12 +477,12 @@
                             </h5>
                             
                             <!-- Room Features -->
-                            <div class="room-features">
+                            <!-- <div class="room-features">
                                 <span class="room-feature"><i class="fas fa-user-friends me-1"></i>2 Guests</span>
                                 <span class="room-feature"><i class="fas fa-bed me-1"></i>1 Bed</span>
                                 <span class="room-feature"><i class="fas fa-wifi me-1"></i>WiFi</span>
                             </div>
-                            
+                             -->
                             <p class="card-text">
                                 <i class="fas fa-info-circle me-1"></i>
                                 <?php echo htmlspecialchars($row['room_description']); ?>
@@ -521,12 +521,12 @@
             <h2 class="section-title">Need Help Choosing?</h2>
             <p class="mb-4">Our team is here to help you find the perfect accommodation for your stay.</p>
             <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="contact.php" class="btn btn-resort btn-lg">
+                <a href="contactus.php" class="btn btn-resort btn-lg">
                     <i class="fas fa-phone-alt me-2"></i>Contact Us
                 </a>
-                <a href="guest_reservation.php" class="btn btn-outline-resort btn-lg">
+                <!-- <a href="guest_reservation.php" class="btn btn-outline-resort btn-lg">
                     <i class="fas fa-question-circle me-2"></i>FAQ
-                </a>
+                </a> -->
             </div>
         </div>
     </section>
