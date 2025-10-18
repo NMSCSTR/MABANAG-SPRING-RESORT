@@ -67,38 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         cottagesTable.column(3).search(value).draw();
     });
 
-    // Capacity mapping based on cottage type
-    const capacityMap = {
-        'Small Cottage': '3-5 People',
-        'Medium Cottage': '6-10 People',
-        'Large Cottage': '10-15 People',
-    };
 
-    // Update capacity when cottage type changes
-    function updateCapacity(selectId, outputId) {
-        const select = document.getElementById(selectId);
-        const output = document.getElementById(outputId);
-        
-        if (select && output) {
-            // Set initial value
-            if (select.value) {
-                output.value = capacityMap[select.value] || '2-4 People';
-            }
-            
-            select.addEventListener('change', function() {
-                const capacity = capacityMap[this.value] || '2-4 People';
-                output.value = capacity;
-            });
-        }
-    }
-
-    // Initialize capacity updates when modals are shown
-    const addCottageModal = document.getElementById('addCottageModal');
-    if (addCottageModal) {
-        addCottageModal.addEventListener('show.bs.modal', function() {
-            updateCapacity('cottage_type', 'capacity');
-        });
-    }
 
     // Edit Cottage Modal Handler
     const editCottageModal = document.getElementById('editCottageModal');
@@ -120,12 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             document.getElementById('current_cottage_photo').textContent = cottagePhoto || 'No photo';
             
-            // Update capacity
-            const capacity = capacityMap[cottageType] || '2-4 People';
-            document.getElementById('edit_capacity').value = capacity;
             
-            // Setup change listener for edit modal
-            updateCapacity('edit_cottage_type', 'edit_capacity');
         });
     }
 
@@ -140,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const cottageAvailability = button.getAttribute('data-availability');
             const cottageDescription = button.getAttribute('data-description');
             const cottagePhoto = button.getAttribute('data-photo');
-            const cottageCapacity = capacityMap[cottageType] || '2-4 People';
+
 
             document.getElementById('view_cottage_id').textContent = cottageId;
             document.getElementById('view_cottage_type').textContent = cottageType + ' Cottage';

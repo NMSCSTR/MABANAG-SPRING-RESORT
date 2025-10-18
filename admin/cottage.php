@@ -184,21 +184,7 @@
                                     <?php
                                         $query = $conn->query("SELECT * FROM `cottage` ORDER BY `cottage_id` DESC") or die(mysqli_error());
                                         while ($fetch = $query->fetch_array()) {
-                                            $capacity = '';
-                                            switch ($fetch['cottage_type']) {
-                                                case 'Small Cottage':
-                                                    $capacity = '3-5 People';
-                                                    break;
-                                                case 'Medium Cottage':
-                                                    $capacity = '6-10 People';
-                                                    break;
-                                                case 'Large Cottage':
-                                                    $capacity = '10-15 People';
-                                                    break;
-                                                default:
-                                                    $capacity = '2-4 People';
-                                            }
-                                        ?>
+                                    ?>
                                     <tr>
                                         <td><?php echo $fetch['cottage_id'] ?></td>
                                         <td>
@@ -213,7 +199,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="capacity-badge"><?php echo $capacity ?></span>
+                                            <span class="capacity-badge"><?php echo $fetch['capacity'] ?></span>
                                         </td>
                                         <td>
                                             <?php if (! empty($fetch['photo'])): ?>
@@ -347,12 +333,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="cottage_type" class="form-label">Cottage Type <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="cottage_type" name="cottage_type" required>
-                                        <option value="">Select Cottage Type</option>
-                                        <option value="Small Cottage">Small Cottage</option>
-                                        <option value="Medium Cottage">Medium Cottage</option>
-                                        <option value="Large Cottage">Large Cottage</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="cottage_type" id="cottage_type" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -375,8 +356,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="capacity" class="form-label">Capacity</label>
-                                    <input type="text" class="form-control" id="capacity" readonly>
-                                    <div class="form-text">Capacity is automatically determined by cottage type</div>
+                                    <input type="text" class="form-control" name="capacity" id="capacity" required>
                                 </div>
                             </div>
                         </div>
