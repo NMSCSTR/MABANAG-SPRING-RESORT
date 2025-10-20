@@ -425,8 +425,8 @@
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="aboutus.php">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="rooms.php">Rooms</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="cottages.php">Cottages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-semibold" href="cottages.php">Cottages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="notice.php">Important Notice</a></li>
                     <li class="nav-item"><a class="nav-link" href="contactus.php">Contact</a></li>
                     <li class="nav-item mt-2 mt-lg-0 ms-lg-3">
                         <a class="btn btn-resort" href="guest_reservation.php" role="button"

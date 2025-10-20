@@ -1,11 +1,10 @@
 <?php
-include 'admin/connect.php'; // make sure this creates $conn as a mysqli connection
+include 'admin/connect.php'; 
 
 $check_in = $_POST['check_in'];
 $check_out = $_POST['check_out'];
 $type = $_POST['type'] ?? 'all';
 
-// Base SQL query
 $sql = "SELECT * FROM room r
         WHERE r.room_availability = 'available'
         AND r.room_id NOT IN (
@@ -18,7 +17,7 @@ $sql = "SELECT * FROM room r
             )
         )";
 
-// Add type filter if needed
+
 if ($type !== 'all') {
     $sql .= " AND r.room_type = ?";
 }

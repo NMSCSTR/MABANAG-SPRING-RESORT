@@ -620,7 +620,7 @@
                         <a class="nav-link" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php#about">About</a>
+                        <a class="nav-link" href="aboutus.php">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="rooms.php">Rooms</a>
@@ -629,8 +629,7 @@
                         <a class="nav-link" href="cottages.php">Cottages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php#gallery">Gallery</a>
-                    </li>
+                        <a class="nav-link" href="notice.php">Important Notice</a></li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.php">Contact</a>
                     </li>

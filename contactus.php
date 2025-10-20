@@ -368,8 +368,8 @@
                     <li class="nav-item"><a class="nav-link" href="aboutus.php">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="rooms.php">Rooms</a></li>
                     <li class="nav-item"><a class="nav-link" href="cottages.php">Cottages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="contactus.php">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="notice.php">Important Notice</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-semibold" href="contactus.php">Contact</a></li>
                     <li class="nav-item mt-2 mt-lg-0 ms-lg-3">
                         <a class="btn btn-resort" href="guest_reservation.php" role="button"
                             aria-label="Reserve Now">Reserve Now</a>
@@ -546,7 +546,10 @@
                     <div class="mb-5">
                         <h3 class="section-title mb-4"><i class="fas fa-map me-2"></i>Find Us</h3>
                         <div class="map-container">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5502.725963889533!2d123.4715908302647!3d8.140097826251901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32545d31dfed875b%3A0x3a4ef9f0dfb8b2d0!2sMabanag%20Spring%20Resort!5e1!3m2!1sen!2sph!4v1760665502209!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5502.725963889533!2d123.4715908302647!3d8.140097826251901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32545d31dfed875b%3A0x3a4ef9f0dfb8b2d0!2sMabanag%20Spring%20Resort!5e1!3m2!1sen!2sph!4v1760665502209!5m2!1sen!2sph"
+                                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
 
@@ -577,9 +580,31 @@
                                 </li>
                             </ul>
                             <div class="mt-3 p-3 rounded" style="background-color: var(--resort-light);">
-                                <p class="mb-0 text-center"><i
-                                        class="fas fa-info-circle me-2 text-resort-primary"></i>Reservation office opens
-                                    30 minutes earlier</p>
+                                <p class="text-center text-light p-4 rounded-4 shadow-lg"
+                                    style="background: linear-gradient(135deg, #00b09b, #96c93d); max-width: 650px; margin: 0 auto; font-size: 15px; line-height: 1.7;">
+
+                                    <i class="fas fa-umbrella-beach me-2" style="font-size: 22px; color: #fff;"></i>
+                                    <strong style="font-size: 17px;">Resort Reminder</strong><br>
+
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    <strong>Note:</strong> Entrance fee is <u>separate from room fee</u>!<br><br>
+
+                                    <span class="d-inline-block bg-white text-dark rounded-3 p-2 px-3 shadow-sm"
+                                        style="font-size: 14px; line-height: 1.6;">
+                                        <i class="fas fa-ticket-alt text-success me-1"></i>
+                                        <strong>Additional Entrance Fee for Room Guests:</strong><br>
+                                        <i class="fas fa-user text-primary me-1"></i>Adult -
+                                        <strong>₱100.00</strong><br>
+                                        <i class="fas fa-child text-warning me-1"></i>Children (4–9 yrs) -
+                                        <strong>₱40.00</strong><br>
+                                        <i class="fas fa-baby text-info me-1"></i>FREE - <strong>3 years old &
+                                            below</strong>
+                                    </span><br><br>
+
+                                    <i class="fas fa-wifi text-light me-2"></i>
+                                    <em>WIFI HOTSPOT available at the Lemonade Stand, Convenience Store & Entrance</em>
+                                </p>
+
                             </div>
                         </div>
                     </div>

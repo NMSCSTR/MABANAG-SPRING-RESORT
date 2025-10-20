@@ -35,11 +35,11 @@ $result = $conn->query($sql2);
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-semibold" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="aboutus.php">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="rooms.php">Rooms</a></li>
                     <li class="nav-item"><a class="nav-link" href="cottages.php">Cottages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="notice.php">Important Notice</a></li>
                     <li class="nav-item"><a class="nav-link" href="contactus.php">Contact</a></li>
                     <li class="nav-item">
                         <a class="btn btn-reserve ms-lg-3 mt-2 mt-lg-0" href="guest_reservation.php">Reserve Now</a>
