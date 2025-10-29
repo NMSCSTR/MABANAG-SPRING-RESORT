@@ -283,7 +283,7 @@
         </h2>
         <div id="faq1" class="accordion-collapse collapse show">
           <div class="accordion-body">
-            Check-in is at <strong>2:00 PM</strong> and check-out is at <strong>12:00 PM</strong>. Early check-in or late check-out may be available upon request and subject to availability.
+            Check-in is at <strong>2:00 PM</strong> and check-out is at <strong>1:00 AM</strong>. Early check-in or late check-out may be available upon request and subject to availability.
           </div>
         </div>
       </div>

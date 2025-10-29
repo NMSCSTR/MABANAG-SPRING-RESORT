@@ -246,6 +246,7 @@
                                         <th>Guest</th>
                                         <th>Reservation Type</th>
                                         <th>Reservation Date</th>
+                                        <th>Checkout Date</th>
                                         <th>Amount</th>
                                         <th>Reservation Status</th>
                                         <th>Payment Status</th>
@@ -288,6 +289,7 @@
                                         </td>
                                         <td><?php echo $fetch['reservation_type']?></td>
                                         <td><?php echo date('M j, Y', strtotime($fetch['reservation_date']))?></td>
+                                        <td><?php echo date('M j, Y', strtotime($fetch['check_out_date']))?></td>
                                         <td>
                                             <?php if($fetch['amount']): ?>
                                                 <strong class="text-primary">₱<?php echo number_format($fetch['amount'], 2)?></strong>
