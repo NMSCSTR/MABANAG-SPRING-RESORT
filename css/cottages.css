@@ -58,8 +58,25 @@
         transform: translateY(0);
     }
 
-    /* Enhanced Room cards */
-    .card.room-card {
+    .btn-outline-resort {
+        background-color: transparent;
+        color: var(--resort-primary);
+        border: 2px solid var(--resort-primary);
+        border-radius: 50px;
+        padding: 0.5rem 1.25rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-outline-resort:hover,
+    .btn-outline-resort.active {
+        background-color: var(--resort-primary);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Enhanced Cottage cards */
+    .card.cottage-card {
         border: none;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
@@ -69,22 +86,22 @@
         background-color: white;
     }
 
-    .card.room-card:hover {
+    .card.cottage-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .card.room-card .card-img-top {
+    .card.cottage-card .card-img-top {
         height: 220px;
         object-fit: cover;
         transition: transform 0.5s ease;
     }
 
-    .card.room-card:hover .card-img-top {
+    .card.cottage-card:hover .card-img-top {
         transform: scale(1.05);
     }
 
-    .card.room-card .card-body {
+    .card.cottage-card .card-body {
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
@@ -103,9 +120,6 @@
         align-items: center;
         justify-content: center;
     }
-    
-
-    
 
     /* Enhanced Navbar */
     .navbar {
@@ -238,7 +252,7 @@
             font-size: 1.25rem;
         }
         
-        .card.room-card .card-img-top {
+        .card.cottage-card .card-img-top {
             height: 180px;
         }
         
@@ -260,8 +274,8 @@
         margin-bottom: 10px;
     }
 
-    /* Room counter badge */
-    .room-counter {
+    /* Cottage counter badge */
+    .cottage-counter {
         position: absolute;
         top: 15px;
         right: 15px;
@@ -278,10 +292,10 @@
         z-index: 1;
     }
 
-    /* Hero Section for Rooms */
-    .rooms-hero {
+    /* Hero Section for Cottages */
+    .cottages-hero {
         background: linear-gradient(rgba(45, 90, 39, 0.7), rgba(74, 124, 89, 0.7)),
-            url('../photo/g1.jpg') center/cover no-repeat;
+            url('../photo/g3.jpg') center/cover no-repeat;
         height: 50vh;
         display: flex;
         align-items: center;
@@ -292,29 +306,29 @@
         margin-top: 76px;
     }
 
-    .rooms-hero h1 {
+    .cottages-hero h1 {
         font-size: 3rem;
         font-weight: 700;
         text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
         margin-bottom: 1rem;
     }
 
-    .rooms-hero p {
+    .cottages-hero p {
         font-size: 1.2rem;
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
     }
 
-    /* Room Features */
-    .room-features {
+    /* Cottage Features */
+    .cottage-features {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         margin: 15px 0;
     }
 
-    .room-feature {
+    .cottage-feature {
         background-color: var(--resort-light);
         color: var(--resort-primary);
         padding: 5px 12px;
@@ -352,4 +366,17 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         padding: 1.5rem;
         margin-bottom: 2rem;
+    }
+
+    /* Capacity Badge */
+    .capacity-badge {
+        background: linear-gradient(135deg, var(--resort-primary), var(--resort-accent));
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
     }
