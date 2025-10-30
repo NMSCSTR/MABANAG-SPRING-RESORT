@@ -122,7 +122,7 @@ $result = $conn->query($sql2);
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="position-relative">
-                        <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4noTE1Fg95FHX11ctnQDFEItHXhXJTwyX5B8Mgf1YN2zOdIwYTwb-eu0MdEf6XLMZOfEBG7Z2WApTLfM8hfzQHWhMgeUoYsVd2UwF0zZ96FgQf2AvGqCyW19JT0wJf-9NLy0Sl4=s680-w680-h510-rw"
+                        <img src="photo/g3.jpg"
                             class="img-fluid rounded shadow" alt="Resort Nature">
                         <div class="position-absolute bottom-0 start-0 bg-white p-3 m-3 rounded shadow-sm">
                             <h5 class="mb-0">Eco-Certified Resort</h5>

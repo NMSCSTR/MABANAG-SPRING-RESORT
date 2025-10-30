@@ -245,7 +245,7 @@
                                         <th>Transaction Ref</th>
                                         <th>Guest</th>
                                         <th>Reservation Type</th>
-                                        <th>Reservation Date</th>
+                                        <th>Check In Date</th>
                                         <th>Checkout Date</th>
                                         <th>Amount</th>
                                         <th>Reservation Status</th>
@@ -258,7 +258,7 @@
                                     <?php
                                     $query = $conn->query("
                                         SELECT r.reservation_id, r.guest_id, transaction_reference, r.room_id, r.cottage_id, 
-                                               r.reservation_date, r.status as reservation_status,
+                                               r.reservation_date,r.check_in_date, r.check_out_date, r.status as reservation_status,
                                                p.payment_id, p.amount, p.payment_date, p.payment_status, p.payment_method, p.receipt_file,
                                                CONCAT(g.firstname, ' ', g.lastname) as guest_name, g.contactno as guest_contact,
                                                rm.room_number, rm.room_type,
@@ -289,7 +289,16 @@
                                         </td>
                                         <td><?php echo $fetch['reservation_type']?></td>
                                         <td><?php echo date('M j, Y', strtotime($fetch['reservation_date']))?></td>
-                                        <td><?php echo date('M j, Y', strtotime($fetch['check_out_date']))?></td>
+                                        <td>
+                                            <?php 
+                                            if (!empty($fetch['check_out_date'])) {
+                                                echo date('M j, Y', strtotime($fetch['check_out_date']));
+                                            } else {
+                                                echo "1 Day Reservation Only";
+                                            }
+                                            ?>
+                                        </td>
+
                                         <td>
                                             <?php if($fetch['amount']): ?>
                                                 <strong class="text-primary">₱<?php echo number_format($fetch['amount'], 2)?></strong>
