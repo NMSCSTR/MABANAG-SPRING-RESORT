@@ -247,9 +247,11 @@ if (!empty($reservation['check_out_date'])) {
                             <p class="text-muted mb-1">Reference Number</p>
                             <p class="fw-semibold"><?php echo $reservation['payment_reference']; ?></p>
                         </div>
-                        <button class="btn btn-danger" id="cancelReservationBtn">
-                            <i class="fas fa-times-circle me-2"></i>Cancel Reservation
-                        </button>                        
+                        <?php if (empty($reservation['remarks'])): ?>
+                        <button class="btn btn-warning" id="cancelReservationBtn">
+                            <i class="fas fa-times-circle me-2"></i>Request Cancellation
+                        </button>     
+                        <?php endif; ?>                  
                         <?php endif; ?>
                     </div>
                 </div>

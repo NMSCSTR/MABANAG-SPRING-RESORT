@@ -18,14 +18,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $reservation = $check->fetch_assoc();
     $id = $reservation['reservation_id'];
-    $remarks = "Requesting for cancellation";
+    $remarks = "REQUESTING FOR CANCELLATION";
 
-    // Update status to cancelled
-    $update = $conn->query("UPDATE `reservation` SET `remarks`='$remarks' WHERE `reservation_id` = '$id'");
-    if ($update) {
-        echo json_encode(['success' => true, 'message' => 'Requesting cancellation success.']);
+    if ($reservation['remarks'] === "REQUESTING FOR CANCELLATION") {
+        echo json_encode(['success' => false, 'message' => 'ALREADY REQUESTED WAIT FOR THE APPROVAL']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Failed requesting cancellation.']);
+        // Update status to cancelled
+        $update = $conn->query("UPDATE `reservation` SET `remarks`='$remarks' WHERE `reservation_id` = '$id'");
+        if ($update) {
+            echo json_encode(['success' => true, 'message' => 'Requesting cancellation success.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed requesting cancellation.']);
+        }        
     }
+
+    
+
+
 }
 ?>
