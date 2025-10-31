@@ -81,11 +81,14 @@ if (!empty($reservation['check_out_date'])) {
     $check_in = new DateTime($reservation['check_in_date']);
     $check_out = new DateTime($reservation['check_out_date']);
     $duration = $check_out->diff($check_in)->days;
+
+    
 }
 ?>
 
- <!doctype html>
+<!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -93,409 +96,13 @@ if (!empty($reservation['check_out_date'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <style>
-    :root {
-        --forest-green: #2d5a27;
-        --spring-green: #4a7c59;
-        --leaf-green: #8cb369;
-        --water-blue: #4d9de0;
-        --sky-blue: #a1c6ea;
-        --earth-brown: #8b5a2b;
-        --sand: #e6ccb2;
-        --sunset: #e76f51;
-        --deep-blue: #264653;
-        --resort-primary: #2d5a27;
-        --resort-accent: #4a7c59;
-        --resort-light: #e8f5e8;
-        --resort-dark: #1e3d20;
-        --card-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        color: #333;
-        min-height: 100vh;
-    }
-
-    /* Navigation */
-    .navbar {
-        background: rgba(45, 90, 39, 0.95) !important;
-        backdrop-filter: blur(10px);
-        padding: 1rem 0;
-        transition: all 0.4s ease;
-    }
-
-    .navbar-brand {
-        font-weight: 700;
-        color: var(--sand) !important;
-        font-size: 1.4rem;
-    }
-
-    /* Hero Section */
-    .confirmation-hero {
-        background: linear-gradient(135deg, var(--resort-primary) 0%, var(--resort-accent) 100%);
-        color: white;
-        padding: 4rem 0 2rem;
-        margin-top: 76px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .confirmation-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .confirmation-badge {
-        background: rgba(255,255,255,0.2);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: white;
-        padding: 8px 20px;
-        border-radius: 25px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        display: inline-block;
-        margin-bottom: 1rem;
-    }
-
-    /* Main Content Layout */
-    .details-container {
-        padding: 3rem 0;
-    }
-
-    /* Summary Card */
-    .summary-card {
-        background: white;
-        border-radius: 20px;
-        box-shadow: var(--card-shadow);
-        border: none;
-        overflow: hidden;
-        margin-bottom: 2rem;
-    }
-
-    .summary-header {
-        background: linear-gradient(135deg, var(--resort-primary), var(--resort-accent));
-        color: white;
-        padding: 2rem;
-        position: relative;
-    }
-
-    .summary-header::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 20px;
-        height: 20px;
-        background: var(--resort-primary);
-        transform: rotate(45deg);
-    }
-
-    .ref-number {
-        font-size: 0.9rem;
-        opacity: 0.9;
-        margin-bottom: 0.5rem;
-    }
-
-    .guest-name {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-
-    .reservation-type {
-        font-size: 1.1rem;
-        opacity: 0.9;
-    }
-
-    /* Info Cards Grid */
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .info-card {
-        background: white;
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: var(--card-shadow);
-        border: 1px solid rgba(0,0,0,0.05);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .info-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-    }
-
-    .card-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
-        background: var(--resort-light);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        color: var(--resort-primary);
-        font-size: 1.2rem;
-    }
-
-    .card-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--resort-dark);
-        margin-bottom: 1rem;
-    }
-
-    .detail-item {
-        display: flex;
-        justify-content: between;
-        margin-bottom: 0.75rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    .detail-item:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
-
-    .detail-label {
-        font-weight: 500;
-        color: #666;
-        min-width: 120px;
-    }
-
-    .detail-value {
-        font-weight: 500;
-        color: #333;
-        text-align: right;
-        flex: 1;
-    }
-
-    /* Status Card */
-    .status-card {
-        background: white;
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: var(--card-shadow);
-        margin-bottom: 2rem;
-    }
-
-    .status-badge {
-        padding: 8px 20px;
-        border-radius: 25px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .status-pending {
-        background: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeaa7;
-    }
-
-    .status-confirmed {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .status-approved {
-        background: #d1edff;
-        color: #0c5460;
-        border: 1px solid #bee5eb;
-    }
-
-    /* Amount Card */
-    .amount-card {
-        background: linear-gradient(135deg, var(--resort-primary), var(--resort-accent));
-        color: white;
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: var(--card-shadow);
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .amount-label {
-        font-size: 1rem;
-        opacity: 0.9;
-        margin-bottom: 0.5rem;
-    }
-
-    .amount-value {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 0;
-    }
-
-    /* Timeline */
-    .timeline {
-        background: white;
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: var(--card-shadow);
-        margin-bottom: 2rem;
-    }
-
-    .timeline-item {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 1.5rem;
-        position: relative;
-    }
-
-    .timeline-item:last-child {
-        margin-bottom: 0;
-    }
-
-    .timeline-item::before {
-        content: '';
-        position: absolute;
-        left: 25px;
-        top: 40px;
-        bottom: -20px;
-        width: 2px;
-        background: #e9ecef;
-    }
-
-    .timeline-item:last-child::before {
-        display: none;
-    }
-
-    .timeline-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: var(--resort-light);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
-        color: var(--resort-primary);
-        font-size: 1.2rem;
-        position: relative;
-        z-index: 2;
-    }
-
-    .timeline-content {
-        flex: 1;
-    }
-
-    .timeline-title {
-        font-weight: 600;
-        color: var(--resort-dark);
-        margin-bottom: 0.25rem;
-    }
-
-    .timeline-date {
-        font-size: 0.9rem;
-        color: #666;
-    }
-
-    /* Action Buttons */
-    .action-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .btn-primary {
-        background: var(--resort-primary);
-        border: none;
-        padding: 12px 30px;
-        border-radius: 25px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-primary:hover {
-        background: var(--resort-accent);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(45, 90, 39, 0.3);
-    }
-
-    .btn-outline {
-        background: transparent;
-        border: 2px solid var(--resort-primary);
-        color: var(--resort-primary);
-        padding: 12px 30px;
-        border-radius: 25px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-outline:hover {
-        background: var(--resort-primary);
-        color: white;
-        transform: translateY(-2px);
-    }
-
-    /* Footer */
-    .footer {
-        background: var(--resort-dark);
-        color: white;
-        padding: 3rem 0 1.5rem;
-        margin-top: 4rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .info-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .action-buttons {
-            flex-direction: column;
-        }
-        
-        .btn-primary, .btn-outline {
-            width: 100%;
-        }
-        
-        .guest-name {
-            font-size: 1.5rem;
-        }
-    }
-
-    /* Print Styles */
-    @media print {
-        .no-print {
-            display: none !important;
-        }
-        
-        body {
-            background: white !important;
-        }
-        
-        .summary-card, .info-card, .status-card, .amount-card, .timeline {
-            box-shadow: none !important;
-            border: 1px solid #ddd !important;
-        }
-    }
-    </style>
+    <link rel="stylesheet" href="css/details.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -513,7 +120,7 @@ if (!empty($reservation['check_out_date'])) {
                 <i class="fas fa-check-circle me-2"></i>Reservation Confirmed
             </div>
             <h1 class="display-5 fw-bold mb-3">Your Booking is Confirmed!</h1>
-            <p class="lead mb-0">We're excited to welcome you to Mabanag Spring Resort</p>
+            <p class="lead mb-0 text-warning fw-bolder">COPY AND SAVE YOUR REFFERENCE # FOR FUTURE USE.</p>
         </div>
     </section>
 
@@ -523,8 +130,11 @@ if (!empty($reservation['check_out_date'])) {
             <!-- Summary Card -->
             <div class="summary-card" data-aos="fade-up">
                 <div class="summary-header text-center">
-                    <div class="ref-number">Reference: <?php echo $reservation['transaction_reference']; ?></div>
-                    <h2 class="guest-name"><?php echo $reservation['firstname'] . ' ' . $reservation['lastname']; ?></h2>
+                    <h4 class="">Reference: <span
+                            class="text-warning fw-bolder"><?php echo $reservation['transaction_reference']; ?></span>
+                    </h4>
+                    <h2 class="guest-name"><?php echo $reservation['firstname'] . ' ' . $reservation['lastname']; ?>
+                    </h2>
                     <div class="reservation-type">
                         <?php 
                             if ($reservation['room_id']) {
@@ -547,7 +157,8 @@ if (!empty($reservation['check_out_date'])) {
                     <h3 class="card-title">Guest Information</h3>
                     <div class="detail-item">
                         <span class="detail-label">Full Name</span>
-                        <span class="detail-value"><?php echo $reservation['firstname'] . ' ' . $reservation['lastname']; ?></span>
+                        <span
+                            class="detail-value"><?php echo $reservation['firstname'] . ' ' . $reservation['lastname']; ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Contact</span>
@@ -563,23 +174,25 @@ if (!empty($reservation['check_out_date'])) {
                     <h3 class="card-title">Stay Details</h3>
                     <div class="detail-item">
                         <span class="detail-label">Check-in</span>
-                        <span class="detail-value"><?php echo date('M j, Y', strtotime($reservation['check_in_date'])); ?></span>
+                        <span
+                            class="detail-value"><?php echo date('M j, Y', strtotime($reservation['check_in_date'])); ?></span>
                     </div>
-                <?php if (!empty($reservation['check_out_date'])): ?>
+                    <?php if (!empty($reservation['check_out_date'])): ?>
                     <div class="detail-item">
                         <span class="detail-label">Check-out</span>
-                        <span class="detail-value"><?php echo date('M j, Y', strtotime($reservation['check_out_date'])); ?></span>
+                        <span
+                            class="detail-value"><?php echo date('M j, Y', strtotime($reservation['check_out_date'])); ?></span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">Duration</span>
                         <span class="detail-value"><?php echo $duration . ' night(s)'; ?></span>
                     </div>
-                <?php else: ?>
+                    <?php else: ?>
                     <div class="detail-item">
                         <span class="detail-label">Duration</span>
                         <span class="detail-value">1 day (Cottage Reservation)</span>
                     </div>
-                <?php endif; ?>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Accommodation -->
@@ -626,13 +239,17 @@ if (!empty($reservation['check_out_date'])) {
                         </div>
                         <div class="mt-3">
                             <p class="text-muted mb-2">Payment Method</p>
-                            <p class="fw-semibold"><?php echo ucfirst(str_replace('_', ' ', $reservation['payment_method'])); ?></p>
+                            <p class="fw-semibold">
+                                <?php echo ucfirst(str_replace('_', ' ', $reservation['payment_method'])); ?></p>
                         </div>
                         <?php if (!empty($reservation['payment_reference'])): ?>
                         <div class="mt-2">
                             <p class="text-muted mb-1">Reference Number</p>
                             <p class="fw-semibold"><?php echo $reservation['payment_reference']; ?></p>
                         </div>
+                        <button class="btn btn-danger" id="cancelReservationBtn">
+                            <i class="fas fa-times-circle me-2"></i>Cancel Reservation
+                        </button>                        
                         <?php endif; ?>
                     </div>
                 </div>
@@ -640,7 +257,12 @@ if (!empty($reservation['check_out_date'])) {
                     <div class="amount-card" data-aos="fade-up" data-aos-delay="300">
                         <div class="amount-label">Total Amount</div>
                         <div class="amount-value">₱<?php echo number_format($reservation['total_amount'], 2); ?></div>
+                        
                     </div>
+                    <div class="" data-aos="fade-up" data-aos-delay="300">
+
+                    </div>
+
                 </div>
             </div>
 
@@ -653,7 +275,8 @@ if (!empty($reservation['check_out_date'])) {
                     </div>
                     <div class="timeline-content">
                         <div class="timeline-title">Reservation Submitted</div>
-                        <div class="timeline-date"><?php echo date('F j, Y g:i A', strtotime($reservation['reservation_date'])); ?></div>
+                        <div class="timeline-date">
+                            <?php echo date('F j, Y g:i A', strtotime($reservation['reservation_date'])); ?></div>
                     </div>
                 </div>
                 <div class="timeline-item">
@@ -661,7 +284,8 @@ if (!empty($reservation['check_out_date'])) {
                         <i class="fas fa-credit-card"></i>
                     </div>
                     <div class="timeline-content">
-                        <div class="timeline-title">Payment <?php echo $reservation['payment_status'] === 'verified' ? 'Confirmed' : 'Pending'; ?></div>
+                        <div class="timeline-title">Payment
+                            <?php echo $reservation['payment_status'] === 'verified' ? 'Confirmed' : 'Pending'; ?></div>
                         <div class="timeline-date">
                             <?php 
                                 if ($reservation['payment_status'] === 'verified') {
@@ -679,7 +303,8 @@ if (!empty($reservation['check_out_date'])) {
                     </div>
                     <div class="timeline-content">
                         <div class="timeline-title">Ready for Check-in</div>
-                        <div class="timeline-date">Your accommodation will be ready on <?php echo date('F j, Y', strtotime($reservation['check_in_date'])); ?></div>
+                        <div class="timeline-date">Your accommodation will be ready on
+                            <?php echo date('F j, Y', strtotime($reservation['check_in_date'])); ?></div>
                     </div>
                 </div>
             </div>
@@ -695,6 +320,7 @@ if (!empty($reservation['check_out_date'])) {
                 <a href="contactus.php" class="btn btn-outline">
                     <i class="fas fa-question-circle me-2"></i>Need Help?
                 </a>
+
             </div>
 
             <!-- Important Notes -->
@@ -703,7 +329,8 @@ if (!empty($reservation['check_out_date'])) {
                 <ul class="mb-0 mt-2">
                     <li>Please present this confirmation and valid ID upon arrival</li>
                     <li>Check-in time: 2:00 PM | Check-out time: 12:00 PM</li>
-                    <li>Keep your reference number for any inquiries: <strong><?php echo $reservation['transaction_reference']; ?></strong></li>
+                    <li>Keep your reference number for any inquiries:
+                        <strong><?php echo $reservation['transaction_reference']; ?></strong></li>
                     <li>Contact us for any changes or cancellations</li>
                 </ul>
             </div>
@@ -741,13 +368,67 @@ if (!empty($reservation['check_out_date'])) {
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
-        AOS.init({
-            duration: 800,
-            once: true
-        });
+    AOS.init({
+        duration: 800,
+        once: true
+    });
     </script>
+
+    <script>
+    document.getElementById('cancelReservationBtn').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Cancel Reservation?',
+            text: "Are you sure you want to cancel your reservation? This action cannot be undone.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, cancel it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('cancel_reservation.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'transaction_ref=<?php echo $reservation['transaction_reference']; ?>'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cancelled!',
+                                text: data.message,
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                            console.log(data.message);
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Request Failed',
+                            text: 'Something went wrong while cancelling your reservation.',
+                        });
+                    });
+            }
+        });
+    });
+    </script>
+
 </body>
+
 </html>

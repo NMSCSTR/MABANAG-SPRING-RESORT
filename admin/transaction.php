@@ -288,7 +288,7 @@
                                             </div>
                                         </td>
                                         <td><?php echo $fetch['reservation_type']?></td>
-                                        <td><?php echo date('M j, Y', strtotime($fetch['reservation_date']))?></td>
+                                        <td><?php echo date('M j, Y', strtotime($fetch['check_out_date']))?></td>
                                         <td>
                                             <?php 
                                             if (!empty($fetch['check_out_date'])) {
