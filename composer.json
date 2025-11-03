@@ -1,0 +1,13 @@
+{
+    "name": "rhondel/mabanag_spring_resort",
+    "description": "Mabanag Spring Resort Reservation System",
+    "authors": [
+        {
+            "name": "NMSCSTR",
+            "email": "rhondel.pagobo@nmsc.edu.ph"
+        }
+    ],
+    "require": {
+        "xendit/xendit-php": "^7.0"
+    }
+}

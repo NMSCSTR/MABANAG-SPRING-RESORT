@@ -251,6 +251,7 @@
                                         <th>Reservation Status</th>
                                         <th>Payment Status</th>
                                         <th>Receipt</th>
+                                        <th>Remarks</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -258,7 +259,7 @@
                                     <?php
                                     $query = $conn->query("
                                         SELECT r.reservation_id, r.guest_id, transaction_reference, r.room_id, r.cottage_id, 
-                                               r.reservation_date,r.check_in_date, r.check_out_date, r.status as reservation_status,
+                                               r.reservation_date,r.check_in_date, r.check_out_date, r.status as reservation_status, r.remarks,
                                                p.payment_id, p.amount, p.payment_date, p.payment_status, p.payment_method, p.receipt_file,
                                                CONCAT(g.firstname, ' ', g.lastname) as guest_name, g.contactno as guest_contact,
                                                rm.room_number, rm.room_type,
@@ -333,9 +334,10 @@
                                                 <span class="text-muted">No Receipt</span>
                                             <?php endif; ?>
                                         </td>
+                                        <td><?php echo $fetch['remarks'] ?? '---' ?></td>
                                         <td>
                                             <div class="action-buttons">
-                                                <button class="btn btn-sm btn-view" data-bs-toggle="modal" data-bs-target="#viewTransactionModal"
+                                                <button class="btn btn-sm btn-view" title="view transaction" data-bs-toggle="modal" data-bs-target="#viewTransactionModal"
                                                     data-id="<?php echo $fetch['reservation_id']?>"
                                                     data-guest="<?php echo $fetch['guest_name']?>"
                                                     data-contact="<?php echo $fetch['guest_contact']?>"
@@ -355,18 +357,18 @@
                                                         <i class="fas fa-check"></i>
                                                     </button>
                                                     <button class="btn btn-sm btn-cancel" 
-                                                        data-id="<?php echo $fetch['reservation_id']?>"
+                                                        data-id="<?php echo $fetch['reservation_id']?>"in
                                                         data-guest="<?php echo $fetch['guest_name']?>">
                                                         <i class="fas fa-times"></i>
                                                     </button>
                                                 <?php endif; ?> -->
                                                 <?php if($fetch['payment_status'] == 'pending' && $fetch['payment_id']): ?>
-                                                    <button class="btn btn-sm btn-verify" 
+                                                    <button class="btn btn-sm btn-verify" title="Approve Payment and Reservation"
                                                         data-id="<?php echo $fetch['payment_id']?>"
                                                         data-amount="<?php echo $fetch['amount']?>">
                                                         <i class="fas fa-check-circle"></i>
                                                     </button>
-                                                    <button class="btn btn-sm btn-reject" 
+                                                    <button class="btn btn-sm btn-reject" title="Reject payment and reservation"
                                                         data-id="<?php echo $fetch['payment_id']?>"
                                                         data-amount="<?php echo $fetch['amount']?>">
                                                         <i class="fas fa-times-circle"></i>

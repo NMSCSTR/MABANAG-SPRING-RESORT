@@ -14,22 +14,29 @@ $result = $conn->query($sql2);
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Mabanag Spring Resort</title>
 
     <!-- Bootstrap -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index_style.css">
+
 <body>
-    
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-leaf me-2"></i>Mabanag Spring Resort</a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container **d-flex flex-nowrap justify-content-between**">
+            <a class="navbar-brand **flex-shrink-0**" href="#">
+                <i class="fas fa-leaf me-2"></i>Mabanag
+                <span class="d-none d-sm-inline">Spring Resort</span>
+            </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -122,8 +129,7 @@ $result = $conn->query($sql2);
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="position-relative">
-                        <img src="photo/g3.jpg"
-                            class="img-fluid rounded shadow" alt="Resort Nature">
+                        <img src="photo/g3.jpg" class="img-fluid rounded shadow" alt="Resort Nature">
                         <div class="position-absolute bottom-0 start-0 bg-white p-3 m-3 rounded shadow-sm">
                             <h5 class="mb-0">Eco-Certified Resort</h5>
                             <small>Sustainable tourism practices</small>
@@ -143,8 +149,8 @@ $result = $conn->query($sql2);
             <div class="row">
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="100">
                     <div class="gallery-item">
-                        <img src="https://pbs.twimg.com/media/FBsTuwEUcAUbxXN.jpg"
-                            class="img-fluid rounded" alt="Resort Beach">
+                        <img src="https://pbs.twimg.com/media/FBsTuwEUcAUbxXN.jpg" class="img-fluid rounded"
+                            alt="Resort Beach">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="200">
@@ -167,30 +173,26 @@ $result = $conn->query($sql2);
                 </div>
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
                     <div class="gallery-item">
-                        <img src="photo/g1.jpg"
-                            class="img-fluid rounded" alt="Resort Garden">
+                        <img src="photo/g1.jpg" class="img-fluid rounded" alt="Resort Garden">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
                     <div class="gallery-item">
-                        <img src="photo/g2.jpg"
-                            class="img-fluid rounded" alt="Resort Garden">
+                        <img src="photo/g2.jpg" class="img-fluid rounded" alt="Resort Garden">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
                     <div class="gallery-item">
-                        <img src="photo/g3.jpg"
-                            class="img-fluid rounded" alt="Resort Garden">
+                        <img src="photo/g3.jpg" class="img-fluid rounded" alt="Resort Garden">
                     </div>
                 </div>
                 <div class="col-md-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
                     <div class="gallery-item">
-                        <img src="photo/bgmabanag.jpg"
-                            class="img-fluid rounded" alt="Resort Garden">
+                        <img src="photo/bgmabanag.jpg" class="img-fluid rounded" alt="Resort Garden">
                     </div>
                 </div>
             </div>
-<!-- 
+            <!-- 
             <div class="text-center mt-4">
                 <a href="#" class="btn btn-outline-resort">View More Photos</a>
             </div> -->
@@ -199,68 +201,74 @@ $result = $conn->query($sql2);
 
     <section>
         <div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8" 
-             data-aos="fade-up" 
-             data-aos-duration="1000">
+            <div class="row justify-content-center">
+                <div class="col-lg-8" data-aos="fade-up" data-aos-duration="1000">
 
-            <div class="testimonial-form-card">
-                <h2 class="text-center mb-4">Share Your Mabanag Spring Resort Experience</h2>
-                <p class="text-center mb-5 text-muted">We'd love to hear what you thought of your stay!</p>
+                    <div class="testimonial-form-card">
+                        <h2 class="text-center mb-4">Share Your Mabanag Spring Resort Experience</h2>
+                        <p class="text-center mb-5 text-muted">We'd love to hear what you thought of your stay!</p>
 
-                <form action="submit_rating.php" method="POST">
-                    
-                    <div class="row">
-                        <div class="col-md-6 form-group" data-aos="fade-right" data-aos-delay="100">
-                            <label for="guest_name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control" id="guest_name" name="guest_name" required>
-                        </div>
-                        <div class="col-md-6 form-group" data-aos="fade-left" data-aos-delay="200">
-                            <label for="guest_location" class="form-label">Your Location (e.g., New York, USA)</label>
-                            <input type="text" class="form-control" id="guest_location" name="guest_location">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" data-aos="fade-up" data-aos-delay="300">
-                        <label class="form-label d-block">Overall Rating (1-5 Stars)</label>
-                        <div class="star-rating">
-                            <input type="radio" id="5-star" name="rating" value="5" required><label for="5-star" title="5 Stars">★</label>
-                            <input type="radio" id="4-star" name="rating" value="4"><label for="4-star" title="4 Stars">★</label>
-                            <input type="radio" id="3-star" name="rating" value="3"><label for="3-star" title="3 Stars">★</label>
-                            <input type="radio" id="2-star" name="rating" value="2"><label for="2-star" title="2 Stars">★</label>
-                            <input type="radio" id="1-star" name="rating" value="1"><label for="1-star" title="1 Star">★</label>
-                        </div>
-                    </div>
+                        <form action="submit_rating.php" method="POST">
 
-                    <div class="form-group" data-aos="fade-up" data-aos-delay="400">
-                        <label for="review_text" class="form-label">Your Experience/Testimonial</label>
-                        <textarea class="form-control" id="review_text" name="review_text" rows="5" placeholder="Tell us about your stay..." required></textarea>
-                    </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group" data-aos="fade-right" data-aos-delay="100">
+                                    <label for="guest_name" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="guest_name" name="guest_name" required>
+                                </div>
+                                <div class="col-md-6 form-group" data-aos="fade-left" data-aos-delay="200">
+                                    <label for="guest_location" class="form-label">Your Location (e.g., New York,
+                                        USA)</label>
+                                    <input type="text" class="form-control" id="guest_location" name="guest_location">
+                                </div>
+                            </div>
 
-                    <div class="form-group" data-aos="fade-up" data-aos-delay="500">
-                        <label for="badge_category" class="form-label">Best describes your experience</label>
-                        <select class="form-select" id="badge_category" name="badge_category" required>
-                            <option value="">Choose one...</option>
-                            <option value="Nature Lover">Nature Lover</option>
-                            <option value="Family Getaway">Family Getaway</option>
-                            <option value="Relaxation Seeker">Relaxation Seeker</option>
-                            <option value="Adventure Traveler">Adventure Traveler</option>
-                            <option value="Food Enthusiast">Food Enthusiast</option>
-                        </select>
-                    </div>
+                            <div class="form-group" data-aos="fade-up" data-aos-delay="300">
+                                <label class="form-label d-block">Overall Rating (1-5 Stars)</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="5-star" name="rating" value="5" required><label for="5-star"
+                                        title="5 Stars">★</label>
+                                    <input type="radio" id="4-star" name="rating" value="4"><label for="4-star"
+                                        title="4 Stars">★</label>
+                                    <input type="radio" id="3-star" name="rating" value="3"><label for="3-star"
+                                        title="3 Stars">★</label>
+                                    <input type="radio" id="2-star" name="rating" value="2"><label for="2-star"
+                                        title="2 Stars">★</label>
+                                    <input type="radio" id="1-star" name="rating" value="1"><label for="1-star"
+                                        title="1 Star">★</label>
+                                </div>
+                            </div>
 
-                    <div class="text-center" data-aos="zoom-in" data-aos-delay="600">
-                        <button type="submit" class="btn btn-resort shadow shadow-success btn-lg mt-3">Submit Testimonial</button>
+                            <div class="form-group" data-aos="fade-up" data-aos-delay="400">
+                                <label for="review_text" class="form-label">Your Experience/Testimonial</label>
+                                <textarea class="form-control" id="review_text" name="review_text" rows="5"
+                                    placeholder="Tell us about your stay..." required></textarea>
+                            </div>
+
+                            <div class="form-group" data-aos="fade-up" data-aos-delay="500">
+                                <label for="badge_category" class="form-label">Best describes your experience</label>
+                                <select class="form-select" id="badge_category" name="badge_category" required>
+                                    <option value="">Choose one...</option>
+                                    <option value="Nature Lover">Nature Lover</option>
+                                    <option value="Family Getaway">Family Getaway</option>
+                                    <option value="Relaxation Seeker">Relaxation Seeker</option>
+                                    <option value="Adventure Traveler">Adventure Traveler</option>
+                                    <option value="Food Enthusiast">Food Enthusiast</option>
+                                </select>
+                            </div>
+
+                            <div class="text-center" data-aos="zoom-in" data-aos-delay="600">
+                                <button type="submit" class="btn btn-resort shadow shadow-success btn-lg mt-3">Submit
+                                    Testimonial</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
     </section>
 
     <!-- Testimonials Section -->
-<!-- Testimonials Section -->
+    <!-- Testimonials Section -->
     <section class="py-5 leaf-pattern">
         <div class="container">
             <h2 class="section-title text-center">Guest Experiences</h2>
@@ -291,20 +299,20 @@ $result = $conn->query($sql2);
                         
                 
                         ?>
-                        <div class="col-md-4 mb-4" data-aos="fade-up">
-                            <div class="testimonial-card p-4 h-100 d-flex flex-column">
-                                <div class="nature-badge mb-3"><?php echo $badge_text; ?></div>
-                                <div class="mb-3"><?php echo $stars_html; ?></div>
-                                <p class="fst-italic flex-grow-1">"<?php echo $review_text_display; ?>"</p>
-                                <div class="d-flex align-items-center mt-3">
-                                    <div>
-                                        <h6 class="mb-0"><?php echo $guest_name_display; ?></h6>
-                                        <small><?php echo $guest_location_display; ?></small>
-                                    </div>
-                                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up">
+                    <div class="testimonial-card p-4 h-100 d-flex flex-column">
+                        <div class="nature-badge mb-3"><?php echo $badge_text; ?></div>
+                        <div class="mb-3"><?php echo $stars_html; ?></div>
+                        <p class="fst-italic flex-grow-1">"<?php echo $review_text_display; ?>"</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div>
+                                <h6 class="mb-0"><?php echo $guest_name_display; ?></h6>
+                                <small><?php echo $guest_location_display; ?></small>
                             </div>
                         </div>
-                        <?php
+                    </div>
+                </div>
+                <?php
                     }
                 } else {
                     // Display a message if no testimonials are found
@@ -427,11 +435,13 @@ $result = $conn->query($sql2);
     </script>
 
 
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+    </script>
+
 
     <script defer>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('checkReservationModal').addEventListener('click', function() {
             var modal = new bootstrap.Modal(document.getElementById('reservationModal'));
             modal.show();
@@ -440,7 +450,8 @@ $result = $conn->query($sql2);
         document.getElementById('checkReservationBtn').addEventListener('click', function() {
             var transacRef = document.getElementById('transacRefInput').value.trim();
             if (transacRef) {
-                window.location.href = 'transaction_details.php?transaction_ref=' + encodeURIComponent(transacRef);
+                window.location.href = 'transaction_details.php?transaction_ref=' + encodeURIComponent(
+                    transacRef);
             }
         });
     });
@@ -457,7 +468,7 @@ $result = $conn->query($sql2);
         }
     });
     </script>
-     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

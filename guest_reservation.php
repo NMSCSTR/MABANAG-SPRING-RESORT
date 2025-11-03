@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <?php
     require 'admin/connect.php';
+    $XENDIT_API_KEY = "xnd_production_oXm5yXdwGgNDR5CKucONZQnQklZzPwlXdMhvwzCttod3weebbQ1VgWJNSZvz";
 
-    // Handle form submission
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $firstname         = $_POST['firstname'];
         $lastname          = $_POST['lastname'];
         $contactno         = $_POST['contactno'];
+        $email             = $_POST['email'];
         $address           = $_POST['address'];
         $reservation_type  = $_POST['reservation_type'];
         $room_id           = $_POST['room_id'] ?? null;
@@ -18,8 +19,110 @@
 
         $transaction_ref = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 6);
 
+        // --- Calculate total amount (universal logic) ---
+        $total_amount = 0;
+        if ($reservation_type == 'room' && $room_id) {
+            $room_query = $conn->query("SELECT room_price FROM room WHERE room_id = '$room_id'");
+            if ($room_query && $room_query->num_rows > 0) {
+                $room_data  = $room_query->fetch_array();
+                $daily_rate = floatval($room_data['room_price']);
+                $check_in       = new DateTime($check_in_date);
+                $check_out      = new DateTime($check_out_date);
+                $number_of_days = $check_out->diff($check_in)->days;
+                if ($number_of_days == 0) {
+                    $number_of_days = 1;
+                }
 
-        // Handle file upload
+                $total_amount = $daily_rate * $number_of_days;
+            }
+        } elseif ($reservation_type == 'cottage' && $cottage_id) {
+            $cottage_query = $conn->query("SELECT cottage_price FROM cottage WHERE cottage_id = '$cottage_id'");
+            if ($cottage_query && $cottage_query->num_rows > 0) {
+                $cottage_data   = $cottage_query->fetch_array();
+                $daily_rate     = floatval($cottage_data['cottage_price']);
+                $total_amount   = $daily_rate;
+                $check_out_date = 'NULL';
+            }
+        }
+
+        // --- Conflict check ---
+        if ($reservation_type == 'room' && $room_id) {
+            $conflict_query = $conn->query("
+                SELECT * FROM reservation
+                WHERE room_id = '$room_id'
+                AND status = 'confirmed'
+                AND ((check_in_date <= '$check_out_date' AND check_out_date >= '$check_in_date'))
+            ");
+        } elseif ($reservation_type == 'cottage' && $cottage_id) {
+            $conflict_query = $conn->query("
+                SELECT * FROM reservation
+                WHERE cottage_id = '$cottage_id'
+                AND status = 'confirmed'
+                AND ((check_in_date <= '$check_out_date' AND check_out_date >= '$check_in_date'))
+            ");
+        }
+
+        if (isset($conflict_query) && $conflict_query->num_rows > 0) {
+            die("Sorry, the selected date is already booked (confirmed).");
+        }
+
+        // --- Insert guest info ---
+        $guest_query = $conn->query("INSERT INTO guest (firstname, lastname, address, contactno)
+                                    VALUES ('$firstname', '$lastname', '$address', '$contactno')");
+        if (!$guest_query) {
+            die("Error inserting guest: " . $conn->error);
+        }
+        $guest_id = $conn->insert_id;
+
+        // --- Insert reservation ---
+        $reservation_query = $conn->query("INSERT INTO reservation (guest_id, transaction_reference, room_id, cottage_id, check_in_date, check_out_date, total_amount)
+            VALUES ('$guest_id', '$transaction_ref', " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', " . ($check_out_date === 'NULL' ? 'NULL' : "'$check_out_date'") . ", '$total_amount')");
+
+        if (!$reservation_query) {
+            die("Error creating reservation: " . $conn->error);
+        }
+        $reservation_id = $conn->insert_id;
+
+        if ($payment_method === 'xendit') {
+            $base_url = "https://mabanag-spring-resort.site";
+            $success_url  = $base_url . "/success.php?res_id=" . $reservation_id;
+            $failure_url  = $base_url . "/fail.php";
+
+            $data = [
+                'external_id'           => 'invoice_' . uniqid(),
+                'payer_email'           => $email,
+                'amount'                => intval($total_amount),
+                'description'           => "Reservation payment for " . $firstname . " " . $lastname,
+                'success_redirect_url'  => $success_url,
+                'failure_redirect_url'  => $failure_url,
+                'customer'              => [
+                    'given_names'   => $firstname,
+                    'surname'       => $lastname,
+                    'email'         => $email,
+                    'mobile_number' => $contactno
+                ]
+            ];
+
+            $ch = curl_init('https://api.xendit.co/v2/invoices');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_USERPWD, $XENDIT_API_KEY . ":");
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            $invoice = json_decode($response, true);
+
+            if (isset($invoice['invoice_url'])) {
+                header('Location: ' . $invoice['invoice_url']);
+                exit;
+            } else {
+                die("Failed to create Xendit invoice: " . $response);
+            }
+        } else {
+        // --- Manual GCash Upload Flow ---
         $receipt_file = null;
         if (isset($_FILES['receipt_file']) && $_FILES['receipt_file']['error'] == 0) {
             $upload_dir = 'uploads/receipts/';
@@ -37,108 +140,35 @@
                 if (move_uploaded_file($_FILES['receipt_file']['tmp_name'], $file_path)) {
                     $receipt_file = $file_path;
                 } else {
-                    $error_message = "Error uploading receipt file.";
+                    die("Error uploading receipt file.");
                 }
             } else {
-                $error_message = "Invalid file type. Only JPG, PNG, and PDF files are allowed.";
+                die("Invalid file type. Only JPG, PNG, and PDF are allowed.");
             }
         }
 
-        // Calculate amount (rate × number of days)
-        $total_amount = 0;
-        if ($reservation_type == 'room' && $room_id) {
-            $room_query = $conn->query("SELECT room_price FROM room WHERE room_id = '$room_id'");
-            if ($room_query && $room_query->num_rows > 0) {
-                $room_data  = $room_query->fetch_array();
-                $daily_rate = floatval($room_data['room_price']);
+        $receipt_file_sql      = $receipt_file ? "'$receipt_file'" : 'NULL';
+        $payment_reference_sql = !empty($payment_reference) ? "'$payment_reference'" : 'NULL';
 
-                // Calculate number of days
-                $check_in       = new DateTime($check_in_date);
-                $check_out      = new DateTime($check_out_date);
-                $number_of_days = $check_out->diff($check_in)->days;
+        $payment_query = $conn->query("INSERT INTO payment (reservation_id, amount, payment_method, payment_reference, receipt_file, payment_status)
+            VALUES ('$reservation_id', '$total_amount', '$payment_method', $payment_reference_sql, $receipt_file_sql, 'pending')");
 
-                if ($number_of_days == 0) {
-                    $number_of_days = 1;
-                }
-
-                $total_amount = $daily_rate * $number_of_days;
-            }
-        } elseif ($reservation_type == 'cottage' && $cottage_id) {
-            $cottage_query = $conn->query("SELECT cottage_price FROM cottage WHERE cottage_id = '$cottage_id'");
-            if ($cottage_query && $cottage_query->num_rows > 0) {
-                $cottage_data = $cottage_query->fetch_array();
-                $daily_rate   = floatval($cottage_data['cottage_price']);
-
-                // Cottage is charged per use (no checkout)
-                $total_amount   = $daily_rate;
-                $check_out_date = 'NULL';
-            }
-        }
-
-        if ($reservation_type == 'room' && $room_id) {
-            $conflict_query = $conn->query("
-                SELECT * FROM reservation
-                WHERE room_id = '$room_id'
-                AND status = 'confirmed'
-                AND (
-                        (check_in_date <= '$check_out_date' AND check_out_date >= '$check_in_date')
-                    )
-            ");
-        } elseif ($reservation_type == 'cottage' && $cottage_id) {
-            $conflict_query = $conn->query("
-                SELECT * FROM reservation
-                WHERE cottage_id = '$cottage_id'
-                AND status = 'confirmed'
-                AND (
-                        (check_in_date <= '$check_out_date' AND check_out_date >= '$check_in_date')
-                    )
-            ");
-        }
-
-        if (isset($conflict_query) && $conflict_query->num_rows > 0) {
-            $error_message = "Sorry, the selected date is already booked (confirmed) for this " . $reservation_type . ".";
+        if ($payment_query) {
+            header("Location: transaction_details.php?reservation_id=" . $reservation_id . "&transaction_ref=" . $transaction_ref);
+            exit;
         } else {
-
-                    // Insert guest information
-        $guest_query = $conn->query("INSERT INTO guest (firstname, lastname, address, contactno)
-                                    VALUES ('$firstname', '$lastname', '$address', '$contactno')");
-
-        if ($guest_query) {
-            $guest_id = $conn->insert_id;
-
-            // Insert reservation
-            $reservation_query = $conn->query("INSERT INTO reservation (guest_id, transaction_reference, room_id, cottage_id, check_in_date, check_out_date, total_amount)
-                                             VALUES ('$guest_id', '$transaction_ref', " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', " . ($check_out_date === 'NULL' ? 'NULL' : "'$check_out_date'") . ", '$total_amount')");
-
-            if ($reservation_query) {
-                $reservation_id = $conn->insert_id;
-
-                // Insert payment record for admin review
-                $receipt_file_sql      = $receipt_file ? "'$receipt_file'" : 'NULL';
-                $payment_reference_sql = ! empty($payment_reference) ? "'$payment_reference'" : 'NULL';
-                $payment_query         = $conn->query("INSERT INTO payment (reservation_id, amount, payment_method, payment_reference, receipt_file, payment_status)
-                                             VALUES ('$reservation_id', '$total_amount', '$payment_method', $payment_reference_sql, $receipt_file_sql, 'pending')");
-
-                if ($payment_query) {
-                    // Redirect to transaction details page
-                    header("Location: transaction_details.php?reservation_id=" . $reservation_id . "&transaction_ref=" . $transaction_ref);
-                    exit();
-                } else {
-                    $error_message = "Error creating payment record: " . $conn->error;
-                }
-            } else {
-                $error_message = "Error creating reservation: " . $conn->error;
-            }
-        } else {
-            $error_message = "Error creating guest record: " . $conn->error;
-        }
-
+            die("Error creating payment record: " . $conn->error);
         }
     }
+}
 ?>
+
+
+
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -147,13 +177,15 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="css/reservation.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -179,7 +211,8 @@
                         <a class="nav-link" href="cottages.php">Cottages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="notice.php">Important Notice</a></li>
+                        <a class="nav-link" href="notice.php">Important Notice</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.php">Contact</a>
                     </li>
@@ -195,7 +228,8 @@
                 <div class="col-lg-8 text-center" data-aos="fade-up">
                     <span class="nature-badge">Book Your Nature Escape</span>
                     <h1 class="hero-title">Make Your Reservation</h1>
-                    <p class="hero-subtitle">Experience the beauty and tranquility of Mabanag Spring Resort - your perfect nature getaway awaits</p>
+                    <p class="hero-subtitle">Experience the beauty and tranquility of Mabanag Spring Resort - your
+                        perfect nature getaway awaits</p>
                 </div>
             </div>
         </div>
@@ -215,10 +249,10 @@
                         </div>
 
                         <?php if (isset($error_message)): ?>
-                            <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3" role="alert">
-                                <i class="fas fa-exclamation-circle me-2"></i><?php echo $error_message; ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
+                        <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i><?php echo $error_message; ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
                         <?php endif; ?>
 
                         <form method="POST" class="reservation-form" enctype="multipart/form-data">
@@ -230,7 +264,8 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="firstname" class="form-label">First Name *</label>
-                                        <input type="text" class="form-control" id="firstname" name="firstname" required>
+                                        <input type="text" class="form-control" id="firstname" name="firstname"
+                                            required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="lastname" class="form-label">Last Name *</label>
@@ -242,10 +277,16 @@
                                         <label for="contactno" class="form-label">Contact Number *</label>
                                         <input type="tel" class="form-control" id="contactno" name="contactno" required>
                                     </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+
                                 </div>
                                 <div class="mb-3">
                                     <label for="address" class="form-label">Address *</label>
-                                    <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                                    <textarea class="form-control" id="address" name="address" rows="3"
+                                        required></textarea>
                                 </div>
                             </div>
 
@@ -257,35 +298,43 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="reservation_type" class="form-label">Reservation Type *</label>
-                                        <select class="form-select" id="reservation_type" name="reservation_type" required>
+                                        <select class="form-select" id="reservation_type" name="reservation_type"
+                                            required>
                                             <option value="">Select Type</option>
                                             <option value="room">Room</option>
                                             <option value="cottage">Cottage</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="room_id" class="form-label" id="room_label" style="display: none;">Select Room *</label>
-                                        <label for="cottage_id" class="form-label" id="cottage_label" style="display: none;">Select Cottage *</label>
+                                        <label for="room_id" class="form-label" id="room_label"
+                                            style="display: none;">Select Room *</label>
+                                        <label for="cottage_id" class="form-label" id="cottage_label"
+                                            style="display: none;">Select Cottage *</label>
                                         <select class="form-select" id="room_id" name="room_id" style="display: none;">
                                             <option value="">Select Room</option>
                                             <?php
                                                 $room_query = $conn->query("SELECT * FROM room WHERE room_availability = 'available'");
                                                 while ($room = $room_query->fetch_array()):
                                             ?>
-                                                <option value="<?php echo $room['room_id'] ?>" data-price="<?php echo $room['room_price'] ?>">
-                                                    Room <?php echo $room['room_number'] ?> - <?php echo $room['room_type'] ?> (₱<?php echo $room['room_price'] ?>)
-                                                </option>
+                                            <option value="<?php echo $room['room_id'] ?>"
+                                                data-price="<?php echo $room['room_price'] ?>">
+                                                Room                                                     <?php echo $room['room_number'] ?> -
+                                                <?php echo $room['room_type'] ?> (₱<?php echo $room['room_price'] ?>)
+                                            </option>
                                             <?php endwhile; ?>
                                         </select>
-                                        <select class="form-select" id="cottage_id" name="cottage_id" style="display: none;">
+                                        <select class="form-select" id="cottage_id" name="cottage_id"
+                                            style="display: none;">
                                             <option value="">Select Cottage</option>
                                             <?php
                                                 $cottage_query = $conn->query("SELECT * FROM cottage WHERE cottage_availability = 'available'");
                                                 while ($cottage = $cottage_query->fetch_array()):
                                             ?>
-                                                <option value="<?php echo $cottage['cottage_id'] ?>" data-price="<?php echo $cottage['cottage_price'] ?>">
-                                                    <?php echo $cottage['cottage_type'] ?> (₱<?php echo $cottage['cottage_price'] ?>)
-                                                </option>
+                                            <option value="<?php echo $cottage['cottage_id'] ?>"
+                                                data-price="<?php echo $cottage['cottage_price'] ?>">
+                                                <?php echo $cottage['cottage_type'] ?>
+                                                (₱<?php echo $cottage['cottage_price'] ?>)
+                                            </option>
                                             <?php endwhile; ?>
                                         </select>
                                     </div>
@@ -293,18 +342,21 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="check_in_date" class="form-label">Check-in Date *</label>
-                                        <input type="date" class="form-control" id="check_in_date" name="check_in_date" required>
+                                        <input type="date" class="form-control" id="check_in_date" name="check_in_date"
+                                            required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="check_out_date" class="form-label">Check-out Date *</label>
-                                        <input type="date" class="form-control" id="check_out_date" name="check_out_date" required>
+                                        <input type="date" class="form-control" id="check_out_date"
+                                            name="check_out_date" required>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12 mb-3">
                                         <div class="stay-duration" id="stay_duration" style="display: none;">
                                             <i class="fas fa-calendar-alt me-2"></i>
-                                            <span class="duration-text">Duration: <strong id="duration_days">0</strong> day(s)</span>
+                                            <span class="duration-text">Duration: <strong id="duration_days">0</strong>
+                                                day(s)</span>
                                         </div>
                                     </div>
                                 </div>
@@ -315,7 +367,7 @@
                                 <h4 class="section-title">
                                     <i class="fas fa-credit-card me-2"></i>Payment Information
                                 </h4>
-                                
+
                                 <!-- GCash Information -->
                                 <?php
                                     $sql  = mysqli_query($conn, " SELECT * FROM `owners_info` WHERE `info_id` = 1");
@@ -347,21 +399,23 @@
                                         <label for="payment_method" class="form-label">Payment Method *</label>
                                         <select class="form-select" id="payment_method" name="payment_method" required>
                                             <option value="">Select Payment Method</option>
-                                            <option value="gcash">GCash</option>
+                                                <option value="gcashreceipt">Manual GCash Upload</option> 
+                                                <option value="xendit">Pay Now (Online Payment)</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-6 mb-3">
+
+                                    <div class="col-md-6 mb-3 manual-fields">
                                         <label for="payment_reference" class="form-label">Payment Reference *</label>
-                                        <input type="text" class="form-control" id="payment_reference" name="payment_reference"
-                                               placeholder="Reference Number, etc." required>
+                                        <input type="text" class="form-control" id="payment_reference"
+                                            name="payment_reference" placeholder="Reference Number, etc." required>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row manual-fields">
                                     <div class="col-12 mb-3">
                                         <label for="receipt_file" class="form-label">Upload Payment Receipt *</label>
                                         <div class="file-upload-container">
-                                            <input type="file" class="form-control file-input" id="receipt_file" name="receipt_file"
-                                                   accept=".jpg,.jpeg,.png,.pdf" required>
+                                            <input type="file" class="form-control file-input" id="receipt_file"
+                                                name="receipt_file" accept=".jpg,.jpeg,.png,.pdf" required>
                                             <div class="file-upload-info">
                                                 <i class="fas fa-cloud-upload-alt me-2"></i>
                                                 <span class="file-text">Choose file or drag and drop</span>
@@ -412,7 +466,8 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5><i class="fas fa-leaf me-2"></i>Mabanag Spring Resort</h5>
-                    <p>Experience the perfect blend of nature and comfort at our beautiful resort nestled in pristine natural surroundings.</p>
+                    <p>Experience the perfect blend of nature and comfort at our beautiful resort nestled in pristine
+                        natural surroundings.</p>
                 </div>
                 <div class="col-lg-4 mb-4">
                     <h5>Quick Links</h5>
@@ -426,13 +481,17 @@
                 <div class="col-lg-4 mb-4">
                     <h5>Contact Info</h5>
                     <p><i class="fas fa-phone me-2"></i><?php echo $info['phone_number'] ?? '+63 123 456 7890'; ?></p>
-                    <p><i class="fas fa-envelope me-2"></i><?php echo $info['email_address'] ?? 'info@mabanagresort.com'; ?></p>
-                    <p><i class="fas fa-map-marker-alt me-2"></i><?php echo $info['address'] ?? 'Mabanag, Juban, Sorsogon'; ?></p>
+                    <p><i
+                            class="fas fa-envelope me-2"></i><?php echo $info['email_address'] ?? 'info@mabanagresort.com'; ?>
+                    </p>
+                    <p><i
+                            class="fas fa-map-marker-alt me-2"></i><?php echo $info['address'] ?? 'Mabanag, Juban, Sorsogon'; ?>
+                    </p>
                 </div>
             </div>
             <hr>
             <div class="text-center">
-                <p>&copy; <?php echo date('Y'); ?> Mabanag Spring Resort. All rights reserved.</p>
+                <p>&copy;                          <?php echo date('Y'); ?> Mabanag Spring Resort. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -440,75 +499,98 @@
     <!-- AOS Animation -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init();
+    AOS.init();
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
-        // Navbar background toggle on scroll
-        document.addEventListener("DOMContentLoaded", () => {
-            const navbar = document.querySelector(".navbar");
-
-            function toggleNavbarBackground() {
-                if (window.scrollY > 60) {
-                    navbar.classList.add("scrolled");
+        document.addEventListener("DOMContentLoaded", function() {
+            const paymentMethod = document.getElementById("payment_method");
+            const manualFields = document.querySelectorAll(".manual-fields");
+            
+            function togglePaymentFields() {
+                if (paymentMethod.value === "xendit"){
+                    manualFields.forEach(el => el.style.display = "none");
+                    document.getElementById("payment_reference").required = false;
+                    document.getElementById("receipt_file").required = false;
                 } else {
-                    navbar.classList.remove("scrolled");
+                    manualFields.forEach(el => el.style.display = "block");
+                    document.getElementById("payment_reference").required = true;
+                    document.getElementById("receipt_file").required = true;
                 }
             }
-
-            toggleNavbarBackground();
-            window.addEventListener("scroll", toggleNavbarBackground);
-
-            // File upload preview functionality
-            const fileInput = document.getElementById('receipt_file');
-            const filePreview = document.getElementById('file-preview');
-            const previewName = document.querySelector('.preview-name');
-            const previewSize = document.querySelector('.preview-size');
-
-            fileInput.addEventListener('change', function(e) {
-                if (this.files && this.files[0]) {
-                    const file = this.files[0];
-                    const fileName = file.name;
-                    const fileSize = (file.size / 1024 / 1024).toFixed(2); // Convert to MB
-                    
-                    previewName.textContent = fileName;
-                    previewSize.textContent = fileSize + ' MB';
-                    filePreview.style.display = 'block';
-                }
-            });
-
-            // Remove file function
-            window.removeFile = function() {
-                fileInput.value = '';
-                filePreview.style.display = 'none';
-            };
-
-            // Drag and drop functionality
-            const fileUploadContainer = document.querySelector('.file-upload-container');
-
-            fileUploadContainer.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                this.classList.add('dragover');
-            });
-
-            fileUploadContainer.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                this.classList.remove('dragover');
-            });
-
-            fileUploadContainer.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.classList.remove('dragover');
-                fileInput.files = e.dataTransfer.files;
-                
-                // Trigger change event
-                const event = new Event('change');
-                fileInput.dispatchEvent(event);
-            });
+            paymentMethod.addEventListener("change", togglePaymentFields);
+            
         });
+    </script>
+    
+    <script>
+    // Navbar background toggle on scroll
+    document.addEventListener("DOMContentLoaded", () => {
+        const navbar = document.querySelector(".navbar");
+
+        function toggleNavbarBackground() {
+            if (window.scrollY > 60) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        }
+
+        toggleNavbarBackground();
+        window.addEventListener("scroll", toggleNavbarBackground);
+
+        // File upload preview functionality
+        const fileInput = document.getElementById('receipt_file');
+        const filePreview = document.getElementById('file-preview');
+        const previewName = document.querySelector('.preview-name');
+        const previewSize = document.querySelector('.preview-size');
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const fileName = file.name;
+                const fileSize = (file.size / 1024 / 1024).toFixed(2); // Convert to MB
+
+                previewName.textContent = fileName;
+                previewSize.textContent = fileSize + ' MB';
+                filePreview.style.display = 'block';
+            }
+        });
+
+        // Remove file function
+        window.removeFile = function() {
+            fileInput.value = '';
+            filePreview.style.display = 'none';
+        };
+
+        // Drag and drop functionality
+        const fileUploadContainer = document.querySelector('.file-upload-container');
+
+        fileUploadContainer.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        fileUploadContainer.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        fileUploadContainer.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            fileInput.files = e.dataTransfer.files;
+
+            // Trigger change event
+            const event = new Event('change');
+            fileInput.dispatchEvent(event);
+        });
+    });
     </script>
 
     <script src="js/guest_reservation_script.js"></script>
 </body>
+
 </html>

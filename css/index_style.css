@@ -17,7 +17,6 @@
 body {
   font-family: "Poppins", sans-serif;
   background-color: #f9f9f9;
-  overflow-x: hidden;
 }
 
 /* Nature-inspired elements */
@@ -443,5 +442,16 @@ body {
 
   .hero-content .btn {
     margin-right: 0 !important;
+  }
+
+  .navbar {
+    /* Reduces padding on the left/right from 1rem (16px) to 0.5rem (8px) */
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .navbar-toggler {
+    /* Pushes the toggler to the absolute right of the container */
+    margin-left: auto;
   }
 }
