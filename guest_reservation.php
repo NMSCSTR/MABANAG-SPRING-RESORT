@@ -24,8 +24,8 @@
         if ($reservation_type == 'room' && $room_id) {
             $room_query = $conn->query("SELECT room_price FROM room WHERE room_id = '$room_id'");
             if ($room_query && $room_query->num_rows > 0) {
-                $room_data  = $room_query->fetch_array();
-                $daily_rate = floatval($room_data['room_price']);
+                $room_data      = $room_query->fetch_array();
+                $daily_rate     = floatval($room_data['room_price']);
                 $check_in       = new DateTime($check_in_date);
                 $check_out      = new DateTime($check_out_date);
                 $number_of_days = $check_out->diff($check_in)->days;
@@ -69,7 +69,7 @@
         // --- Insert guest info ---
         $guest_query = $conn->query("INSERT INTO guest (firstname, lastname, address, contactno)
                                     VALUES ('$firstname', '$lastname', '$address', '$contactno')");
-        if (!$guest_query) {
+        if (! $guest_query) {
             die("Error inserting guest: " . $conn->error);
         }
         $guest_id = $conn->insert_id;
@@ -78,29 +78,29 @@
         $reservation_query = $conn->query("INSERT INTO reservation (guest_id, transaction_reference, room_id, cottage_id, check_in_date, check_out_date, total_amount)
             VALUES ('$guest_id', '$transaction_ref', " . ($room_id ? "'$room_id'" : 'NULL') . ", " . ($cottage_id ? "'$cottage_id'" : 'NULL') . ", '$check_in_date', " . ($check_out_date === 'NULL' ? 'NULL' : "'$check_out_date'") . ", '$total_amount')");
 
-        if (!$reservation_query) {
+        if (! $reservation_query) {
             die("Error creating reservation: " . $conn->error);
         }
         $reservation_id = $conn->insert_id;
 
         if ($payment_method === 'xendit') {
-            $base_url = "https://mabanag-spring-resort.site";
-            $success_url  = $base_url . "/success.php?res_id=" . $reservation_id;
-            $failure_url  = $base_url . "/fail.php";
+            $base_url    = "https://mabanag-spring-resort.site";
+            $success_url = $base_url . "/success.php?res_id=" . $reservation_id;
+            $failure_url = $base_url . "/fail.php";
 
             $data = [
-                'external_id'           => 'invoice_' . uniqid(),
-                'payer_email'           => $email,
-                'amount'                => intval($total_amount),
-                'description'           => "Reservation payment for " . $firstname . " " . $lastname,
-                'success_redirect_url'  => $success_url,
-                'failure_redirect_url'  => $failure_url,
-                'customer'              => [
+                'external_id'          => 'invoice_' . uniqid(),
+                'payer_email'          => $email,
+                'amount'               => intval($total_amount),
+                'description'          => "Reservation payment for " . $firstname . " " . $lastname,
+                'success_redirect_url' => $success_url,
+                'failure_redirect_url' => $failure_url,
+                'customer'             => [
                     'given_names'   => $firstname,
                     'surname'       => $lastname,
                     'email'         => $email,
-                    'mobile_number' => $contactno
-                ]
+                    'mobile_number' => $contactno,
+                ],
             ];
 
             $ch = curl_init('https://api.xendit.co/v2/invoices');
@@ -116,51 +116,66 @@
             $invoice = json_decode($response, true);
 
             if (isset($invoice['invoice_url'])) {
-                header('Location: ' . $invoice['invoice_url']);
-                exit;
-            } else {
-                die("Failed to create Xendit invoice: " . $response);
-            }
-        } else {
-        // --- Manual GCash Upload Flow ---
-        $receipt_file = null;
-        if (isset($_FILES['receipt_file']) && $_FILES['receipt_file']['error'] == 0) {
-            $upload_dir = 'uploads/receipts/';
-            if (! file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
+                $invoice_id  = mysqli_real_escape_string($conn, $invoice['id']);
+                $external_id = mysqli_real_escape_string($conn, $invoice['external_id']);
+                $status      = mysqli_real_escape_string($conn, $invoice['status']);
+                $amount      = mysqli_real_escape_string($conn, $invoice['amount']);
+                $payer_email = mysqli_real_escape_string($conn, $invoice['payer_email']);
+                $description = mysqli_real_escape_string($conn, $invoice['description']);
+                $invoice_url = mysqli_real_escape_string($conn, $invoice['invoice_url']);
+                $expiry_date = mysqli_real_escape_string($conn, $invoice['expiry_date']);
+                $created     = mysqli_real_escape_string($conn, $invoice['created']);
 
-            $file_extension     = strtolower(pathinfo($_FILES['receipt_file']['name'], PATHINFO_EXTENSION));
-            $allowed_extensions = ['jpg', 'jpeg', 'png', 'pdf'];
-
-            if (in_array($file_extension, $allowed_extensions)) {
-                $file_name = 'receipt_' . time() . '_' . uniqid() . '.' . $file_extension;
-                $file_path = $upload_dir . $file_name;
-
-                if (move_uploaded_file($_FILES['receipt_file']['tmp_name'], $file_path)) {
-                    $receipt_file = $file_path;
+                $sql = "INSERT INTO xendit_invoices (invoice_id, external_id, status, amount, customer_email, description, invoice_url, expiry_date, created_at)
+                        VALUES ('$invoice_id', '$external_id', '$status', '$amount', '$payer_email', '$description', '$invoice_url', '$expiry_date', '$created')";
+                if (mysqli_query($conn, $sql)) {
+                    header('Location: ' . $invoice['invoice_url']);
+                    mysqli_close($conn);
+                    exit;
                 } else {
-                    die("Error uploading receipt file.");
+                    die("Failed to create Xendit invoice: " . $response);
                 }
             } else {
-                die("Invalid file type. Only JPG, PNG, and PDF are allowed.");
-            }
-        }
+                // --- Manual GCash Upload Flow ---
+                $receipt_file = null;
+                if (isset($_FILES['receipt_file']) && $_FILES['receipt_file']['error'] == 0) {
+                    $upload_dir = 'uploads/receipts/';
+                    if (! file_exists($upload_dir)) {
+                        mkdir($upload_dir, 0777, true);
+                    }
 
-        $receipt_file_sql      = $receipt_file ? "'$receipt_file'" : 'NULL';
-        $payment_reference_sql = !empty($payment_reference) ? "'$payment_reference'" : 'NULL';
+                    $file_extension     = strtolower(pathinfo($_FILES['receipt_file']['name'], PATHINFO_EXTENSION));
+                    $allowed_extensions = ['jpg', 'jpeg', 'png', 'pdf'];
 
-        $payment_query = $conn->query("INSERT INTO payment (reservation_id, amount, payment_method, payment_reference, receipt_file, payment_status)
+                    if (in_array($file_extension, $allowed_extensions)) {
+                        $file_name = 'receipt_' . time() . '_' . uniqid() . '.' . $file_extension;
+                        $file_path = $upload_dir . $file_name;
+
+                        if (move_uploaded_file($_FILES['receipt_file']['tmp_name'], $file_path)) {
+                            $receipt_file = $file_path;
+                        } else {
+                            die("Error uploading receipt file.");
+                        }
+                    } else {
+                        die("Invalid file type. Only JPG, PNG, and PDF are allowed.");
+                    }
+                }
+
+                $receipt_file_sql      = $receipt_file ? "'$receipt_file'" : 'NULL';
+                $payment_reference_sql = ! empty($payment_reference) ? "'$payment_reference'" : 'NULL';
+
+                $payment_query = $conn->query("INSERT INTO payment (reservation_id, amount, payment_method, payment_reference, receipt_file, payment_status)
             VALUES ('$reservation_id', '$total_amount', '$payment_method', $payment_reference_sql, $receipt_file_sql, 'pending')");
 
-        if ($payment_query) {
-            header("Location: transaction_details.php?reservation_id=" . $reservation_id . "&transaction_ref=" . $transaction_ref);
-            exit;
-        } else {
-            die("Error creating payment record: " . $conn->error);
+                if ($payment_query) {
+                    header("Location: transaction_details.php?reservation_id=" . $reservation_id . "&transaction_ref=" . $transaction_ref);
+                    exit;
+                } else {
+                    die("Error creating payment record: " . $conn->error);
+                }
+            }
         }
     }
-}
 ?>
 
 
@@ -399,8 +414,8 @@
                                         <label for="payment_method" class="form-label">Payment Method *</label>
                                         <select class="form-select" id="payment_method" name="payment_method" required>
                                             <option value="">Select Payment Method</option>
-                                                <option value="gcashreceipt">Manual GCash Upload</option> 
-                                                <option value="xendit">Pay Now (Online Payment)</option>
+                                            <option value="gcashreceipt">Manual GCash Upload</option>
+                                            <option value="xendit">Pay Now (Online Payment)</option>
                                         </select>
                                     </div>
 
@@ -503,28 +518,28 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const paymentMethod = document.getElementById("payment_method");
-            const manualFields = document.querySelectorAll(".manual-fields");
-            
-            function togglePaymentFields() {
-                if (paymentMethod.value === "xendit"){
-                    manualFields.forEach(el => el.style.display = "none");
-                    document.getElementById("payment_reference").required = false;
-                    document.getElementById("receipt_file").required = false;
-                } else {
-                    manualFields.forEach(el => el.style.display = "block");
-                    document.getElementById("payment_reference").required = true;
-                    document.getElementById("receipt_file").required = true;
-                }
+    document.addEventListener("DOMContentLoaded", function() {
+        const paymentMethod = document.getElementById("payment_method");
+        const manualFields = document.querySelectorAll(".manual-fields");
+
+        function togglePaymentFields() {
+            if (paymentMethod.value === "xendit") {
+                manualFields.forEach(el => el.style.display = "none");
+                document.getElementById("payment_reference").required = false;
+                document.getElementById("receipt_file").required = false;
+            } else {
+                manualFields.forEach(el => el.style.display = "block");
+                document.getElementById("payment_reference").required = true;
+                document.getElementById("receipt_file").required = true;
             }
-            paymentMethod.addEventListener("change", togglePaymentFields);
-            
-        });
+        }
+        paymentMethod.addEventListener("change", togglePaymentFields);
+
+    });
     </script>
-    
+
     <script>
     // Navbar background toggle on scroll
     document.addEventListener("DOMContentLoaded", () => {
