@@ -1,90 +1,140 @@
-<!DOCTYPE html>
-<?php 
+<?php
 require_once 'admin/connect.php';
 
-// Check if transaction_ref is provided
+// ✅ Enable error display for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// ----------------------------
+// 1️⃣ Validate and get transaction_ref
+// ----------------------------
 if (!isset($_GET['transaction_ref']) || empty($_GET['transaction_ref'])) {
-    echo "
-    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Missing Reference',
-            text: 'Transaction reference is required!',
-        }).then(() => {
-            window.location.href = 'index.php';
-        });
-    </script>";
-    exit();
+    die("❌ Missing transaction_ref parameter in URL.");
 }
 
+$transaction_ref = mysqli_real_escape_string($conn, $_GET['transaction_ref']);
 
-
-$transaction_ref = $_GET['transaction_ref'];
-$contactno = isset($_GET['contactno']) ? $_GET['contactno'] : '';
-
-// Fetch reservation details
-$query = "
-    SELECT 
-        r.*,
-        g.firstname, 
-        g.lastname, 
-        g.address, 
-        g.contactno,
-        p.payment_method,
-        p.payment_reference,
-        p.payment_status,
-        p.receipt_file,
-        rm.room_number,
-        rm.room_type,
-        rm.room_price,
-        c.cottage_type,
-        c.cottage_price
+// ----------------------------
+// 2️⃣ Fetch reservation using transaction_ref (FULL DETAILS)
+// ----------------------------
+$res_query = "
+    SELECT r.*, 
+           g.firstname, g.lastname, g.address, g.contactno, g.email,
+           p.payment_method, p.payment_reference, p.payment_status, p.receipt_file,
+           rm.room_number, rm.room_type, rm.room_price,
+           c.cottage_type, c.cottage_price,
+           xi.external_id, xi.status AS invoice_status, xi.amount AS invoice_amount,
+           xi.invoice_url, xi.expiry_date, xi.created_at AS invoice_created
     FROM reservation r
     JOIN guest g ON r.guest_id = g.guest_id
     LEFT JOIN payment p ON r.reservation_id = p.reservation_id
     LEFT JOIN room rm ON r.room_id = rm.room_id
     LEFT JOIN cottage c ON r.cottage_id = c.cottage_id
-    WHERE r.transaction_reference = '$transaction_ref' OR g.contactno = '$contactno'
+    LEFT JOIN xendit_invoices xi ON r.reservation_id = xi.reservation_id
+    WHERE r.transaction_reference = '$transaction_ref'
+    LIMIT 1
 ";
+$res_result = mysqli_query($conn, $res_query);
 
-$result = $conn->query($query);
-
-if (!$result || $result->num_rows == 0) {
-    $msg = "The transaction you are trying to access does not exist.";
-    echo "<script>
-    (function(){
-      var s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
-      s.onload = function(){
-        Swal.fire({
-          icon: 'error',
-          title: 'No Record Found',
-          text: " . json_encode($msg) . "
-        }).then(function(){
-          window.location.href = 'index.php';
-        });
-      };
-      document.head.appendChild(s);
-    })();
-    </script>";
-    exit();
+if (!$res_result || mysqli_num_rows($res_result) === 0) {
+    die("❌ No reservation found for transaction_ref: $transaction_ref");
 }
 
+$reservation = mysqli_fetch_assoc($res_result);
+$res_id = $reservation['reservation_id'];
+
+// ----------------------------
+// 3️⃣ Fetch Xendit invoice by reservation_id
+// ----------------------------
+$invoice_query = "
+    SELECT * FROM xendit_invoices
+    WHERE reservation_id = '$res_id'
+    ORDER BY id DESC
+    LIMIT 1
+";
+$invoice_result = mysqli_query($conn, $invoice_query);
+
+if (!$invoice_result || mysqli_num_rows($invoice_result) === 0) {
+    die("❌ No invoice found for reservation_id: $res_id");
+}
+
+$invoice_row = mysqli_fetch_assoc($invoice_result);
+$external_id = $invoice_row['external_id'];
+
+// ----------------------------
+// 4️⃣ Fetch invoice details from Xendit API
+// ----------------------------
+$apiKey = 'xnd_production_oXm5yXdwGgNDR5CKucONZQnQklZzPwlXdMhvwzCttod3weebbQ1VgWJNSZvz';
+$url = 'https://api.xendit.co/v2/invoices?external_id=' . urlencode($external_id);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_USERPWD, $apiKey . ':');
+$response = curl_exec($ch);
+
+if (curl_errno($ch)) {
+    die("❌ cURL Error: " . curl_error($ch));
+}
+curl_close($ch);
+
+$invoice_data = json_decode($response, true);
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    die("❌ JSON Decode Error: " . json_last_error_msg());
+}
+
+if (!isset($invoice_data[0])) {
+    die("❌ No invoice found for external_id: $external_id");
+}
+
+$invoice = $invoice_data[0];
+$invoice_status = strtoupper($invoice['status']);
+$invoice_amount = $invoice['amount'];
+$payer_email = $invoice['payer_email'] ?? '';
+$payment_method = $invoice['payment_method'] ?? '';
+$payment_channel = $invoice['payment_channel'] ?? '';
+$paid_at = $invoice['paid_at'] ?? null;
+
+// ----------------------------
+// 5️⃣ Update invoice table
+// ----------------------------
 
 
-$reservation = $result->fetch_assoc();
+$update_invoice = "
+    UPDATE xendit_invoices
+    SET status = '$invoice_status',
+        amount = '$invoice_amount',
+        customer_email = '$payer_email',
+       created_at = NOW()
+    WHERE external_id = '$external_id'
+";
+mysqli_query($conn, $update_invoice);
 
-// Calculate duration only if check_out_date exists
+// ----------------------------
+// 6️⃣ Update reservation if paid
+// ----------------------------
+if ($invoice_status === 'PAID') {
+    $update_res = "
+        UPDATE reservation 
+        SET status = 'confirmed', is_paid_online = 1
+        WHERE reservation_id = '$res_id'
+    ";
+    mysqli_query($conn, $update_res);
+}
+
+// ----------------------------
+// 7️⃣ Calculate duration
+// ----------------------------
 $duration = 0;
 if (!empty($reservation['check_out_date'])) {
     $check_in = new DateTime($reservation['check_in_date']);
     $check_out = new DateTime($reservation['check_out_date']);
     $duration = $check_out->diff($check_in)->days;
-
-    
 }
+
+mysqli_close($conn);
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -235,24 +285,41 @@ if (!empty($reservation['check_out_date'])) {
                         <h3 class="card-title mb-3">Reservation Status</h3>
                         <div class="status-badge status-<?php echo $reservation['status']; ?>">
                             <i class="fas fa-check-circle"></i>
-                            <?php echo ucfirst($reservation['status']); ?>
+                            <?php echo ucfirst($reservation['status']); ?> 
+                             <?php if ($reservation['remarks']): ?>
+                             & <span class="text-warning"><?= $reservation['remarks'] ?></span>
+                             <?php endif; ?>  
                         </div>
                         <div class="mt-3">
                             <p class="text-muted mb-2">Payment Method</p>
                             <p class="fw-semibold">
-                                <?php echo ucfirst(str_replace('_', ' ', $reservation['payment_method'])); ?></p>
+                                <?php echo $payment_method; ?> | 
+                                <?php echo $payment_channel; ?>
+                            </p>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-muted mb-2">View Invoice</p>
+                            <p class="fw-semibold">
+                                <a href="<?= htmlspecialchars($reservation['invoice_url']) ?>" target="_blank">Click To View Invoice</a>
+                            </p>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-muted mb-2">Paid At</p>
+                            <p class="fw-semibold">
+                                <?= date('M j, Y H:i:s', strtotime($paid_at)); ?>
+                            </p>
                         </div>
                         <?php if (!empty($reservation['payment_reference'])): ?>
                         <div class="mt-2">
                             <p class="text-muted mb-1">Reference Number</p>
                             <p class="fw-semibold"><?php echo $reservation['payment_reference']; ?></p>
                         </div>
-                        <?php if (empty($reservation['remarks'])): ?>
-                        <button class="btn btn-warning" id="cancelReservationBtn">
-                            <i class="fas fa-times-circle me-2"></i>Request Cancellation
-                        </button>     
-                        <?php endif; ?>                  
                         <?php endif; ?>
+                        <?php if (empty($reservation['remarks'])): ?>
+                            <button class="btn btn-warning" id="cancelReservationBtn">
+                                <i class="fas fa-times-circle me-2"></i>Request Cancellation
+                            </button>     
+                        <?php endif; ?>   
                     </div>
                 </div>
                 <div class="col-lg-6">
